@@ -49,7 +49,8 @@
   <ItemGroup>
     <Compile Include="Cryptography\RSACryptography.cs" />
     <Compile Include="DataModels\Solvency.cs" />
-    <Compile Include="Workers\ContactsFactory.cs" />
+    <Compile Include="Exceptions\ArrayExtensions.cs" />
+    <Compile Include="Factories\ContactsFactory.cs" />
     <Compile Include="Workers\CurrencyContext.cs" />
     <Compile Include="DataBaseModels\Contact.cs" />
     <Compile Include="DataBaseModels\DataBaseModel.cs" />
@@ -63,9 +64,9 @@
     <Compile Include="Workers\Miner.cs" />
     <Compile Include="Workers\TransactionVerifier.cs" />
     <Compile Include="Workers\SolvencyCounter.cs" />
-    <Compile Include="Workers\TransactionFactory.cs" />
+    <Compile Include="Factories\TransactionFactory.cs" />
     <Compile Include="Workers\TransactionValidator.cs" />
-    <Compile Include="Workers\WalletFactory.cs" />
+    <Compile Include="Factories\WalletFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Secret.cs" />
   </ItemGroup>

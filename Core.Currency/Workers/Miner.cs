@@ -24,7 +24,7 @@ namespace Core.Currency.Workers
                     while (!TransactionValidator.IsClosed(transact))
                     {
                         ++transact.ClousingByte;
-                        Thread.Sleep(Rand.Next(50));
+                        Thread.Sleep(Rand.Next(70));
                     }
 
                     transact.MinerSign = csp.Sign(transact.GetFinalBytes());

@@ -2,7 +2,7 @@
 using Core.Currency.Cryptography;
 using Core.Currency.DataBaseModels;
 
-namespace Core.Currency.Workers
+namespace Core.Currency.Factories
 {
     public static class WalletFactory
     {

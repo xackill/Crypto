@@ -1,0 +1,33 @@
+﻿@{
+    ViewBag.Title = "Новый кошелек";
+}
+
+<script type="text/javascript" src="../../Scripts/knockout-3.4.1.js"></script>
+<script type="text/javascript" src="../../Scripts/CreateWallet.js"></script>
+
+<div class="jumbotron">
+    <h1>Создание кошелька</h1>
+</div>
+
+<div class="row">
+    <div class="col-md-8" method="post">
+        <div class="form-group">
+            <span class="lead">Все поля обязательны!</span>
+        </div>
+
+        <div class="form-group" data-bind="css: { 'has-error' : Surname() === '', 'has-success' : Surname() !== '' }">
+            <input type="text" class="form-control" id="Surname" data-bind="value: Surname" placeholder="Введите фамилию">
+        </div>
+
+        <div class="form-group" data-bind="css: { 'has-error' : Name() === '', 'has-success' : Name() !== '' }">
+            <input type="text" class="form-control" id="Name" data-bind="value: Name" placeholder="Введите имя">
+        </div>
+
+        <input type="button" class="btn btn-primary" value="Создать кошелек" onclick="createWallet()" data-bind="visible: !CreationInProgress()">
+        <img src="../../Content/Load.gif" width="27" data-bind="visible: CreationInProgress()" alt="<Load>" style="display: none" />
+    </div>
+</div>
+
+<script>
+    ko.applyBindings(data);
+</script>

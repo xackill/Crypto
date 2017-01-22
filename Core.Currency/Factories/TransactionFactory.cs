@@ -2,8 +2,9 @@ using System;
 using Core.Currency.Cryptography;
 using Core.Currency.DataBaseModels;
 using Core.Currency.Extensions;
+using Core.Currency.Workers;
 
-namespace Core.Currency.Workers
+namespace Core.Currency.Factories
 {
     public static class TransactionFactory
     {

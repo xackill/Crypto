@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq;
-using Core.Currency;
 using Core.Currency.DataBaseModels;
-using Core.Currency.Extensions;
+using Core.Currency.Factories;
 using Core.Currency.Workers;
 
 namespace Test
