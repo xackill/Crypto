@@ -6,10 +6,10 @@ namespace Core.Currency.Factories
 {
     public static class ContactsFactory
     {
-        public static Contact Create(Wallet wallet)
+        public static Contact Create(Wallet wallet, string ownerName)
         {
             using (var csp = new RSACryptography(wallet.PublicPrivateKey))
-                return Create(wallet.Id, wallet.OwnerName, csp.PublicKey);
+                return Create(wallet.Id, ownerName, csp.PublicKey);
         }
 
         public static Contact Create(Guid id, string name, byte[] publicKey)

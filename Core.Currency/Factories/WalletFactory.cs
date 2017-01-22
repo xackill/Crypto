@@ -6,14 +6,13 @@ namespace Core.Currency.Factories
 {
     public static class WalletFactory
     {
-        public static Wallet Create(string ownerName)
+        public static Wallet Create()
         {
             using (var cryptography = new RSACryptography())
             {
                 return new Wallet
                 {
                     Id = Guid.NewGuid(),
-                    OwnerName = ownerName,
                     PublicPrivateKey = cryptography.PublicPrivateKey
                 };
             }

@@ -49,7 +49,7 @@
   <ItemGroup>
     <Compile Include="Cryptography\RSACryptography.cs" />
     <Compile Include="DataModels\Solvency.cs" />
-    <Compile Include="Exceptions\ArrayExtensions.cs" />
+    <Compile Include="Exceptions\EnumerableExtensions.cs" />
     <Compile Include="Factories\ContactsFactory.cs" />
     <Compile Include="Workers\CurrencyContext.cs" />
     <Compile Include="DataBaseModels\Contact.cs" />
