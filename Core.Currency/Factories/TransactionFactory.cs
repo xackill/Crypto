@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Core.Currency.Cryptography;
 using Core.Currency.DataBaseModels;
 using Core.Currency.Extensions;
@@ -8,26 +9,32 @@ namespace Core.Currency.Factories
 {
     public static class TransactionFactory
     {
-        public static Transaction CreateFirst(Guid userId)
-            => CreateTransaction(userId, userId, Guid.Empty, null, null);
+        public static Transaction CreateFirst(byte[] userPublicKey)
+            => CreateTransaction(userPublicKey, userPublicKey, Guid.Empty, null, null);
 
-        public static Transaction CreateTransfer(Guid senderId, Guid reciverId, Guid sourceId, int coinsForTransfer)
-            => CreateTransaction(senderId, reciverId, sourceId, null, coinsForTransfer);
+        public static Transaction CreateTransfer(byte[] senderPublicKey, byte[] reciverPublicKey, Guid sourceId, int coinsForTransfer)
+            => CreateTransaction(senderPublicKey, reciverPublicKey, sourceId, null, coinsForTransfer);
 
-        public static Transaction CreateUnion(Guid senderId, Guid sourceId, Guid extraSourceId)
-            => CreateTransaction(senderId, senderId, sourceId, extraSourceId, null);
+        public static Transaction CreateUnion(byte[] senderPublicKey, Guid sourceId, Guid extraSourceId)
+            => CreateTransaction(senderPublicKey, senderPublicKey, sourceId, extraSourceId, null);
 
-        private static Transaction CreateTransaction(Guid senderId, Guid reciverId, Guid sourceId, Guid? extraSourceId, int? coinsForTransfer)
+        private static Transaction CreateTransaction(byte[] senderPublicKey, byte[] reciverPublicKey, 
+            Guid sourceId, Guid? extraSourceId, int? coinsForTransfer)
         {
             if (extraSourceId.HasValue && coinsForTransfer.HasValue)
                 throw new Exception("Не определен тип операции");
 
             using (var context = new CurrencyContext())
             {
-                var senderWallet = context.Read<Wallet>(senderId);
-                var reciverContact = context.Read<Contact>(reciverId);
+                var publicPrivateKeyQuery =
+                    from c in context.Contacts
+                    join w in context.Wallets on c.Id equals w.Id
+                    where c.PublicKey == senderPublicKey
+                    select w.PublicPrivateKey;
 
-                using (var csp = new RSACryptography(senderWallet.PublicPrivateKey))
+                var senderPublicPrivateKey = publicPrivateKeyQuery.First();
+
+                using (var csp = new RSACryptography(senderPublicPrivateKey))
                 {
                     var solvency = SolvencyCounter.Count(csp.PublicKey, sourceId, extraSourceId);
                     var coins = coinsForTransfer ?? solvency.Coins;
@@ -39,7 +46,7 @@ namespace Core.Currency.Factories
 
                         SourceId = sourceId,
                         ExtraSourceId = extraSourceId,
-                        ReciverPublicKey = reciverContact.PublicKey,
+                        ReciverPublicKey = reciverPublicKey,
 
                         Coins = coins,
                         SenderPublicKey = csp.PublicKey,

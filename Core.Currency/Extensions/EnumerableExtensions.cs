@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Core.Currency.Exceptions
+namespace Core.Currency.Extensions
 {
     public static class EnumerableExtensions
     {
@@ -13,5 +13,8 @@ namespace Core.Currency.Exceptions
 
             return arr.Length == 0 ? default(T) : arr[rand.Next(arr.Length)];
         }
+
+        public static string JoinStrings<T>(this IEnumerable<T> enumerable, string separator)
+            => string.Join(separator, enumerable);
     }
 }

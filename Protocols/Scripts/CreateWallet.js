@@ -17,10 +17,12 @@ function createWallet() {
         async: true,
         url: "CreateWallet",
         cache: false,
-        data: { name: data.Name(), surname: data.Surname() },
+        data: { surname: data.Surname(), name: data.Name() },
         success: function(data) {
-            self.data.CreationInProgress(false);
             window.location.href = "Work/" + data;
+        },
+        error: function() {
+            self.data.CreationInProgress(false);
         }
     });
 }

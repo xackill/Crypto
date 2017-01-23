@@ -10,25 +10,21 @@ namespace Core.Currency.Workers
     {
         private static readonly Random Rand = new Random();
 
-        public static void CloseTransaction(Transaction transact, Guid minerId)
+        public static void CloseTransaction(Transaction transact, byte[] minerPublicPrivateKey)
         {
             TransactionValidator.ValidateVerified(transact);
 
-            using (var context = new CurrencyContext())
+            using (var csp = new RSACryptography(minerPublicPrivateKey))
             {
-                var minerPublicPrivateKey = context.Read<Wallet>(minerId).PublicPrivateKey;
-                using (var csp = new RSACryptography(minerPublicPrivateKey))
+                transact.MinerPublicKey = csp.PublicKey;
+
+                while (!TransactionValidator.IsClosed(transact))
                 {
-                    transact.MinerPublicKey = csp.PublicKey;
-
-                    while (!TransactionValidator.IsClosed(transact))
-                    {
-                        ++transact.ClousingByte;
-                        Thread.Sleep(Rand.Next(70));
-                    }
-
-                    transact.MinerSign = csp.Sign(transact.GetFinalBytes());
+                    ++transact.ClousingByte;
+                    Thread.Sleep(Rand.Next(70));
                 }
+
+                transact.MinerSign = csp.Sign(transact.GetFinalBytes());
             }
         }
     }

@@ -1,5 +1,4 @@
-﻿using System;
-using Core.Currency.Cryptography;
+﻿using Core.Currency.Cryptography;
 using Core.Currency.DataBaseModels;
 using Core.Currency.Extensions;
 
@@ -7,17 +6,13 @@ namespace Core.Currency.Workers
 {
     public static class TransactionVerifier
     {
-        public static void Verify(Transaction transact, Guid walletId)
+        public static void Verify(Transaction transact, byte[] verifierPublicPrivateKey)
         {
             TransactionValidator.ValidateInitial(transact);
-            using (var context = new CurrencyContext())
+            using (var csp = new RSACryptography(verifierPublicPrivateKey))
             {
-                var walletPublicPrivateKey = context.Read<Wallet>(walletId).PublicPrivateKey;
-                using (var csp = new RSACryptography(walletPublicPrivateKey))
-                {
-                    transact.VerifierPublicKey = csp.PublicKey;
-                    transact.VerifierSign = csp.Sign(transact.GetVerifyBytes());
-                }
+                transact.VerifierPublicKey = csp.PublicKey;
+                transact.VerifierSign = csp.Sign(transact.GetVerifyBytes());
             }
         }
     }

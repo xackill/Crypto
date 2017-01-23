@@ -2,7 +2,103 @@
     ViewBag.Title = "Операции";
 }
 
+<script type="text/javascript" src="../../Scripts/CurrencyWork.js"></script>
+
 <div class="jumbotron">
     <h1>@ViewBag.ContactName</h1>
-    <p class="lead">@ViewBag.ContactId</p>
+
+    <dl class="dl-horizontal" style="font-size: 87%">
+        <dt style="text-align: left">Кошелек</dt>
+        <dd id="WalletId" style="font-family: monospace;">@ViewBag.ContactId</dd>
+        <dt style="text-align: left">Открытый ключ</dt>
+        <dd id="WalletPublicKey" style="font-family: monospace;">@ViewBag.ContactPublicKey</dd>
+    </dl>
 </div>
+
+<h2>Создать транзакцию</h2>
+<div class="form-horizontal">
+    <div class="form-group">
+        <label for="ModesContainer" class="col-md-2 control-label">Режим</label>
+        <div id="ModesContainer">
+            <div class="col-sm-10">
+                <input type="button" class="btn" onclick="setMode('Перевести')" value="Перевод"
+                       data-bind="css: {'btn-primary': IsTransfer(), 'btn-default' : !IsTransfer() }"/>
+
+                <input type="button" class="btn" onclick="setMode('Объединить')" value="Объединение"
+                       data-bind="css: {'btn-primary': IsUnion(), 'btn-default' : !IsUnion() }"/>
+            </div>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label for="SourceId" class="col-md-2 control-label">Исходная транзакция</label>
+        <div class="col-sm-10">
+            <input type="text" id="SourceId" class="form-control" placeholder="Введите идентификатор"
+                   data-bind="value: SourceId">
+        </div>
+    </div>
+
+    <div class="form-group" data-bind="visible: IsUnion()" style="display: none">
+        <label for="ExtraSourceId" class="col-md-2 control-label">Доп. транзакция</label>
+        <div class="col-sm-10">
+            <input type="text" id="ExtraSourceId" class="form-control" placeholder="Введите идентификатор"
+                   data-bind="value: ExtraSourceId">
+        </div>
+    </div>
+    
+    <div class="form-group" data-bind="visible: IsTransfer()">
+        <label for="DestPublicKey" class="col-md-2 control-label">Получатель</label>
+        <div class="col-sm-10">
+            <input type="text" id="DestPublicKey" class="form-control" placeholder="Введите открытый ключ"
+                   data-bind="value: DestPublicKey">
+        </div>
+    </div>
+    
+    <div class="form-group" data-bind="visible: IsTransfer()">
+        <label for="Coins" class="col-md-2 control-label">Перевести</label>
+        <div class="col-sm-10">
+            <input type="text" id="Coins" class="form-control" placeholder="0"
+                   data-bind="value: Coins">
+        </div>
+    </div>
+    
+    <div class="form-group" data-bind="visible: Error() !== ''">
+        <div class="col-md-offset-2 col-sm-10">
+            <span class="text-danger" data-bind="text: Error"></span>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <div class="col-md-offset-2 col-sm-10">
+            <input type="button" class="btn btn-success" onclick="processTransact()" data-bind="value: Mode, visible: !ProcessTransact()" />
+            <img src="../../Content/Load.gif" style="display: none; width: 27px" alt="<Load>" data-bind="visible: ProcessTransact" />
+        </div>
+    </div>
+</div>
+
+<h2>Список транзакций</h2>
+<table id="TransactionTable" class="table table-condensed table-hover">
+    <tr id="TableHeader">
+        <th></th>
+        <th>Идентификатор транзакции</th>
+    </tr>
+    
+    @foreach (var t in (Guid[])ViewBag.TransactionsIds)
+    {
+        <tr onclick="showhide('@t')">
+            <td></td>
+            <td>@t</td>
+        </tr>
+        <tr id="@t" style="display: none">
+            <td class="text-center" colspan="2">
+                <img id="load_@(t)" style="display: none; width: 27px" src="../../Content/Load.gif" alt="<Load>" />
+                <div id="data_@(t)" class="text-left" style="display: none"></div>
+            </td>
+        </tr>
+    }
+</table>
+
+<script>
+    data.WalletPublicKey = $('#WalletPublicKey').text();
+    ko.applyBindings(data);
+</script>
