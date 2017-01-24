@@ -196,6 +196,7 @@
     <Content Include="Views\Currency\NewWallet.cshtml" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Views\Currency\Work.cshtml" />
+    <Content Include="Views\Currency\Help.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -49,6 +49,6 @@ namespace Core.Currency.Extensions
             => $"{GetInitialData(t)}{t.SenderSign.ToBase64()}{t.VerifierPublicKey.ToBase64()}";
 
         private static string GetFinalData(Transaction t)
-            => $"{GetVerifyData(t)}{t.VerifierSign.ToBase64()}{t.MinerPublicKey.ToBase64()}{(char)t.ClousingByte}";
+            => $"{GetVerifyData(t)}{t.VerifierSign.ToBase64()}{t.MinerPublicKey.ToBase64()}{(char)t.ClosingByte}";
     }
 }

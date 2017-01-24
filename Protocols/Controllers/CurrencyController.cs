@@ -23,6 +23,11 @@ namespace Currency.Controllers
             return View();
         }
 
+        public ActionResult Help()
+        {
+            return View();
+        }
+
         public Guid CreateWallet(string surname, string name)
         {
             var wallet = WalletFactory.Create();

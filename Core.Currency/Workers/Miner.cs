@@ -20,7 +20,7 @@ namespace Core.Currency.Workers
 
                 while (!TransactionValidator.IsClosed(transact))
                 {
-                    ++transact.ClousingByte;
+                    ++transact.ClosingByte;
                     Thread.Sleep(Rand.Next(70));
                 }
 

@@ -53,7 +53,7 @@ function showhide(id) {
                             wrapByDl(transact, "VerifierSign") +
                             "<br/>" +
                             wrapByDl(transact, "MinerPublicKey") +
-                            wrapByDl(transact, "ClousingByte") +
+                            wrapByDl(transact, "ClosingByte") +
                             "<br/>" +
                             wrapByDl(transact, "MinerSign") +
                         "</dl>"
@@ -130,7 +130,7 @@ function processTransact()
                     insertNewTransaction(json.TransactId);
             },
             error: function () {
-                data.Error("Внутренняя ошибка сервера!");
+                data.Error("Внутренняя ошибка сервера! Возможно, это связано с ошибками в формате ввода.");
             },
             complete: function () {
                 data.ProcessTransact(false);

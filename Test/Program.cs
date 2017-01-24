@@ -9,10 +9,19 @@ namespace Test
 {
     class Program
     {
+        public static string[] forceSensitives =
+        {
+            "Мейс Винду",
+            "Дарт Вейдер",
+            "Люк Скайуокер",
+            "Дарт Сидиус",
+            "Йода",
+            "Граф Дуку",
+            "Оби-Ван Кеноби",
+        };
+
         public static void CreateMajorWallets()
         {
-            var forceSensitives = new[] { "Mace Windu", "Luke Skywalker", "Darth Vader", "Joda", "Darth Sidious", "Ben Solo" };
-
             var forceSensitivesWallets = new List<Wallet>(forceSensitives.Length);
             var forceSensitivesContacts = new List<Contact>(forceSensitives.Length);
             foreach (var name in forceSensitives)
@@ -31,34 +40,46 @@ namespace Test
                 context.SaveChanges();
             }
         }
-//
-//        public static void CreateFirstTransaction()
-//        {
-//            var LukeWalletId = Guid.Parse("00E01ABB-FD4A-4D04-8159-6ADD4C84B7C7");
-//            var VaderWalletId = Guid.Parse("ACFD5D3E-0AE6-4689-AD06-E502F6BBB5A7");
-//            var JodaWalletId = Guid.Parse("BD174CE4-18C8-495E-8B68-B176B759C89D");
-//
-//            using (new ConsoleMonitoring("Полный цикл"))
-//            {
-//                Transaction transact;
-//                using (new ConsoleMonitoring("Создание транзакции"))
-//                    transact = TransactionFactory.CreateFirst(LukeWalletId);
-//
-//                using (new ConsoleMonitoring("Верификация"))
-//                    TransactionVerifier.Verify(transact, VaderWalletId);
-//
-//                using (new ConsoleMonitoring("Закрытие"))
-//                    Miner.CloseTransaction(transact, JodaWalletId);
-//
-//                using (new ConsoleMonitoring("Запись в базу"))
-//                using (var context = new CurrencyContext())
-//                {
-//                    context.Transactions.Add(transact);
-//                    context.SaveChanges();
-//                }
-//            }
-//        }
-//
+
+        public static byte[] GetPublicPrivateKeyByName(CurrencyContext context, string name)
+        {
+            var query = from c in context.Contacts
+                        join w in context.Wallets on c.Id equals w.Id
+                        where c.Name == name
+                        select w.PublicPrivateKey;
+            return query.First();
+        }
+
+        public static void CreateFirstTransaction()
+        {
+            using (var context = new CurrencyContext())
+            {
+                var Luke = forceSensitives[2];
+                var senderPublicKey = context.Contacts.First(c => c.Name == Luke).PublicKey;
+                var verifierPublicPrivateKey = GetPublicPrivateKeyByName(context, forceSensitives[1]);
+                var minerPublicPrivateKey = GetPublicPrivateKeyByName(context, forceSensitives[4]);
+
+                using (new ConsoleMonitoring("Полный цикл"))
+                {
+                    Transaction transact;
+                    using (new ConsoleMonitoring("Создание транзакции"))
+                        transact = TransactionFactory.CreateFirst(senderPublicKey);
+
+                    using (new ConsoleMonitoring("Верификация"))
+                        TransactionVerifier.Verify(transact, verifierPublicPrivateKey);
+
+                    using (new ConsoleMonitoring("Закрытие"))
+                        Miner.CloseTransaction(transact, minerPublicPrivateKey);
+
+                    using (new ConsoleMonitoring("Запись в базу"))
+                    {
+                        context.Transactions.Add(transact);
+                        context.SaveChanges();
+                    }
+                }
+            }
+        }
+
 //        public static void SendCoins()
 //        {
 //            var sourceId = Guid.Parse("5342BB56-4CF1-4750-922E-B78140F87AED");
@@ -119,7 +140,7 @@ namespace Test
 
         public static void Main()
         {
-//            CreateFirstTransaction();
+            CreateFirstTransaction();
         }
     }
 }

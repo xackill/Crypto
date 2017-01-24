@@ -22,7 +22,7 @@ namespace Core.Currency.DataBaseModels
         public byte[] VerifierSign { get; set; }
 
         public byte[] MinerPublicKey { get; set; }
-        public byte ClousingByte { get; set; }
+        public byte ClosingByte { get; set; }
 
         public byte[] MinerSign { get; set; }
     }
