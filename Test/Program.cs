@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Core.Currency.DataBaseModels;
-using Core.Currency.Factories;
-using Core.Currency.Workers;
+using DistributedCurrency.DataBaseModels;
+using DistributedCurrency.Factories;
+using DistributedCurrency.Workers;
 
 namespace Test
 {
@@ -33,7 +33,7 @@ namespace Test
                 forceSensitivesContacts.Add(contact);
             }
 
-            using (var context = new CurrencyContext())
+            using (var context = new DistributedCurrencyContext())
             {
                 context.Wallets.AddRange(forceSensitivesWallets);
                 context.Contacts.AddRange(forceSensitivesContacts);
@@ -41,7 +41,7 @@ namespace Test
             }
         }
 
-        public static byte[] GetPublicPrivateKeyByName(CurrencyContext context, string name)
+        public static byte[] GetPublicPrivateKeyByName(DistributedCurrencyContext context, string name)
         {
             var query = from c in context.Contacts
                         join w in context.Wallets on c.Id equals w.Id
@@ -52,7 +52,7 @@ namespace Test
 
         public static void CreateFirstTransaction()
         {
-            using (var context = new CurrencyContext())
+            using (var context = new DistributedCurrencyContext())
             {
                 var Luke = forceSensitives[2];
                 var senderPublicKey = context.Contacts.First(c => c.Name == Luke).PublicKey;
@@ -101,7 +101,7 @@ namespace Test
 //                    Miner.CloseTransaction(transact, LukeWalletId);
 //
 //                using (new ConsoleMonitoring("Запись в базу"))
-//                using (var context = new CurrencyContext())
+//                using (var context = new DistributedCurrencyContext())
 //                {
 //                    context.Transactions.Add(transact);
 //                    context.SaveChanges();
@@ -130,7 +130,7 @@ namespace Test
 //                    Miner.CloseTransaction(transact, VaderWalletId);
 //
 //                using (new ConsoleMonitoring("Запись в базу"))
-//                using (var context = new CurrencyContext())
+//                using (var context = new DistributedCurrencyContext())
 //                {
 //                    context.Transactions.Add(transact);
 //                    context.SaveChanges();
@@ -140,6 +140,7 @@ namespace Test
 
         public static void Main()
         {
+            CreateMajorWallets();
             CreateFirstTransaction();
         }
     }

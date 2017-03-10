@@ -30,7 +30,7 @@ function showhide(id) {
 
             $.ajax({
                 async: true,
-                url: "/Currency/GetTransaction",
+                url: "/DistributedCurrency/GetTransaction",
                 cache: false,
                 data: { id: id },
                 success: function (data) {
@@ -88,7 +88,7 @@ function processTransact()
     {
         $.ajax({
             async: true,
-            url: "/Currency/CreateTransfer",
+            url: "/DistributedCurrency/CreateTransfer",
             cache: false,
             data: {
                 senderPublicKey: data.WalletPublicKey,
@@ -115,7 +115,7 @@ function processTransact()
     {
         $.ajax({
             async: true,
-            url: "/Currency/CreateUnion",
+            url: "/DistributedCurrency/CreateUnion",
             cache: false,
             data: {
                 senderPublicKey: data.WalletPublicKey,

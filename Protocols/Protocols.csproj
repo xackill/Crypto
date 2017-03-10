@@ -146,7 +146,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\CurrencyController.cs" />
+    <Compile Include="Controllers\DistributedCurrencyController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -192,11 +192,11 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Currency\Index.cshtml" />
-    <Content Include="Views\Currency\NewWallet.cshtml" />
+    <Content Include="Views\DistributedCurrency\Index.cshtml" />
+    <Content Include="Views\DistributedCurrency\NewWallet.cshtml" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
-    <Content Include="Views\Currency\Work.cshtml" />
-    <Content Include="Views\Currency\Help.cshtml" />
+    <Content Include="Views\DistributedCurrency\Work.cshtml" />
+    <Content Include="Views\DistributedCurrency\Help.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -221,9 +221,13 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Core.Currency\Core.Currency.csproj">
+    <ProjectReference Include="..\Core\Core.csproj">
       <Project>{EE0C36C8-6437-4D15-BCAB-BC21E287BA1F}</Project>
-      <Name>Core.Currency</Name>
+      <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DistributedCurrency\DistributedCurrency.csproj">
+      <Project>{8B6D5BF4-437C-49A6-AE4E-5CB3672FD269}</Project>
+      <Name>DistributedCurrency</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

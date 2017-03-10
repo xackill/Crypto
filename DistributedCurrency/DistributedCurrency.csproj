@@ -4,16 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F8369B24-C758-4D0B-BAB5-3322D7FF388F}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>Test</RootNamespace>
-    <AssemblyName>Test</AssemblyName>
+    <ProjectGuid>{8B6D5BF4-437C-49A6-AE4E-5CB3672FD269}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DistributedCurrency</RootNamespace>
+    <AssemblyName>DistributedCurrency</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,7 +22,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -49,9 +47,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConsoleMonitoring.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="DataBaseModels\Contact.cs" />
+    <Compile Include="DataBaseModels\Transaction.cs" />
+    <Compile Include="DataBaseModels\Wallet.cs" />
+    <Compile Include="DataModels\Solvency.cs" />
+    <Compile Include="DataModels\TransactCreationResult.cs" />
+    <Compile Include="Exceptions\TransactionValidateException.cs" />
+    <Compile Include="Extensions\TransactionExtensions.cs" />
+    <Compile Include="Factories\ContactsFactory.cs" />
+    <Compile Include="Factories\TransactionFactory.cs" />
+    <Compile Include="Factories\WalletFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Workers\DistributedCurrencyContext.cs" />
+    <Compile Include="Workers\Miner.cs" />
+    <Compile Include="Workers\SolvencyCounter.cs" />
+    <Compile Include="Workers\TransactionValidator.cs" />
+    <Compile Include="Workers\TransactionVerifier.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -61,10 +72,6 @@
     <ProjectReference Include="..\Core\Core.csproj">
       <Project>{EE0C36C8-6437-4D15-BCAB-BC21E287BA1F}</Project>
       <Name>Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DistributedCurrency\DistributedCurrency.csproj">
-      <Project>{8B6D5BF4-437C-49A6-AE4E-5CB3672FD269}</Project>
-      <Name>DistributedCurrency</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
