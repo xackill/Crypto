@@ -50,7 +50,6 @@ namespace Core.Currency.Workers
 
             public Guid VisitedByUserId { get; set; }
             public Wave VisitedInWave { get; set; }
-
         }
 
         private class Visiters
