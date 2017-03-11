@@ -6,7 +6,7 @@ using Core.DataBaseModels;
 namespace AnonymousCurrency.DataBaseModels
 {
     [Table("AC_Envelopes")]
-    public class Envelope : DataBaseModel
+    public class SignedEnvelope : DataBaseModel
     {
         public Guid OwnerId { get; set; }
         public EnvelopeState State { get; set; }
@@ -15,7 +15,7 @@ namespace AnonymousCurrency.DataBaseModels
         public byte[] EncryptedEnvelopeSign { get; set; }
 
         public byte[] SecretData { get; set; }
-        public byte[] SecretSigns { get; set; }
+        public byte[] SecretSign { get; set; }
 
         public byte[] PublicPrivateKey { get; set; }
     }

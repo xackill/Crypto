@@ -16,5 +16,11 @@ namespace Core.Extensions
 
         public static string JoinStrings<T>(this IEnumerable<T> enumerable, string separator)
             => string.Join(separator, enumerable);
+
+        public static IEnumerable<T> Except<T>(this IEnumerable<T> enumerable, T element)
+            => enumerable.Except(new[] {element});
+
+        public static IOrderedEnumerable<T> Shuffle<T>(this IEnumerable<T> enumerable)
+            => enumerable.OrderBy(_ => Guid.NewGuid());
     }
 }

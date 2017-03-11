@@ -1,6 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AnonymousCurrency.DataBaseModels;
+using AnonymousCurrency.Workers;
+using Core;
+using Core.Cryptography;
+using Core.Extensions;
 using DistributedCurrency.DataBaseModels;
 using DistributedCurrency.Factories;
 using DistributedCurrency.Workers;
@@ -140,8 +145,15 @@ namespace Test
 
         public static void Main()
         {
-            CreateMajorWallets();
-            CreateFirstTransaction();
+            //            using (var csp = new RSACryptography())
+            //            {
+            //                Console.WriteLine(csp.PublicKey.ToBase64());
+            //                Console.WriteLine();
+            //                Console.WriteLine(csp.PublicPrivateKey.ToBase64());
+            //            }
+
+            //            CreateMajorWallets();
+            //            CreateFirstTransaction();
         }
     }
 }
