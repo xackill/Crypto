@@ -170,6 +170,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\CreateAccount.js" />
     <Content Include="Scripts\CreateWallet.js" />
     <Content Include="Scripts\CurrencyWork.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -202,6 +203,7 @@
     <Content Include="Views\DistributedCurrency\Work.cshtml" />
     <Content Include="Views\DistributedCurrency\Help.cshtml" />
     <Content Include="Views\AnonymousCurrency\Index.cshtml" />
+    <Content Include="Views\AnonymousCurrency\NewAccount.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -226,6 +228,10 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AnonymousCurrency\AnonymousCurrency.csproj">
+      <Project>{C53D9279-19FC-4124-BAAF-19F632A0714D}</Project>
+      <Name>AnonymousCurrency</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Core\Core.csproj">
       <Project>{EE0C36C8-6437-4D15-BCAB-BC21E287BA1F}</Project>
       <Name>Core</Name>

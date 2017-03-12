@@ -1,0 +1,29 @@
+﻿@{
+    ViewBag.Title = "Новый счет";
+}
+
+<script type="text/javascript" src="../../Scripts/CreateAccount.js"></script>
+
+<div class="jumbotron">
+    <h1>Создание счета</h1>
+    Банк анонимусов гарантирует Вашу анонимность до тех пор, пока Вы не нарушаете его правил!
+</div>
+
+<div class="row">
+    <div class="col-md-8" method="post">
+        <div class="form-group">
+            <span class="lead">Все поля обязательны!</span>
+        </div>
+
+        <div class="form-group" data-bind="css: { 'has-error' : Nickname() === '', 'has-success' : Nickname() !== '' }">
+            <input type="text" class="form-control" id="Nickname" data-bind="value: Nickname" placeholder="Введите никнейм">
+        </div>
+
+        <input type="button" class="btn btn-primary" value="Стать клиентом!" onclick="createAccount()" data-bind="visible: !CreationInProgress()">
+        <img src="../../Content/Load.gif" width="27" data-bind="visible: CreationInProgress()" alt="<Load>" style="display: none" />
+    </div>
+</div>
+
+<script>
+    ko.applyBindings(data);
+</script>
