@@ -4,6 +4,8 @@ using System.Linq;
 using AnonymousCurrency.DataBaseModels;
 using AnonymousCurrency.DataModels;
 using AnonymousCurrency.Enums;
+using AnonymousCurrency.Extensions;
+using AnonymousCurrency.Helpers;
 using Core;
 using Core.Cryptography;
 using Core.Extensions;
@@ -13,20 +15,27 @@ namespace AnonymousCurrency.Workers
 {
     public class SignEnvelopeOperation
     {
-        private readonly BankCustomer Creator;
+        private readonly Guid CustomerId;
+        private readonly int ApplicationBalance;
         private readonly int EnvelopeToSign;
         private readonly ImmutableArray<int> EnvelopesToOpen;
         private readonly Envelope[] Envelopes;
         private readonly RSACryptography BankCryptography;
 
-        public SignEnvelopeOperation(RSACryptography bankCryptography, Guid creatorId, Envelope[] envelopesForCheck)
+        public SignEnvelopeOperation(RSACryptography bankCryptography, CustomerApplication application)
         {
-            if (envelopesForCheck.Length != Secret.EnvelopeSignCount)
+            BankCryptography = bankCryptography;
+            CustomerId = application.CustomerId;
+            ApplicationBalance = application.Balance;
+            Envelopes = application.Envelopes;
+
+            if (Envelopes.Length != Secret.EnvelopeSignCount)
                 throw new Exception($"Конвертов должно быть {Secret.EnvelopeSignCount}");
 
-            Creator = DataBase.Read<BankCustomer>(creatorId);
-            BankCryptography = bankCryptography;
-            Envelopes = envelopesForCheck;
+            var customer = DataBase.Read<BankCustomer>(CustomerId);
+            if (customer.Balance < application.Balance)
+                throw new Exception("Недостаточно средств на счете!");
+
             EnvelopesToOpen = GenerateEnvelopesNumbers(out EnvelopeToSign);
         }
 
@@ -44,7 +53,15 @@ namespace AnonymousCurrency.Workers
                 ThrowIfEnvelopeCorrupted(envelope, publicPrivateKey);
             }
 
+            UpdateCustomerBalance();
             return SignEnvelope(Envelopes[EnvelopeToSign]);
+        }
+
+        private void UpdateCustomerBalance()
+        {
+            var customer = DataBase.Read<BankCustomer>(CustomerId);
+            customer.Balance -= ApplicationBalance;
+            DataBase.Update(customer);
         }
 
         private static ImmutableArray<int> GenerateEnvelopesNumbers(out int exclude)
@@ -59,22 +76,58 @@ namespace AnonymousCurrency.Workers
                 .ToImmutableArray();
         }
 
-        private static void ThrowIfEnvelopeCorrupted(Envelope envelope, byte[] publicPrivateKey)
+        private void ThrowIfEnvelopeCorrupted(Envelope envelope, byte[] publicPrivateKey)
         {
+            using (var csp = new RSACryptography(publicPrivateKey))
+            {
+                var content = CryptoConverter.Decrypt<EnvelopeContent>(envelope.EncryptedContent, csp);
+                ThrowIfEnvelopeContentCorrupted(content);
+
+                var encryptedSecrets = envelope.EncryptedSecrets().ToArray();
+                if (encryptedSecrets.Length != Secret.SecretsCount)
+                    throw new Exception("Обнаружен конверт с недостаточным числом секретов!");
+                 
+                foreach (var encryptedSecret in encryptedSecrets)
+                {
+                    var secret = CryptoConverter.Decrypt<EnvelopeSecret>(encryptedSecret, csp);
+                    ThrowIfEnvelopeSecretCorrupted(secret);
+                }
+            }
         }
 
-        private SignedEnvelope SignEnvelope(Envelope envelope) =>
-            new SignedEnvelope
+        private void ThrowIfEnvelopeContentCorrupted(EnvelopeContent content)
+        {
+            if (content.Balance != ApplicationBalance)
+                throw new Exception("Обнаружен конверт с поддельной суммой!");
+        }
+
+        private void ThrowIfEnvelopeSecretCorrupted(EnvelopeSecret secret)
+        {
+            if (!EnvelopeSecretHelper.IsSecretBelongsToOwner(secret, CustomerId))
+                throw new Exception("Обнаружен конверт с поддельным секретом!");
+        }
+
+        private SignedEnvelope SignEnvelope(Envelope envelope)
+        {
+            var encryptedContentSign = BankCryptography.Sign(envelope.EncryptedContent);
+
+            var encryptedSecretsSigns = envelope
+                .EncryptedSecrets()
+                .Select(secret => BankCryptography.Sign(secret))
+                .Aggregate((signs, nextSign) => signs.ConcatBytes(nextSign));
+
+            return new SignedEnvelope
             {
                 Id = Guid.NewGuid(),
                 OwnerId = envelope.OwnerId,
                 State = EnvelopeState.Sealed,
 
-                EncryptedEnvelopeData = envelope.EncryptedEnvelopeData,
-                EncryptedEnvelopeSign = BankCryptography.Sign(envelope.EncryptedEnvelopeData),
+                EncryptedContent = envelope.EncryptedContent,
+                EncryptedContentSign = encryptedContentSign,
 
-                SecretData = envelope.SecretData,
-                SecretSign = BankCryptography.Sign(envelope.SecretData)
+                EncryptedSecrets = envelope.EncryptedSecrets,
+                EncryptedSecretsSigns = encryptedSecretsSigns
             };
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using AnonymousCurrency.DataBaseModels;
+using AnonymousCurrency.DataModels;
 using Core;
 using Core.Cryptography;
 using DataBase = Core.Workers.DataBase<AnonymousCurrency.Workers.AnonymousCurrencyContext>;
@@ -27,5 +28,9 @@ namespace AnonymousCurrency.Workers
             return bankCustomer.Id;
         }
 
+        public SignEnvelopeOperation StartSignEnvelopeOperation(CustomerApplication application)
+        {
+            return new SignEnvelopeOperation(csp, application);
+        }
     }
 }

@@ -57,15 +57,19 @@
     <Compile Include="DataBaseModels\BankCustomer.cs" />
     <Compile Include="DataBaseModels\SignedEnvelope.cs" />
     <Compile Include="DataBaseModels\UsedCheck.cs" />
+    <Compile Include="DataModels\CustomerApplication.cs" />
     <Compile Include="DataModels\Envelope.cs" />
     <Compile Include="DataModels\EnvelopeContent.cs" />
     <Compile Include="DataModels\EnvelopeSecret.cs" />
+    <Compile Include="DataModels\IEnvelope.cs" />
     <Compile Include="DataModels\IExtremelySerializable.cs" />
     <Compile Include="Enums\EnvelopeState.cs" />
+    <Compile Include="Extensions\EnvelopeExtensions.cs" />
+    <Compile Include="Helpers\CryptoConverter.cs" />
+    <Compile Include="Helpers\EnvelopeSecretHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Workers\AnonymousCurrencyContext.cs" />
     <Compile Include="Workers\Bank.cs" />
-    <Compile Include="Workers\CryptoConverter.cs" />
     <Compile Include="Workers\SignEnvelopeOperation.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -7,12 +7,12 @@ namespace AnonymousCurrency.DataModels
     public class EnvelopeContent : IExtremelySerializable
     {
         public Guid Id { get; set; }
-        public int Coins { get; set; }
+        public int Balance { get; set; }
 
         public byte[] ExtremelySerialize()
         {
             var idAsBytes = Id.ToByteArray();
-            var coinsAsBytes = BitConverter.GetBytes(Coins);
+            var coinsAsBytes = BitConverter.GetBytes(Balance);
             return idAsBytes.ConcatBytes(coinsAsBytes);
         }
 
@@ -22,7 +22,7 @@ namespace AnonymousCurrency.DataModels
                 throw new Exception($"Байтовый массив поврежден: Необходимо 20 байт, а сейчас {bytes.Length}");
 
             Id = new Guid(bytes.Take(16).ToArray());
-            Coins = BitConverter.ToInt32(bytes, startIndex: 16);
+            Balance = BitConverter.ToInt32(bytes, startIndex: 16);
         }
     }
 }

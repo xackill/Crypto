@@ -28,5 +28,12 @@ namespace Core.Workers
             Set<T>().Add(entity);
             SaveChanges();
         }
+
+        public void Update<T>(T entity) where T : DataBaseModel
+        {
+            Set<T>().Attach(entity);
+            Entry(entity).State = EntityState.Modified;
+            SaveChanges();
+        }
     }
 }

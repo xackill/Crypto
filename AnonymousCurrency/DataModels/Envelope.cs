@@ -2,10 +2,10 @@
 
 namespace AnonymousCurrency.DataModels
 {
-    public class Envelope
+    public class Envelope : IEnvelope
     {
         public Guid OwnerId { get; set; }
-        public byte[] EncryptedEnvelopeData { get; set; }
-        public byte[] SecretData { get; set; }
+        public byte[] EncryptedContent { get; set; }
+        public byte[] EncryptedSecrets { get; set; }
     }
 }

@@ -9,10 +9,10 @@ namespace AnonymousCurrency.Helpers
     {
         private static readonly Random Rand = new Random((int) (DateTime.Now.Ticks & int.MaxValue));
 
-        public static bool IsSecretBelongsToOwner(EnvelopeSecret secret, Guid ownerId)
+        public static bool IsSecretBelongsToOwner(EnvelopeSecret secret, BankCustomer owner)
         {
             var linear = secret;
-            var point = GuidToPoint(ownerId);
+            var point = GuidToPoint(owner.Id);
 
             return point.Y == linear.K * point.X + linear.B;
         }

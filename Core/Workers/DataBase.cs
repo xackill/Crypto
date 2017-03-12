@@ -22,5 +22,11 @@ namespace Core.Workers
             using (var context = new TC())
                 context.Write(entity);
         }
+
+        public static void Update<T>(T entity) where T : DataBaseModel
+        {
+            using (var context = new TC())
+                context.Update(entity);
+        }
     }
 }

@@ -156,18 +156,25 @@ namespace Test
             //    Console.WriteLine($"K = {ent.K}; B = {ent.B}");
             //}
 
-            //var ent = new EnvelopeContent { Id = Guid.NewGuid(), Coins = int.MaxValue };
-            //Console.WriteLine($"Id = {ent.Id}; Coins = {ent.Coins}");
+            //var ent = new EnvelopeContent { Id = Guid.NewGuid(), Balance = int.MaxValue };
+            //Console.WriteLine($"Id = {ent.Id}; Balance = {ent.Balance}");
             //
             //using (var csp = new RSACryptography())
             //{
             //    var enc = CryptoConverter.Encrypt(ent, csp);
             //    var dent = CryptoConverter.Decrypt<EnvelopeContent>(enc, csp);
-            //    Console.WriteLine($"Id = {ent.Id}; Coins = {ent.Coins}");
+            //    Console.WriteLine($"Id = {ent.Id}; Balance = {ent.Balance}");
             //}
 
-
-
+            var wallet = new Wallet {Id = Guid.NewGuid(), PublicPrivateKey = new byte[] {90, 91, 92}};
+            using (var context = new DistributedCurrencyContext())
+            {
+                context.Write(wallet);
+                wallet.PublicPrivateKey = new byte[] {93, 94, 95};
+                context.Update(wallet);
+                wallet.PublicPrivateKey = new byte[] {96, 97, 98 };
+                context.Update(wallet);
+            }
             //CreateMajorWallets();
             //CreateFirstTransaction();
         }
