@@ -1,0 +1,19 @@
+﻿@{
+    ViewBag.Title = "Операции";
+}
+
+@*<script type="text/javascript" src="../../Scripts/CurrencyWork.js"></script>*@
+
+<div class="jumbotron">
+    <h1>@ViewBag.AccountName</h1>
+
+    <dl class="dl-horizontal" style="font-size: 87%">
+        <dt style="text-align: left">Текущий баланс</dt>
+        <dd id="WalletId" style="font-family: monospace;">@ViewBag.AccountBalance</dd>
+    </dl>
+</div>
+
+@*<script>*@
+@*    data.WalletPublicKey = $('#WalletPublicKey').text();*@
+@*    ko.applyBindings(data);*@
+@*</script>*@

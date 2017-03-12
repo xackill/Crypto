@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
 using AnonymousCurrency.DataBaseModels;
 using AnonymousCurrency.DataModels;
+using AnonymousCurrency.Enums;
+using AnonymousCurrency.Factories;
 using AnonymousCurrency.Workers;
 using Core;
 using Core.Cryptography;
 using Core.Extensions;
+using Core.Workers;
 using DistributedCurrency.DataBaseModels;
 using DistributedCurrency.Factories;
 using DistributedCurrency.Workers;
@@ -144,8 +148,36 @@ namespace Test
 //            }
 //        }
 
+        public static void CreateEnvelope()
+        {
+            using (var bank = new Bank())
+            {
+                var id = Guid.Parse("B079B377-C4DB-431E-B9E2-341BA628FE66");
+
+                var range = Enumerable.Range(0, Secret.EnvelopeSignCount).ToArray();
+                var csps = range.Select(_ => new RSACryptography()).ToArray();
+                var envelopes = csps.Select(csp => EnvelopeFactory.CreateEnvelope(csp, id, 10)).ToArray();
+
+                var application = new CustomerApplication
+                {
+                    CustomerId = id,
+                    Balance = 10,
+                    Envelopes = envelopes
+                };
+
+                var operation = bank.StartSignEnvelopeOperation(application);
+                var publicPrivateKeys = operation.EnvelopesToCheck.Select(i => csps[i]).ToArray();
+                var signedEnvelope = operation.CheckAndSignEnvelope(publicPrivateKeys);
+
+                signedEnvelope.PublicPrivateKey = csps[operation.EnvelopeToSign].PublicPrivateKey;
+                signedEnvelope.State = EnvelopeState.Opened;
+                DataBase<AnonymousCurrencyContext>.Write(signedEnvelope);
+            }
+        }
+
         public static void Main()
         {
+            CreateEnvelope();
             //var ent = new EnvelopeSecret {K = long.MaxValue - 1, B = long.MinValue + 1};
             //Console.WriteLine($"K = {ent.K}; B = {ent.B}");
             //
@@ -166,15 +198,6 @@ namespace Test
             //    Console.WriteLine($"Id = {ent.Id}; Balance = {ent.Balance}");
             //}
 
-            var wallet = new Wallet {Id = Guid.NewGuid(), PublicPrivateKey = new byte[] {90, 91, 92}};
-            using (var context = new DistributedCurrencyContext())
-            {
-                context.Write(wallet);
-                wallet.PublicPrivateKey = new byte[] {93, 94, 95};
-                context.Update(wallet);
-                wallet.PublicPrivateKey = new byte[] {96, 97, 98 };
-                context.Update(wallet);
-            }
             //CreateMajorWallets();
             //CreateFirstTransaction();
         }

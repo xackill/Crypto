@@ -1,6 +1,11 @@
 ﻿using System;
+using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using AnonymousCurrency.DataBaseModels;
+using AnonymousCurrency.Enums;
+using AnonymousCurrency.Workers;
+using Core.Extensions;
 using DataBase = Core.Workers.DataBase<AnonymousCurrency.Workers.AnonymousCurrencyContext>;
 
 namespace Currency.Controllers
@@ -24,10 +29,32 @@ namespace Currency.Controllers
 
         public Guid CreateAccount(string nickname)
         {
-            var customer = new BankCustomer {Id = Guid.NewGuid(), NickName = nickname};
-            DataBase.Write(customer);
+            using (var bank = new Bank())
+                return bank.RegisterCustomer(nickname);
+        }
 
-            return customer.Id;
+        public ActionResult Work(Guid? id)
+        {
+            using (var context = new AnonymousCurrencyContext())
+            {
+                var account = id.HasValue ? context.Read<BankCustomer>(id.Value) : context.BankCustomers.GetRandomElement();
+                ViewBag.AccountName = account.NickName;
+                ViewBag.AccountBalance = account.Balance;
+
+                ViewBag.OpenedEnvelopesIds = context
+                                                .Envelopes
+                                                .Where(e => e.OwnerId == account.Id && e.State == EnvelopeState.Opened)
+                                                .Select(t => t.Id)
+                                                .ToArray();
+
+                ViewBag.SealedEnvelopesIds = context
+                                                .Envelopes
+                                                .Where(e => e.OwnerId == account.Id && e.State == EnvelopeState.Sealed)
+                                                .Select(t => t.Id)
+                                                .ToArray();
+            }
+
+            return View();
         }
     }
 }

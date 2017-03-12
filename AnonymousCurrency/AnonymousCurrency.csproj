@@ -65,6 +65,7 @@
     <Compile Include="DataModels\IExtremelySerializable.cs" />
     <Compile Include="Enums\EnvelopeState.cs" />
     <Compile Include="Extensions\EnvelopeExtensions.cs" />
+    <Compile Include="Factories\EnvelopeFactory.cs" />
     <Compile Include="Helpers\CryptoConverter.cs" />
     <Compile Include="Helpers\EnvelopeSecretHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

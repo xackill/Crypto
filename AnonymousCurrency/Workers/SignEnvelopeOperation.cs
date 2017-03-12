@@ -17,7 +17,7 @@ namespace AnonymousCurrency.Workers
     {
         private readonly Guid CustomerId;
         private readonly int ApplicationBalance;
-        private readonly int EnvelopeToSign;
+        private readonly int EnvelopeToSignIdx;
         private readonly ImmutableArray<int> EnvelopesToOpen;
         private readonly Envelope[] Envelopes;
         private readonly RSACryptography BankCryptography;
@@ -36,25 +36,25 @@ namespace AnonymousCurrency.Workers
             if (customer.Balance < application.Balance)
                 throw new Exception("Недостаточно средств на счете!");
 
-            EnvelopesToOpen = GenerateEnvelopesNumbers(out EnvelopeToSign);
+            EnvelopesToOpen = GenerateEnvelopesNumbers(out EnvelopeToSignIdx);
         }
 
+        public int EnvelopeToSign => EnvelopeToSignIdx;
         public ImmutableArray<int> EnvelopesToCheck => EnvelopesToOpen;
 
-        public SignedEnvelope CheckAndSignEnvelope(byte[][] publicPrivateKeys)
+        public SignedEnvelope CheckAndSignEnvelope(RSACryptography[] csps)
         {
-            if (publicPrivateKeys.Length != Secret.EnvelopeSignCount - 1)
+            if (csps.Length != Secret.EnvelopeSignCount - 1)
                 throw new Exception($"Закрытых ключей должно быть {Secret.EnvelopeSignCount - 1}");
 
             for (var i = 0; i < Secret.EnvelopeSignCount - 1; ++i)
             {
                 var envelope = Envelopes[EnvelopesToOpen[i]];
-                var publicPrivateKey = publicPrivateKeys[i];
-                ThrowIfEnvelopeCorrupted(envelope, publicPrivateKey);
+                ThrowIfEnvelopeCorrupted(envelope, csps[i]);
             }
 
             UpdateCustomerBalance();
-            return SignEnvelope(Envelopes[EnvelopeToSign]);
+            return SignEnvelope(Envelopes[EnvelopeToSignIdx]);
         }
 
         private void UpdateCustomerBalance()
@@ -76,22 +76,19 @@ namespace AnonymousCurrency.Workers
                 .ToImmutableArray();
         }
 
-        private void ThrowIfEnvelopeCorrupted(Envelope envelope, byte[] publicPrivateKey)
+        private void ThrowIfEnvelopeCorrupted(Envelope envelope, RSACryptography csp)
         {
-            using (var csp = new RSACryptography(publicPrivateKey))
-            {
-                var content = CryptoConverter.Decrypt<EnvelopeContent>(envelope.EncryptedContent, csp);
-                ThrowIfEnvelopeContentCorrupted(content);
+            var content = CryptoConverter.Decrypt<EnvelopeContent>(envelope.EncryptedContent, csp);
+            ThrowIfEnvelopeContentCorrupted(content);
 
-                var encryptedSecrets = envelope.EncryptedSecrets().ToArray();
-                if (encryptedSecrets.Length != Secret.SecretsCount)
-                    throw new Exception("Обнаружен конверт с недостаточным числом секретов!");
+            var encryptedSecrets = envelope.EnumerateSecrets().ToArray();
+            if (encryptedSecrets.Length != Secret.SecretsCount)
+                throw new Exception("Обнаружен конверт с недостаточным числом секретов!");
                  
-                foreach (var encryptedSecret in encryptedSecrets)
-                {
-                    var secret = CryptoConverter.Decrypt<EnvelopeSecret>(encryptedSecret, csp);
-                    ThrowIfEnvelopeSecretCorrupted(secret);
-                }
+            foreach (var encryptedSecret in encryptedSecrets)
+            {
+                var secret = CryptoConverter.Decrypt<EnvelopeSecret>(encryptedSecret, csp);
+                ThrowIfEnvelopeSecretCorrupted(secret);
             }
         }
 
@@ -112,7 +109,7 @@ namespace AnonymousCurrency.Workers
             var encryptedContentSign = BankCryptography.Sign(envelope.EncryptedContent);
 
             var encryptedSecretsSigns = envelope
-                .EncryptedSecrets()
+                .EnumerateSecrets()
                 .Select(secret => BankCryptography.Sign(secret))
                 .Aggregate((signs, nextSign) => signs.ConcatBytes(nextSign));
 
