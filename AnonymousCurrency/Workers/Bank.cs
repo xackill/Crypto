@@ -2,6 +2,7 @@
 using AnonymousCurrency.DataBaseModels;
 using Core;
 using Core.Cryptography;
+using DataBase = Core.Workers.DataBase<AnonymousCurrency.Workers.AnonymousCurrencyContext>;
 
 namespace AnonymousCurrency.Workers
 {
@@ -22,12 +23,9 @@ namespace AnonymousCurrency.Workers
         public Guid RegisterCustomer(string nickname)
         {
             var bankCustomer = new BankCustomer {Id = Guid.NewGuid(), NickName = nickname};
-            using (var context = new AnonymousCurrencyContext())
-                context.Write(bankCustomer);
-
+            DataBase.Write(bankCustomer);
             return bankCustomer.Id;
         }
-
 
     }
 }

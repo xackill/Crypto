@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AnonymousCurrency.DataBaseModels;
+using AnonymousCurrency.DataModels;
 using AnonymousCurrency.Workers;
 using Core;
 using Core.Cryptography;
@@ -49,9 +50,9 @@ namespace Test
         public static byte[] GetPublicPrivateKeyByName(DistributedCurrencyContext context, string name)
         {
             var query = from c in context.Contacts
-                        join w in context.Wallets on c.Id equals w.Id
-                        where c.Name == name
-                        select w.PublicPrivateKey;
+                join w in context.Wallets on c.Id equals w.Id
+                where c.Name == name
+                select w.PublicPrivateKey;
             return query.First();
         }
 
@@ -145,15 +146,30 @@ namespace Test
 
         public static void Main()
         {
-            //            using (var csp = new RSACryptography())
-            //            {
-            //                Console.WriteLine(csp.PublicKey.ToBase64());
-            //                Console.WriteLine();
-            //                Console.WriteLine(csp.PublicPrivateKey.ToBase64());
-            //            }
+            //var ent = new EnvelopeSecret {K = long.MaxValue - 1, B = long.MinValue + 1};
+            //Console.WriteLine($"K = {ent.K}; B = {ent.B}");
+            //
+            //using (var csp = new RSACryptography())
+            //{
+            //    var enc = CryptoConverter.Encrypt(ent, csp);
+            //    var dent = CryptoConverter.Decrypt<EnvelopeSecret>(enc, csp);
+            //    Console.WriteLine($"K = {ent.K}; B = {ent.B}");
+            //}
 
-            //            CreateMajorWallets();
-            //            CreateFirstTransaction();
+            //var ent = new EnvelopeContent { Id = Guid.NewGuid(), Coins = int.MaxValue };
+            //Console.WriteLine($"Id = {ent.Id}; Coins = {ent.Coins}");
+            //
+            //using (var csp = new RSACryptography())
+            //{
+            //    var enc = CryptoConverter.Encrypt(ent, csp);
+            //    var dent = CryptoConverter.Decrypt<EnvelopeContent>(enc, csp);
+            //    Console.WriteLine($"Id = {ent.Id}; Coins = {ent.Coins}");
+            //}
+
+
+
+            //CreateMajorWallets();
+            //CreateFirstTransaction();
         }
     }
 }

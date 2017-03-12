@@ -56,6 +56,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Secret.cs" />
     <Compile Include="Workers\Context.cs" />
+    <Compile Include="Workers\DataBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

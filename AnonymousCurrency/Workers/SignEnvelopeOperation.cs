@@ -7,21 +7,24 @@ using AnonymousCurrency.Enums;
 using Core;
 using Core.Cryptography;
 using Core.Extensions;
+using DataBase = Core.Workers.DataBase<AnonymousCurrency.Workers.AnonymousCurrencyContext>;
 
 namespace AnonymousCurrency.Workers
 {
     public class SignEnvelopeOperation
     {
+        private readonly BankCustomer Creator;
         private readonly int EnvelopeToSign;
         private readonly ImmutableArray<int> EnvelopesToOpen;
         private readonly Envelope[] Envelopes;
         private readonly RSACryptography BankCryptography;
 
-        public SignEnvelopeOperation(RSACryptography bankCryptography, Envelope[] envelopesForCheck)
+        public SignEnvelopeOperation(RSACryptography bankCryptography, Guid creatorId, Envelope[] envelopesForCheck)
         {
             if (envelopesForCheck.Length != Secret.EnvelopeSignCount)
                 throw new Exception($"Конвертов должно быть {Secret.EnvelopeSignCount}");
 
+            Creator = DataBase.Read<BankCustomer>(creatorId);
             BankCryptography = bankCryptography;
             Envelopes = envelopesForCheck;
             EnvelopesToOpen = GenerateEnvelopesNumbers(out EnvelopeToSign);
@@ -58,7 +61,6 @@ namespace AnonymousCurrency.Workers
 
         private static void ThrowIfEnvelopeCorrupted(Envelope envelope, byte[] publicPrivateKey)
         {
-            
         }
 
         private SignedEnvelope SignEnvelope(Envelope envelope) =>
