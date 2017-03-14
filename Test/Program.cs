@@ -6,6 +6,7 @@ using AnonymousCurrency.DataBaseModels;
 using AnonymousCurrency.DataModels;
 using AnonymousCurrency.Enums;
 using AnonymousCurrency.Factories;
+using AnonymousCurrency.Helpers;
 using AnonymousCurrency.Workers;
 using Core;
 using Core.Cryptography;
@@ -156,7 +157,7 @@ namespace Test
 
                 var range = Enumerable.Range(0, Secret.EnvelopeSignCount).ToArray();
                 var csps = range.Select(_ => new RSACryptography()).ToArray();
-                var envelopes = csps.Select(csp => EnvelopeFactory.CreateEnvelope(csp, id, 10)).ToArray();
+                var envelopes = csps.Select(csp => EnvelopeFactory.CreateBankCheckingEnvelope(csp, id, 10)).ToArray();
 
                 var application = new CustomerApplication
                 {
@@ -177,17 +178,15 @@ namespace Test
 
         public static void Main()
         {
-            CreateEnvelope();
-            //var ent = new EnvelopeSecret {K = long.MaxValue - 1, B = long.MinValue + 1};
-            //Console.WriteLine($"K = {ent.K}; B = {ent.B}");
-            //
-            //using (var csp = new RSACryptography())
-            //{
-            //    var enc = CryptoConverter.Encrypt(ent, csp);
-            //    var dent = CryptoConverter.Decrypt<EnvelopeSecret>(enc, csp);
-            //    Console.WriteLine($"K = {ent.K}; B = {ent.B}");
-            //}
+            //            CreateEnvelope();
 
+            var id = Guid.NewGuid();
+            Console.WriteLine(id);
+
+            var secr1 = EnvelopeSecretHelper.GenerateSecret(id, Guid.NewGuid());
+            var secr2 = EnvelopeSecretHelper.GenerateSecret(id, Guid.NewGuid());
+            var id2 = EnvelopeSecretHelper.RevealThePerson(secr1, secr2);
+            Console.WriteLine(id2);
             //var ent = new EnvelopeContent { Id = Guid.NewGuid(), Balance = int.MaxValue };
             //Console.WriteLine($"Id = {ent.Id}; Balance = {ent.Balance}");
             //

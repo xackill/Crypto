@@ -19,7 +19,7 @@ namespace AnonymousCurrency.Workers
         private readonly int ApplicationBalance;
         private readonly int EnvelopeToSignIdx;
         private readonly ImmutableArray<int> EnvelopesToOpen;
-        private readonly Envelope[] Envelopes;
+        private readonly BankCheckingEnvelope[] Envelopes;
         private readonly RSACryptography BankCryptography;
 
         public SignEnvelopeOperation(RSACryptography bankCryptography, CustomerApplication application)
@@ -28,6 +28,9 @@ namespace AnonymousCurrency.Workers
             CustomerId = application.CustomerId;
             ApplicationBalance = application.Balance;
             Envelopes = application.Envelopes;
+
+            if (ApplicationBalance == 0)
+                throw new Exception("Не может быть создан конверт с 0!");
 
             if (Envelopes.Length != Secret.EnvelopeSignCount)
                 throw new Exception($"Конвертов должно быть {Secret.EnvelopeSignCount}");
@@ -76,7 +79,7 @@ namespace AnonymousCurrency.Workers
                 .ToImmutableArray();
         }
 
-        private void ThrowIfEnvelopeCorrupted(Envelope envelope, RSACryptography csp)
+        private void ThrowIfEnvelopeCorrupted(BankCheckingEnvelope envelope, RSACryptography csp)
         {
             var content = CryptoConverter.Decrypt<EnvelopeContent>(envelope.EncryptedContent, csp);
             ThrowIfEnvelopeContentCorrupted(content);
@@ -88,7 +91,7 @@ namespace AnonymousCurrency.Workers
             foreach (var encryptedSecret in encryptedSecrets)
             {
                 var secret = CryptoConverter.Decrypt<EnvelopeSecret>(encryptedSecret, csp);
-                ThrowIfEnvelopeSecretCorrupted(secret);
+                ThrowIfEnvelopeSecretCorrupted(secret, content.Id);
             }
         }
 
@@ -98,13 +101,13 @@ namespace AnonymousCurrency.Workers
                 throw new Exception("Обнаружен конверт с поддельной суммой!");
         }
 
-        private void ThrowIfEnvelopeSecretCorrupted(EnvelopeSecret secret)
+        private void ThrowIfEnvelopeSecretCorrupted(EnvelopeSecret secret, Guid contentId)
         {
-            if (!EnvelopeSecretHelper.IsSecretBelongsToOwner(secret, CustomerId))
+            if (!EnvelopeSecretHelper.IsSecretValid(secret, contentId, CustomerId))
                 throw new Exception("Обнаружен конверт с поддельным секретом!");
         }
 
-        private SignedEnvelope SignEnvelope(Envelope envelope)
+        private SignedEnvelope SignEnvelope(BankCheckingEnvelope envelope)
         {
             var encryptedContentSign = BankCryptography.Sign(envelope.EncryptedContent);
 

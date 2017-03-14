@@ -1,5 +1,4 @@
 ﻿using System;
-using AnonymousCurrency.DataBaseModels;
 using AnonymousCurrency.DataModels;
 using Core.Extensions;
 
@@ -9,19 +8,16 @@ namespace AnonymousCurrency.Helpers
     {
         private static readonly Random Rand = new Random((int) (DateTime.Now.Ticks & int.MaxValue));
 
-        public static bool IsSecretBelongsToOwner(EnvelopeSecret secret, Guid ownerId)
+        public static bool IsSecretValid(EnvelopeSecret secret, Guid contentId, Guid ownerId)
         {
             var linear = secret;
             var point = GuidToPoint(ownerId);
 
-            return point.Y == linear.K * point.X + linear.B;
+            return secret.Id == contentId && point.Y == linear.K * point.X + linear.B;
         }
 
         public static Guid RevealThePerson(EnvelopeSecret first, EnvelopeSecret second)
         {
-            if (first.Equals(second))
-                throw new Exception("Секреты одинаковы!");
-
             var personX = (second.B - first.B) / (first.K - second.K);
             var personY = first.K * personX + first.B;
 
@@ -29,14 +25,14 @@ namespace AnonymousCurrency.Helpers
             return PointToGuid(personPoint);
         }
 
-        public static EnvelopeSecret GenerateSecret(Guid guid)
+        public static EnvelopeSecret GenerateSecret(Guid ownerId, Guid envelopeId)
         {
-            var point = GuidToPoint(guid);
+            var point = GuidToPoint(ownerId);
 
             var k = Rand.Next() * ((Rand.Next() & 1) == 1 ? -1 : 1);
             var b = point.Y - k * point.X;
 
-            return new EnvelopeSecret {K = k, B = b};
+            return new EnvelopeSecret {Id = envelopeId, K = k, B = b};
         }
 
         private class Point

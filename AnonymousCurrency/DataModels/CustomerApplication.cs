@@ -6,6 +6,6 @@ namespace AnonymousCurrency.DataModels
     {
         public Guid CustomerId { get; set; }
         public int Balance { get; set; }
-        public Envelope[] Envelopes { get; set; }
+        public BankCheckingEnvelope[] Envelopes { get; set; }
     }
 }

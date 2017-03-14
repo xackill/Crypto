@@ -2,18 +2,122 @@
     ViewBag.Title = "Операции";
 }
 
-@*<script type="text/javascript" src="../../Scripts/CurrencyWork.js"></script>*@
+<script type="text/javascript" src="../../Scripts/ACurrencyWork.js"></script>
 
 <div class="jumbotron">
-    <h1>@ViewBag.AccountName</h1>
-
-    <dl class="dl-horizontal" style="font-size: 87%">
-        <dt style="text-align: left">Текущий баланс</dt>
-        <dd id="WalletId" style="font-family: monospace;">@ViewBag.AccountBalance</dd>
+    <h1>Добро пожаловать!</h1>
+    <dl class="dl-horizontal" style="font-size: 150%">
+        <dt style="text-align: left">Анонимус:</dt>
+        <dd style="font-family: monospace;">@ViewBag.AccountName</dd>
+        <dt style="text-align: left">Счет:</dt>
+        <dd style="font-family: monospace;">@ViewBag.AccountId</dd>
+        <dt style="text-align: left">На счете:</dt>
+        <dd id="AccountBalance" style="font-family: monospace;">@ViewBag.AccountBalance</dd>
     </dl>
 </div>
 
-@*<script>*@
-@*    data.WalletPublicKey = $('#WalletPublicKey').text();*@
-@*    ko.applyBindings(data);*@
-@*</script>*@
+<div class="bs-callout" 
+     data-bind="visible: HasResult, css: {'bs-callout-danger': IsResultError, 'bs-callout-success' : !IsResultError() }">
+    <h4 data-bind="text: ResultHeader"></h4>
+    <p data-bind="text: ResultText"></p>
+</div>
+
+<h2>Управление</h2>
+<div class="form-horizontal">
+    <div class="form-group">
+        <label for="ModesContainer" class="col-md-2 control-label">Операция</label>
+        <div id="ModesContainer">
+            <div class="col-sm-10">
+                <input type="button" class="btn" onclick="setMode('Получить конверт')" value="Снять со счета"
+                       data-bind="css: {'btn-primary': IsWithdrawMode(), 'btn-default' : !IsWithdrawMode() }" />
+
+                <input type="button" class="btn" onclick="setMode('Заплатить')" value="Заплатить"
+                       data-bind="css: {'btn-primary': IsPayMode(), 'btn-default' : !IsPayMode() }" />
+                
+                <input type="button" class="btn" onclick="setMode('Положить')" value="Положить на счет"
+                       data-bind="css: {'btn-primary': IsDepositMode(), 'btn-default' : !IsDepositMode() }" />
+            </div>
+        </div>
+    </div>
+    
+    <div class="form-group" data-bind="visible: IsWithdrawMode">
+        <label for="Amount" class="col-md-2 control-label">Сумма</label>
+        <div class="col-sm-10">
+            <input type="text" id="Amount" class="form-control" placeholder="0" data-bind="value: Amount">
+        </div>
+    </div>
+    
+    <div class="form-group" data-bind="visible: IsWithdrawMode">
+        <label for="Cheat" class="col-md-2 control-label">Смухлевать на</label>
+        <div class="col-sm-10">
+            <input type="text" id="Cheat" class="form-control" placeholder="0" data-bind="value: CheatAmount">
+        </div>
+    </div>
+    
+    <div class="form-group" data-bind="visible: !IsWithdrawMode()">
+        <label for="EnvelopeID" class="col-md-2 control-label">Конверт</label>
+        <div class="col-sm-10">
+            <input type="text" id="EnvelopeID" class="form-control" placeholder="Введите идентификатор" 
+                   data-bind="value: EnvelopeID">
+        </div>
+    </div>
+    
+    <div class="form-group" data-bind="visible: IsPayMode">
+        <label for="ReciverID" class="col-md-2 control-label">Получатель</label>
+        <div class="col-sm-10">
+            <input type="text" id="ReciverID" class="form-control" placeholder="Введите идентификатор"
+                   data-bind="value: ReciverID">
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <div class="col-md-offset-2 col-sm-10">
+            <input type="button" class="btn btn-success" onclick="process()" data-bind="value: Mode, visible: !Process()" />
+            <img src="../../Content/Load.gif" style="display: none; width: 27px" alt="<Load>" data-bind="visible: Process" />
+        </div>
+    </div>
+</div>
+
+<h2>Список конвертов</h2>
+<table id="EnvelopeTable" class="table table-condensed table-hover">
+    <tr id="TableHeader">
+        <th></th>
+        <th>Идентификатор конверта</th>
+        <th>Состояние конверта</th>
+    </tr>
+
+    @foreach (var t in (Guid[])ViewBag.SealedEnvelopesIds)
+    {
+        <tr onclick="showhide('@t')">
+            <td></td>
+            <td>@t</td>
+            <td>Запечатанный</td>
+        </tr>
+        <tr id="@t" style="display: none">
+            <td class="text-center" colspan="3">
+                <img id="load_@(t)" style="display: none; width: 27px" src="../../Content/Load.gif" alt="<Load>" />
+                <div id="data_@(t)" class="text-left" style="display: none"></div>
+            </td>
+        </tr>
+    }
+    
+    @foreach (var t in (Guid[])ViewBag.OpenedEnvelopesIds)
+    {
+        <tr onclick="showhide('@t')">
+            <td></td>
+            <td>@t</td>
+            <td>Открытый</td>
+        </tr>
+        <tr id="@t" style="display: none">
+            <td class="text-center" colspan="3">
+                <img id="load_@(t)" style="display: none; width: 27px" src="../../Content/Load.gif" alt="<Load>" />
+                <div id="data_@(t)" class="text-left" style="display: none"></div>
+            </td>
+        </tr>
+    }
+</table>
+
+<script>
+    data.UserId = "@ViewBag.AccountId";
+    ko.applyBindings(data);
+</script>
