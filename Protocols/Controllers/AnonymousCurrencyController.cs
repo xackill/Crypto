@@ -140,6 +140,8 @@ namespace Currency.Controllers
                 var envelope = DataBase.Read<SignedEnvelope>(envelopeId);
                 if (envelope.OwnerId != userId)
                     throw new Exception("Этот конверт Вам не принадлежит!");
+                if (envelope.State != EnvelopeState.Opened)
+                    throw new Exception("Класть на счет можно только открытые конверты!");
 
                 using (var bank = new Bank())
                     return $"Успех! На ваш счет добавлено: {bank.AddDeposite(envelope)}";
