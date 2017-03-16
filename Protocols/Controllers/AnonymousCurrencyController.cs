@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using AnonymousCurrency.DataBaseModels;
 using AnonymousCurrency.DataModels;
 using AnonymousCurrency.Enums;
+using AnonymousCurrency.Extensions;
 using AnonymousCurrency.Factories;
 using AnonymousCurrency.Workers;
 using Core;
@@ -116,12 +117,11 @@ namespace Currency.Controllers
                 if (envelope.State != EnvelopeState.Sealed)
                     throw new Exception("Тратить можно только закрытые конверты!");
 
-                MissingByte[] missingBytes;
-                var envelopeToCheck = EnvelopeFactory.CreateSellerCheckingEnvelope(envelope, out missingBytes);
+                var envelopeToCheck = EnvelopeFactory.CreateSellerCheckingEnvelope(envelope);
                 var payOperation = new PayOperation(envelopeToCheck);
                 var sidx = payOperation.SecretNumber;
-                var secretSign = envelope.EncryptedSecretsSigns.Skip(128 * sidx).Take(128).ToArray();
-                var newSignedEnvelope = payOperation.Exec(missingBytes[sidx], secretSign);
+                var encryptedSecret = envelope.EnumerateSecrets().ElementAt(sidx);
+                var newSignedEnvelope = payOperation.Exec(encryptedSecret);
                 newSignedEnvelope.OwnerId = reciverId;
                 DataBase.Write(newSignedEnvelope);
 

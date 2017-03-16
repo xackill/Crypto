@@ -2,7 +2,7 @@
 
 namespace AnonymousCurrency.DataModels
 {
-    public class BankCheckingEnvelope : IEnvelope
+    public class BankCheckingEnvelope : IEncryptedSecretsField
     {
         public Guid OwnerId { get; set; }
         public byte[] EncryptedContent { get; set; }

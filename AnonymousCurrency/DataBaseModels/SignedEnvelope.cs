@@ -7,7 +7,7 @@ using Core.DataBaseModels;
 namespace AnonymousCurrency.DataBaseModels
 {
     [Table("AC_Envelopes")]
-    public class SignedEnvelope : DataBaseModel, IEnvelope
+    public class SignedEnvelope : DataBaseModel, IEncryptedSecretsField, IEncryptedSecretsSignsField
     {
         public Guid OwnerId { get; set; }
         public EnvelopeState State { get; set; }

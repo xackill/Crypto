@@ -1,6 +1,6 @@
 ﻿namespace AnonymousCurrency.DataModels
 {
-    public interface IEnvelope
+    public interface IEncryptedSecretsField
     {
         byte[] EncryptedSecrets { get; }
     }

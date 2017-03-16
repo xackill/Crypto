@@ -12,7 +12,7 @@
         <dt style="text-align: left">Счет:</dt>
         <dd style="font-family: monospace;">@ViewBag.AccountId</dd>
         <dt style="text-align: left">На счете:</dt>
-        <dd id="AccountBalance" style="font-family: monospace;">@ViewBag.AccountBalance</dd>
+        <dd style="font-family: monospace;" data-bind="text: AccountBalance"></dd>
     </dl>
 </div>
 
@@ -119,5 +119,7 @@
 
 <script>
     data.UserId = "@ViewBag.AccountId";
+    data.AccountBalance = ko.observable("@ViewBag.AccountBalance");
+
     ko.applyBindings(data);
 </script>

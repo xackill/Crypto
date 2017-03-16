@@ -100,11 +100,11 @@ function sendCreateSealedEnvelopeRequest() {
             data.Result(result);
             if (!data.IsResultError()) {
                 insertNewEnvelope(result);
-                updateAccountBalance();
+                updateAccountBalance(-data.Amount());
             }
         },
         error: function () {
-            data.Result("Ошибка сервера! Возможно, данные введены некорректно.");
+            data.Result("Ошибка! Возможно, данные введены некорректно.");
         },
         complete: function () {
             data.Process(false);
@@ -128,7 +128,7 @@ function sendPayRequest() {
                 insertNewEnvelope(result);
         },
         error: function () {
-            data.Result("Ошибка сервера! Возможно, данные введены некорректно.");
+            data.Result("Ошибка! Возможно, данные введены некорректно.");
         },
         complete: function () {
             data.Process(false);
@@ -147,13 +147,13 @@ function sendDepositeRequest() {
         },
         success: function (result) {
             data.Result(result);
-//            if (!data.IsResultError()) {
-//                insertNewEnvelope(result);
-//                updateAccountBalance();
-//            }
+            if (!data.IsResultError()) {
+                result = result.match(/\d+/);
+                updateAccountBalance(result);
+            }
         },
         error: function () {
-            data.Result("Ошибка сервера! Возможно, данные введены некорректно.");
+            data.Result("Ошибка! Возможно, данные введены некорректно.");
         },
         complete: function () {
             data.Process(false);
@@ -181,8 +181,7 @@ function insertNewEnvelope(result) {
     element.insertAfter($("#TableHeader"));
 }
 
-function updateAccountBalance() {
-    var lbl = $("#AccountBalance");
-    var curBalance = lbl.text();
-    lbl.text(curBalance - data.Amount());
+function updateAccountBalance(val) {
+    var oldVal = data.AccountBalance();
+    data.AccountBalance((+oldVal) + (+val));
 }

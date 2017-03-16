@@ -62,12 +62,12 @@
     <Compile Include="DataModels\BankCheckingEnvelope.cs" />
     <Compile Include="DataModels\EnvelopeContent.cs" />
     <Compile Include="DataModels\EnvelopeSecret.cs" />
-    <Compile Include="DataModels\IEnvelope.cs" />
+    <Compile Include="DataModels\IEncryptedSecretsSignsField.cs" />
+    <Compile Include="DataModels\IEncryptedSecretsField.cs" />
     <Compile Include="DataModels\IExtremelySerializable.cs" />
-    <Compile Include="DataModels\MissingByte.cs" />
     <Compile Include="DataModels\SellerCheckingEnvelope.cs" />
     <Compile Include="Enums\EnvelopeState.cs" />
-    <Compile Include="Extensions\EnvelopeExtensions.cs" />
+    <Compile Include="Extensions\EncryptedFieldsExtensions.cs" />
     <Compile Include="Factories\EnvelopeFactory.cs" />
     <Compile Include="Helpers\BankSignChecker.cs" />
     <Compile Include="Helpers\CryptoConverter.cs" />

@@ -5,11 +5,16 @@ using AnonymousCurrency.DataModels;
 
 namespace AnonymousCurrency.Extensions
 {
-    public static class EnvelopeExtensions
+    public static class EncryptedFieldsExtensions
     {
-        public static IEnumerable<byte[]> EnumerateSecrets(this IEnvelope envelope)
+        public static IEnumerable<byte[]> EnumerateSecrets(this IEncryptedSecretsField envelope)
+            => EnumerateEncrypted(envelope.EncryptedSecrets);
+
+        public static IEnumerable<byte[]> EnumerateSecretsSigns(this IEncryptedSecretsSignsField envelope)
+            => EnumerateEncrypted(envelope.EncryptedSecretsSigns);
+
+        public static IEnumerable<byte[]> EnumerateEncrypted(byte[] bytes)
         {
-            var bytes = envelope.EncryptedSecrets;
             if (bytes.Length % 128 != 0)
                 throw new Exception($"Байтовый массив поврежден: Необходима длина кратная 128 байт, а сейчас {bytes.Length}");
 
