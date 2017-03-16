@@ -29,10 +29,10 @@ namespace Currency.Controllers
             return View();
         }
 
-//        public ActionResult Help()
-//        {
-//            return View();
-//        }
+        public ActionResult Help()
+        {
+            return View();
+        }
 
         public Guid CreateAccount(string nickname)
         {

@@ -218,6 +218,7 @@
     <Content Include="Views\AnonymousCurrency\Index.cshtml" />
     <Content Include="Views\AnonymousCurrency\NewAccount.cshtml" />
     <Content Include="Views\AnonymousCurrency\Work.cshtml" />
+    <Content Include="Views\AnonymousCurrency\Help.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
