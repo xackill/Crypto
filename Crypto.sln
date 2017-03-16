@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Protocols", "Protocols\Prot
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DistributedCurrency", "DistributedCurrency\DistributedCurrency.csproj", "{8B6D5BF4-437C-49A6-AE4E-5CB3672FD269}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnonymousCurrency", "AnonymousCurrency\AnonymousCurrency.csproj", "{C53D9279-19FC-4124-BAAF-19F632A0714D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{8B6D5BF4-437C-49A6-AE4E-5CB3672FD269}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B6D5BF4-437C-49A6-AE4E-5CB3672FD269}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B6D5BF4-437C-49A6-AE4E-5CB3672FD269}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C53D9279-19FC-4124-BAAF-19F632A0714D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C53D9279-19FC-4124-BAAF-19F632A0714D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C53D9279-19FC-4124-BAAF-19F632A0714D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C53D9279-19FC-4124-BAAF-19F632A0714D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

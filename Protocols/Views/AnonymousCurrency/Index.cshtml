@@ -1,0 +1,28 @@
+﻿@{
+    ViewBag.Title = "А-Валюта";
+}
+
+<div class="jumbotron">
+    <h1>А-Валюта</h1>
+    <p class="lead">
+        Анонимная валюта, скрывающая личность того, кто использует ее честно.
+    </p>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>Создать счет</h2>
+        <p>Для работы необходим счет в банке анонимусов. Все, что необходимо сделать - указать свой никнейм.</p>
+        <p><a class="btn btn-default" href="@Url.Action("NewAccount", "AnonymousCurrency")">Далее &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Приступить к работе</h2>
+        <p>Система случайным образом выберет существующий счет и откроет все операции его владельца.</p>
+        <p><a class="btn btn-default" href="@Url.Action("Work", "AnonymousCurrency")">Далее &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Как это работает?</h2>
+        <p>Из каких шагов состоит работа, как их выполнять и зачем; что было реализовано и как это посмотреть.</p>
+        <p><a class="btn btn-default" href="@Url.Action("Help", "AnonymousCurrency")">Подробнее &raquo;</a></p>
+    </div>
+</div>

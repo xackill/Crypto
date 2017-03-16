@@ -1,6 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
+using System.Numerics;
+using AnonymousCurrency.DataBaseModels;
+using AnonymousCurrency.DataModels;
+using AnonymousCurrency.Enums;
+using AnonymousCurrency.Factories;
+using AnonymousCurrency.Helpers;
+using AnonymousCurrency.Workers;
+using Core;
+using Core.Cryptography;
+using Core.Extensions;
+using Core.Workers;
 using DistributedCurrency.DataBaseModels;
 using DistributedCurrency.Factories;
 using DistributedCurrency.Workers;
@@ -44,9 +56,9 @@ namespace Test
         public static byte[] GetPublicPrivateKeyByName(DistributedCurrencyContext context, string name)
         {
             var query = from c in context.Contacts
-                        join w in context.Wallets on c.Id equals w.Id
-                        where c.Name == name
-                        select w.PublicPrivateKey;
+                join w in context.Wallets on c.Id equals w.Id
+                where c.Name == name
+                select w.PublicPrivateKey;
             return query.First();
         }
 
@@ -138,10 +150,70 @@ namespace Test
 //            }
 //        }
 
+        public static void CreateEnvelope()
+        {
+            using (var bank = new Bank())
+            {
+                var id = Guid.Parse("B079B377-C4DB-431E-B9E2-341BA628FE66");
+
+                var range = Enumerable.Range(0, Secret.EnvelopeSignCount).ToArray();
+                var csps = range.Select(_ => new RSACryptography()).ToArray();
+                var envelopes = csps.Select(csp => EnvelopeFactory.CreateBankCheckingEnvelope(csp, id, 10)).ToArray();
+
+                var application = new CustomerApplication
+                {
+                    CustomerId = id,
+                    Balance = 10,
+                    Envelopes = envelopes
+                };
+
+                var operation = bank.StartSignEnvelopeOperation(application);
+                var publicPrivateKeys = operation.EnvelopesToCheck.Select(i => csps[i]).ToArray();
+                var signedEnvelope = operation.CheckAndSignEnvelope(publicPrivateKeys);
+
+                signedEnvelope.PublicPrivateKey = csps[operation.EnvelopeToSign].PublicPrivateKey;
+                signedEnvelope.State = EnvelopeState.Opened;
+                DataBase<AnonymousCurrencyContext>.Write(signedEnvelope);
+            }
+        }
+
         public static void Main()
         {
-            CreateMajorWallets();
-            CreateFirstTransaction();
+            //            CreateEnvelope();
+
+            
+            for (;;)
+            {
+                var contentId = Guid.NewGuid();
+                var ownerId = Guid.NewGuid();
+
+                var s = EnvelopeSecretHelper.GenerateSecret(ownerId, contentId);
+                Console.WriteLine(EnvelopeSecretHelper.IsSecretValid(s, ownerId, contentId));
+                var es = s.ExtremelySerialize();
+                var ds = new EnvelopeSecret();
+                ds.InitByDeserializing(es);
+                Console.WriteLine(EnvelopeSecretHelper.IsSecretValid(ds, ownerId, contentId));
+
+                Console.ReadKey();
+            }
+
+//            var b = new BigInteger(100);
+//            Console.WriteLine(b);
+//            var bytes = b.ToByteArray();
+//            var c = new BigInteger(bytes);
+//            Console.WriteLine(c);
+            //var ent = new EnvelopeContent { Id = Guid.NewGuid(), Balance = int.MaxValue };
+            //Console.WriteLine($"Id = {ent.Id}; Balance = {ent.Balance}");
+            //
+            //using (var csp = new RSACryptography())
+            //{
+            //    var enc = CryptoConverter.Encrypt(ent, csp);
+            //    var dent = CryptoConverter.Decrypt<EnvelopeContent>(enc, csp);
+            //    Console.WriteLine($"Id = {ent.Id}; Balance = {ent.Balance}");
+            //}
+
+            //CreateMajorWallets();
+            //CreateFirstTransaction();
         }
     }
 }

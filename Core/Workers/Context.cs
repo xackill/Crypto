@@ -22,5 +22,18 @@ namespace Core.Workers
 
             throw new Exception($"Сущности <{nameof(T)}> с Id = {id} не существует");
         }
+
+        public void Write<T>(T entity) where T : DataBaseModel
+        {
+            Set<T>().Add(entity);
+            SaveChanges();
+        }
+
+        public void Update<T>(T entity) where T : DataBaseModel
+        {
+            Set<T>().Attach(entity);
+            Entry(entity).State = EntityState.Modified;
+            SaveChanges();
+        }
     }
 }

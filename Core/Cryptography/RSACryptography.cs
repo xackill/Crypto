@@ -26,6 +26,9 @@ namespace Core.Cryptography
         public byte[] PublicKey => csp.ExportCspBlob(false);
         public byte[] PublicPrivateKey => csp.ExportCspBlob(true);
 
+        public byte[] Encrypt(byte[] data) => csp.Encrypt(data, RSAEncryptionPadding.Pkcs1);
+        public byte[] Decrypt(byte[] data) => csp.Decrypt(data, RSAEncryptionPadding.Pkcs1);
+
         public byte[] Sign(byte[] data) => csp.SignData(data, HashAlgorithmName.MD5, RSASignaturePadding.Pkcs1);
         public bool VerifySign(byte[] data, byte[] sign) => csp.VerifyData(data, sign, HashAlgorithmName.MD5, RSASignaturePadding.Pkcs1);
     }
