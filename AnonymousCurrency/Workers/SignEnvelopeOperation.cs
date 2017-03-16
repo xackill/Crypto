@@ -103,7 +103,7 @@ namespace AnonymousCurrency.Workers
 
         private void ThrowIfEnvelopeSecretCorrupted(EnvelopeSecret secret, Guid contentId)
         {
-            if (!EnvelopeSecretHelper.IsSecretValid(secret, contentId, CustomerId))
+            if (!EnvelopeSecretHelper.IsSecretValid(secret, CustomerId, contentId))
                 throw new Exception("Обнаружен конверт с поддельным секретом!");
         }
 

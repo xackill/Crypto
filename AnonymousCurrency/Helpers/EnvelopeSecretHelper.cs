@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Numerics;
 using AnonymousCurrency.DataModels;
 using Core.Extensions;
 
@@ -8,7 +9,7 @@ namespace AnonymousCurrency.Helpers
     {
         private static readonly Random Rand = new Random((int) (DateTime.Now.Ticks & int.MaxValue));
 
-        public static bool IsSecretValid(EnvelopeSecret secret, Guid contentId, Guid ownerId)
+        public static bool IsSecretValid(EnvelopeSecret secret, Guid ownerId, Guid contentId)
         {
             var linear = secret;
             var point = GuidToPoint(ownerId);
@@ -29,16 +30,16 @@ namespace AnonymousCurrency.Helpers
         {
             var point = GuidToPoint(ownerId);
 
-            var k = Rand.Next() * ((Rand.Next() & 1) == 1 ? -1 : 1);
-            var b = point.Y - k * point.X;
+            var k = new BigInteger(Rand.Next());
+            var b = point.Y - (k * point.X);
 
             return new EnvelopeSecret {Id = envelopeId, K = k, B = b};
         }
 
         private class Point
         {
-            public long X;
-            public long Y;
+            public BigInteger X;
+            public BigInteger Y;
         }
 
         private static Point GuidToPoint(Guid guid)
@@ -52,8 +53,8 @@ namespace AnonymousCurrency.Helpers
 
         private static Guid PointToGuid(Point point)
         {
-            var xAsBytes = BitConverter.GetBytes(point.X);
-            var yAsBytes = BitConverter.GetBytes(point.Y);
+            var xAsBytes = point.X.ToByteArray();
+            var yAsBytes = point.Y.ToByteArray();
 
             return new Guid(xAsBytes.ConcatBytes(yAsBytes));
         }

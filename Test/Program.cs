@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
+using System.Numerics;
 using AnonymousCurrency.DataBaseModels;
 using AnonymousCurrency.DataModels;
 using AnonymousCurrency.Enums;
@@ -180,13 +181,27 @@ namespace Test
         {
             //            CreateEnvelope();
 
-            var id = Guid.NewGuid();
-            Console.WriteLine(id);
+            
+            for (;;)
+            {
+                var contentId = Guid.NewGuid();
+                var ownerId = Guid.NewGuid();
 
-            var secr1 = EnvelopeSecretHelper.GenerateSecret(id, Guid.NewGuid());
-            var secr2 = EnvelopeSecretHelper.GenerateSecret(id, Guid.NewGuid());
-            var id2 = EnvelopeSecretHelper.RevealThePerson(secr1, secr2);
-            Console.WriteLine(id2);
+                var s = EnvelopeSecretHelper.GenerateSecret(ownerId, contentId);
+                Console.WriteLine(EnvelopeSecretHelper.IsSecretValid(s, ownerId, contentId));
+                var es = s.ExtremelySerialize();
+                var ds = new EnvelopeSecret();
+                ds.InitByDeserializing(es);
+                Console.WriteLine(EnvelopeSecretHelper.IsSecretValid(ds, ownerId, contentId));
+
+                Console.ReadKey();
+            }
+
+//            var b = new BigInteger(100);
+//            Console.WriteLine(b);
+//            var bytes = b.ToByteArray();
+//            var c = new BigInteger(bytes);
+//            Console.WriteLine(c);
             //var ent = new EnvelopeContent { Id = Guid.NewGuid(), Balance = int.MaxValue };
             //Console.WriteLine($"Id = {ent.Id}; Balance = {ent.Balance}");
             //

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Numerics;
 using Core.Extensions;
 
 namespace AnonymousCurrency.DataModels
@@ -7,25 +8,35 @@ namespace AnonymousCurrency.DataModels
     public class EnvelopeSecret : IExtremelySerializable
     {
         public Guid Id { get; set; }
-        public long K { get; set; }
-        public long B { get; set; }
+        public BigInteger K { get; set; }
+        public BigInteger B { get; set; }
         
         public byte[] ExtremelySerialize()
         {
             var idAsBytes = Id.ToByteArray();
-            var kAsBytes = BitConverter.GetBytes(K);
-            var bAsBytes = BitConverter.GetBytes(B);
-            return idAsBytes.ConcatBytes(kAsBytes).ConcatBytes(bAsBytes);
+            var kAsBytes = K.ToByteArray();
+            var bAsBytes = B.ToByteArray();
+
+            return idAsBytes
+                .ConcatBytes((byte)kAsBytes.Length)
+                .ConcatBytes(kAsBytes)
+                .ConcatBytes(bAsBytes);
         }
 
         public void InitByDeserializing(byte[] bytes)
         {
-            if (bytes.Length != 32)
-                throw new Exception($"Байтовый массив поврежден: Необходимо 32 байта, а сейчас {bytes.Length}");
+            try
+            {
+                Id = new Guid(bytes.Take(16).ToArray());
 
-            Id = new Guid(bytes.Take(16).ToArray());
-            K = BitConverter.ToInt64(bytes, startIndex: 16);
-            B = BitConverter.ToInt64(bytes, startIndex: 24);
+                var kSize = (int)bytes[16];
+                K = new BigInteger(bytes.Skip(17).Take(kSize).ToArray());
+                B = new BigInteger(bytes.Skip(17+kSize).ToArray());
+            }
+            catch (Exception)
+            {
+                throw new Exception("Байтовый массив поврежден");
+            }
         }
 
         public bool Equals(EnvelopeSecret other)
