@@ -58,6 +58,8 @@
     <Compile Include="Extensions\SessionExtensions.cs" />
     <Compile Include="Factories\FieldFactory.cs" />
     <Compile Include="Factories\KeyFactory.cs" />
+    <Compile Include="Factories\BrushFactory.cs" />
+    <Compile Include="Factories\PictureDrawer.cs" />
     <Compile Include="Factories\SessionFactory.cs" />
     <Compile Include="Factories\TableFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
