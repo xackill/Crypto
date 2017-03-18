@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 using System.Data.Entity.ModelConfiguration.Conventions;
+using System.Drawing;
 using System.Linq;
 using System.Numerics;
 using AnonymousCurrency.DataBaseModels;
@@ -16,6 +18,9 @@ using Core.Workers;
 using DistributedCurrency.DataBaseModels;
 using DistributedCurrency.Factories;
 using DistributedCurrency.Workers;
+using Newtonsoft.Json;
+using VisualAuthentication.DataModels;
+using VisualAuthentication.Factories;
 
 namespace Test
 {
@@ -181,27 +186,29 @@ namespace Test
         {
             //            CreateEnvelope();
 
-            
-            for (;;)
-            {
-                var contentId = Guid.NewGuid();
-                var ownerId = Guid.NewGuid();
+            Console.WriteLine(FieldFactory.GenerateRandomSequence(10).JoinStrings(" "));
 
-                var s = EnvelopeSecretHelper.GenerateSecret(ownerId, contentId);
-                Console.WriteLine(EnvelopeSecretHelper.IsSecretValid(s, ownerId, contentId));
-                var es = s.ExtremelySerialize();
-                var ds = new EnvelopeSecret();
-                ds.InitByDeserializing(es);
-                Console.WriteLine(EnvelopeSecretHelper.IsSecretValid(ds, ownerId, contentId));
 
-                Console.ReadKey();
-            }
+            //            for (;;)
+            //            {
+            //                var contentId = Guid.NewGuid();
+            //                var ownerId = Guid.NewGuid();
+            //
+            //                var s = EnvelopeSecretHelper.GenerateSecret(ownerId, contentId);
+            //                Console.WriteLine(EnvelopeSecretHelper.IsSecretValid(s, ownerId, contentId));
+            //                var es = s.ExtremelySerialize();
+            //                var ds = new EnvelopeSecret();
+            //                ds.InitByDeserializing(es);
+            //                Console.WriteLine(EnvelopeSecretHelper.IsSecretValid(ds, ownerId, contentId));
+            //
+            //                Console.ReadKey();
+            //            }
 
-//            var b = new BigInteger(100);
-//            Console.WriteLine(b);
-//            var bytes = b.ToByteArray();
-//            var c = new BigInteger(bytes);
-//            Console.WriteLine(c);
+            //            var b = new BigInteger(100);
+            //            Console.WriteLine(b);
+            //            var bytes = b.ToByteArray();
+            //            var c = new BigInteger(bytes);
+            //            Console.WriteLine(c);
             //var ent = new EnvelopeContent { Id = Guid.NewGuid(), Balance = int.MaxValue };
             //Console.WriteLine($"Id = {ent.Id}; Balance = {ent.Balance}");
             //

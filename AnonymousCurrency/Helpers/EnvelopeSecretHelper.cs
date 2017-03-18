@@ -7,7 +7,7 @@ namespace AnonymousCurrency.Helpers
 {
     public static class EnvelopeSecretHelper
     {
-        private static readonly Random Rand = new Random((int) (DateTime.Now.Ticks & int.MaxValue));
+        private static readonly Random Rand = new Random();
 
         public static bool IsSecretValid(EnvelopeSecret secret, Guid ownerId, Guid contentId)
         {
