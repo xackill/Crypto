@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.Title = "V-Auth";
+}
+
+<div class="jumbotron">
+    <h1>V-Auth</h1>
+    <p class="lead">
+        Протокол визуальной аутентификации.
+    </p>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>Приступить к работе</h2>
+        <p>Система генерирует ключ и предлагает пройти 4 этапа аутентификации, после которых отобразит результат.</p>
+        <p><a class="btn btn-default" href="@Url.Action("Work", "VisualAuthentication")">Приступить &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Как это работает?</h2>
+        <p>Из каких шагов состоит работа, как их выполнять и зачем; что было реализовано и как это посмотреть.</p>
+        <p><a class="btn btn-default" href="@Url.Action("Help", "VisualAuthentication")">Подробнее &raquo;</a></p>
+    </div>
+</div>

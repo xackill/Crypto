@@ -18,7 +18,7 @@ namespace VisualAuthentication
         public static Color[] AvailableColors =
         {
             Color.White,
-            Color.Blue,
+            Color.DeepSkyBlue,
             Color.GreenYellow
         };
     }

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Data.Entity.Core.Metadata.Edm;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using AnonymousCurrency.DataBaseModels;
 using AnonymousCurrency.DataModels;

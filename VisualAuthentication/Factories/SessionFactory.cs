@@ -22,7 +22,7 @@ namespace VisualAuthentication.Factories
             return new Session
             {
                 Id = Guid.NewGuid(),
-                CurrentIteration = 1,
+                CurrentIteration = 0,
                 FirstErrorIteration = -1,
                 SecretKeyNumber =  secretKeyNumber,
                 SerializedKeys = serializedKeys

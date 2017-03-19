@@ -55,6 +55,8 @@
     <Compile Include="DataModels\Element.cs" />
     <Compile Include="DataModels\Field.cs" />
     <Compile Include="DataModels\Key.cs" />
+    <Compile Include="DataViewModels\FieldViewModel.cs" />
+    <Compile Include="Extensions\ElementsExtensions.cs" />
     <Compile Include="Extensions\SessionExtensions.cs" />
     <Compile Include="Factories\FieldFactory.cs" />
     <Compile Include="Factories\KeyFactory.cs" />
@@ -62,6 +64,8 @@
     <Compile Include="Factories\PictureDrawer.cs" />
     <Compile Include="Factories\SessionFactory.cs" />
     <Compile Include="Factories\TableFactory.cs" />
+    <Compile Include="Helpers\BmpHelper.cs" />
+    <Compile Include="Helpers\PathFinder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VASecret.cs" />
     <Compile Include="Workers\VisualAuthenticationContext.cs" />
