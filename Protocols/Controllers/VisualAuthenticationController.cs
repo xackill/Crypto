@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Web.Mvc;
 using Newtonsoft.Json;
+using Core.Extensions;
 using VisualAuthentication.DataBaseModels;
 using VisualAuthentication.DataViewModels;
 using VisualAuthentication.Extensions;
@@ -15,23 +18,17 @@ namespace Currency.Controllers
     {
         public ActionResult Index()
         {
-            return View();
-        }
-
-        //        public ActionResult Help()
-        //        {
-        //            return View();
-        //        }
-
-        public ActionResult Work()
-        {
             var session = SessionFactory.CreateSession();
             var secretKey = session.SecretKey();
 
             DataBase.Write(session);
 
             ViewBag.SessionId = session.Id;
-            ViewBag.KeyElementsInBase64 = secretKey.Elements.ToBase64Pics();
+            ViewBag.KeyElementsInBase64 = secretKey
+                                            .Elements
+                                            .Select(PictureDrawer.Draw)
+                                            .Select(BmpConvert.ToBase64)
+                                            .ToList();
 
             return View();
         }
@@ -39,6 +36,23 @@ namespace Currency.Controllers
         public string GenerateNewField(Guid sessionId)
         {
             var session = DataBase.Read<Session>(sessionId);
+            return GenerateNewField(session);
+        }
+        
+        public string SendAnswer(Guid sessionId, int answer)
+        {
+            var session = DataBase.Read<Session>(sessionId);
+            if (answer != session.CurrentCorrectNumber && session.FirstErrorIteration == -1)
+                session.FirstErrorIteration = session.CurrentIteration;
+
+            if (session.IsClose())
+                return JsonConvert.SerializeObject(session.GetFinResult());
+            return GenerateNewField(session);
+        }
+
+        private string GenerateNewField(Session session)
+        {
+            Thread.Sleep(300);
             ++session.CurrentIteration;
 
             var field = FieldFactory.CreateField(session);
@@ -47,10 +61,32 @@ namespace Currency.Controllers
 
             DataBase.Update(session);
 
-            var elementsInBase64 = field.Elements.Select(els => els.ToBase64Pics()).ToArray();
+            var picsInBase64 = new List<List<string>>();
+            for (var i = 0; i < field.Elements.Length; ++i)
+            {
+                var lastImg = field.RowAnswers[i];
+                var row = field
+                            .Elements[i]
+                            .Select(PictureDrawer.Draw)
+                            .Concat(PictureDrawer.Draw(lastImg))
+                            .Select(BmpConvert.ToBase64)
+                            .ToList();
+
+                picsInBase64.Add(row);
+            }
+
+            var lastList = field
+                            .ColumnAnswers
+                            .Select(PictureDrawer.Draw)
+                            .Concat(PictureDrawer.DrawEmptyImg())
+                            .Select(BmpConvert.ToBase64)
+                            .ToList();
+
+            picsInBase64.Add(lastList);
+
             var fieldViewModel = new FieldViewModel
             {
-                ElementsInBase64 = elementsInBase64,
+                Pics = picsInBase64,
                 ColumnAnswers = field.ColumnAnswers,
                 RowAnswers = field.RowAnswers
             };

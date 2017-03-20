@@ -5,9 +5,9 @@ using System.IO;
 
 namespace VisualAuthentication.Helpers
 {
-    public static class BmpHelper
+    public static class BmpConvert
     {
-        public static string ConvertToBase64(Bitmap bmp)
+        public static string ToBase64(Image bmp)
         {
             using (var stream = new MemoryStream())
             {

@@ -25,5 +25,8 @@ namespace Core.Extensions
 
         public static T[] SelectToArray<T, TK>(this IEnumerable<TK> enumerable, Func<TK, T> selector)
             => enumerable.Select(selector).ToArray();
+
+        public static IEnumerable<T> Concat<T>(this IEnumerable<T> enumerable, T value)
+            => enumerable.Concat(new[] {value});
     }
 }

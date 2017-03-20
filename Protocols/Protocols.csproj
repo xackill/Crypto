@@ -222,7 +222,6 @@
     <Content Include="Views\AnonymousCurrency\Work.cshtml" />
     <Content Include="Views\AnonymousCurrency\Help.cshtml" />
     <Content Include="Views\VisualAuthentication\Index.cshtml" />
-    <Content Include="Views\VisualAuthentication\Work.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

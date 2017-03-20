@@ -187,14 +187,8 @@ namespace Test
         {
             //            CreateEnvelope();
 
-//            var rect = new Rectangle(10, 10, 100, 100);
-//            Console.WriteLine($"{rect.X}, {rect.Y}, {rect.Width}, {rect.Height}");
-//            rect.Inflate(-1, -1);
-//            Console.WriteLine($"{rect.X}, {rect.Y}, {rect.Width}, {rect.Height}");
-
-                        var key = KeyFactory.CreateKey();
-                        var bmp = PictureDrawer.Draw(key.Elements[0]);
-                        bmp.Save(@"C:\work\a.bmp");
+            var bmp = PictureDrawer.Draw();
+            bmp.Save(@"C:\work\a.bmp");
 
             //            for (;;)
             //            {
