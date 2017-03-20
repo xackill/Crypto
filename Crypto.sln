@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DistributedCurrency", "Dist
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnonymousCurrency", "AnonymousCurrency\AnonymousCurrency.csproj", "{C53D9279-19FC-4124-BAAF-19F632A0714D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualAuthentication", "VisualAuthentication\VisualAuthentication.csproj", "{8F0D95B4-8535-4585-BDD3-6086E39A8DBF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{C53D9279-19FC-4124-BAAF-19F632A0714D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C53D9279-19FC-4124-BAAF-19F632A0714D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C53D9279-19FC-4124-BAAF-19F632A0714D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F0D95B4-8535-4585-BDD3-6086E39A8DBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F0D95B4-8535-4585-BDD3-6086E39A8DBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F0D95B4-8535-4585-BDD3-6086E39A8DBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F0D95B4-8535-4585-BDD3-6086E39A8DBF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

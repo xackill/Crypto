@@ -1,0 +1,40 @@
+﻿@{
+    ViewBag.Title = "Аутентификация";
+}
+
+<script type="text/javascript" src="../../Scripts/VAWork.js"></script>
+
+<div class="jumbotron">
+    <h1>Секретный ключ</h1>
+    @foreach (var el in (List<string>)ViewBag.KeyElementsInBase64)
+    {
+        <img src="data:image/bmp;base64, @el" alt="" class="img-thumbnail"/>
+    }
+</div>
+
+<div data-bind="visible: !HasResult()">
+    <h2>Правила</h2>
+    <p class="lead">
+        Начало &mdash; в левом верхнем углу. Если текущий элемент содержится в секретном ключе, шагнуть вниз; иначе &mdash; вправо.
+        Как только попадаете на цифру &mdash; нажимаете ее, этап завершается. После 4х этапов, если не было ни одной ошибки, доступ открывается.
+    </p>   
+</div>
+
+<div class="bs-callout"
+     data-bind="visible: HasResult, css: {'bs-callout-danger': IsResultError, 'bs-callout-success' : !IsResultError() }">
+    <h4 data-bind="text: ResultHeader"></h4>
+    <p data-bind="text: ResultText"></p>
+</div>
+<button data-bind="visible: HasResult" class="btn btn-primary" onclick="location.reload();">Еще раз!</button>
+
+<h2 data-bind="text: StepText, visible: !HasResult()"></h2>
+<div data-bind="visible: !HasResult()">
+    <img id="FieldLoadProgress" data-bind="visible: IsLoading" class="center-block" src="../../Content/Load.gif" alt="<Load>" />
+    <div id="Field" style="text-align: center"></div>
+</div>
+
+<script>
+    data.SessionId = "@ViewBag.SessionId";
+    ko.applyBindings(data);
+    loadNewField();
+</script>

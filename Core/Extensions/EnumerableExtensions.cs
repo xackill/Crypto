@@ -6,12 +6,12 @@ namespace Core.Extensions
 {
     public static class EnumerableExtensions
     {
+        private static readonly Random Rand = new Random();
+
         public static T GetRandomElement<T>(this IEnumerable<T> enumerable)
         {
-            var rand = new Random();
             var arr = enumerable.ToArray();
-
-            return arr.Length == 0 ? default(T) : arr[rand.Next(arr.Length)];
+            return arr.Length == 0 ? default(T) : arr[Rand.Next(arr.Length)];
         }
 
         public static string JoinStrings<T>(this IEnumerable<T> enumerable, string separator)
@@ -22,5 +22,11 @@ namespace Core.Extensions
 
         public static IOrderedEnumerable<T> Shuffle<T>(this IEnumerable<T> enumerable)
             => enumerable.OrderBy(_ => Guid.NewGuid());
+
+        public static T[] SelectToArray<T, TK>(this IEnumerable<TK> enumerable, Func<TK, T> selector)
+            => enumerable.Select(selector).ToArray();
+
+        public static IEnumerable<T> Concat<T>(this IEnumerable<T> enumerable, T value)
+            => enumerable.Concat(new[] {value});
     }
 }

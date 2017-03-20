@@ -54,6 +54,9 @@
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.2\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Collections.Immutable, Version=1.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Collections.Immutable.1.3.1\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
@@ -120,9 +123,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.ApplicationInsights">
       <HintPath>..\packages\Microsoft.ApplicationInsights.2.1.0\lib\net45\Microsoft.ApplicationInsights.dll</HintPath>
     </Reference>
@@ -149,6 +149,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\VisualAuthenticationController.cs" />
     <Compile Include="Controllers\AnonymousCurrencyController.cs" />
     <Compile Include="Controllers\DistributedCurrencyController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -185,6 +186,7 @@
     <Content Include="Scripts\CreateAccount.js" />
     <Content Include="Scripts\CreateWallet.js" />
     <Content Include="Scripts\ACurrencyWork.js" />
+    <Content Include="Scripts\VAWork.js" />
     <Content Include="Scripts\CurrencyWork.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -219,6 +221,7 @@
     <Content Include="Views\AnonymousCurrency\NewAccount.cshtml" />
     <Content Include="Views\AnonymousCurrency\Work.cshtml" />
     <Content Include="Views\AnonymousCurrency\Help.cshtml" />
+    <Content Include="Views\VisualAuthentication\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -242,6 +245,10 @@
     <ProjectReference Include="..\DistributedCurrency\DistributedCurrency.csproj">
       <Project>{8B6D5BF4-437C-49A6-AE4E-5CB3672FD269}</Project>
       <Name>DistributedCurrency</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VisualAuthentication\VisualAuthentication.csproj">
+      <Project>{8F0D95B4-8535-4585-BDD3-6086E39A8DBF}</Project>
+      <Name>VisualAuthentication</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
