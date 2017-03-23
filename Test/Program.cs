@@ -187,8 +187,8 @@ namespace Test
         {
             //            CreateEnvelope();
 
-            var bmp = PictureDrawer.Draw();
-            bmp.Save(@"C:\work\a.bmp");
+//            var bmp = PictureDrawer.Draw();
+//            bmp.Save(@"C:\work\a.bmp");
 
             //            for (;;)
             //            {
