@@ -14,7 +14,7 @@
 <div class="bs-callout"
      data-bind="visible: HasResult, css: {'bs-callout-danger': IsResultError, 'bs-callout-success' : !IsResultError() }">
     <h4 data-bind="text: ResultHeader"></h4>
-    <p data-bind="text: ResultText"></p>
+    <p data-bind="html: ResultText"></p>
 </div>
 
 <h2>Управление</h2>

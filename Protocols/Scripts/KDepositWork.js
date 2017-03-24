@@ -10,7 +10,12 @@
     this.HasResult = ko.computed(function () { return self.Result() !== "" });
     this.IsResultError = ko.computed(function () { return self.Result().startsWith("Ошибка") });
     this.ResultHeader = ko.computed(function () { return self.Result().split(" ", 1) });
-    this.ResultText = ko.computed(function () { return self.Result().split(/(?:.*?) (.+)/)[1] });
+    this.ResultText = ko.computed(function () {
+        var header = self.Result().split(" ", 1);
+        var txt = self.Result().substr(header[0].length + 1);
+        if (txt) txt = txt.split("\n").join("<br/>");
+        return txt;
+    });
 
     this.IsClientMode = ko.computed(function () { return self.Mode() === "Клиент" });
     this.IsDepositCenterMode = ko.computed(function () { return self.Mode() === "Центр депонирования" });
@@ -22,6 +27,7 @@ var data = new UserData();
 
 function setMode(mode) {
     data.Mode(mode);
+    data.Result("");
     loadKeyViewer();
 }
 
@@ -63,23 +69,24 @@ function createHeaderToKeyViewer() {
 }
 
 function loadIdsToKeyViewer(keyIds) {
-    var keyViewer = $("#KeyViewer");
-
     for (var i = 0; i < keyIds.length; ++i) {
-        var keyId = keyIds[i];
-        keyViewer.append(
-            '<tr onclick="showhide(\'' + keyId + '\')">' +
-                '<td></td>' +
-                '<td>' + keyId + '</td>' +
-            '</tr>' +
-            '<tr id="' + keyId + '" style="display: none">' +
-                '<td class="text-center" colspan="2">' +
-                    '<img id="load_' + keyId + '" style="display: none; width: 27px" src="../../Content/Load.gif" alt="<Load>" />' +
-                    '<div id="data_' + keyId + '" class="text-left" style="display: none"></div>' +
-                '</td>' +
-            '</tr>'
-        );
+        insertNewKeyToKeyViewer(keyIds[i]);
     }
+}
+
+function insertNewKeyToKeyViewer(keyId) {
+    $("#KeyViewer").append(
+        '<tr onclick="showhide(\'' + keyId + '\')">' +
+            '<td></td>' +
+            '<td>' + keyId + '</td>' +
+        '</tr>' +
+        '<tr id="' + keyId + '" style="display: none">' +
+            '<td class="text-center" colspan="2">' +
+                '<img id="load_' + keyId + '" style="display: none; width: 27px" src="../../Content/Load.gif" alt="<Load>" />' +
+                '<div id="data_' + keyId + '" class="text-left" style="display: none"></div>' +
+            '</td>' +
+        '</tr>'
+    );
 }
 
 function showhide(id) {
@@ -126,4 +133,33 @@ function wrapByDl(container, val) {
     return "<dt>" + val + "</dt><dd>" + value + "</dd>";
 }
 
+function createKey() {
+    data.Process(true);
+    data.Result("");
 
+    $.ajax({
+        async: true,
+        url: "/KeyDeposit/CreateKey",
+        cache: false,
+        success: function (result) {
+            data.Result(result);
+            if (!data.IsResultError()) {
+                insertNewKey(result);
+            }
+        },
+        error: function () {
+            data.Result("Ошибка! Возможно, данные введены некорректно.");
+        },
+        complete: function () {
+            data.Process(false);
+        }
+    });
+}
+
+function insertNewKey(result) {
+    var keyId = result.match(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/);
+    if (!keyId)
+        data.Result("Ошибка! В сообщении не обнаружен ID: " + result);
+
+    insertNewKeyToKeyViewer(keyId);
+}
