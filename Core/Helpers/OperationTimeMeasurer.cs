@@ -21,7 +21,7 @@ namespace Core.Helpers
         public void Dispose()
         {
             stopwatch.Stop();
-            operationsTimes[operation] = $"{stopwatch.ElapsedMilliseconds}ms";
+            operationsTimes[operation] = $"{stopwatch.ElapsedMilliseconds}";
         }
     }
 }
