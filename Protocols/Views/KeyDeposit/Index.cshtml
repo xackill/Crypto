@@ -1,4 +1,5 @@
-﻿@{
+﻿@using KeyDeposit
+@{
     ViewBag.Title = "Депонирование ключей";
 }
 
@@ -38,6 +39,52 @@
         </div>
     </div>
     
+    <div class="bs-callout bs-callout-info" data-bind="visible: IsClientMode">
+        <h2>Справка</h2>
+        <p>
+            Секретный ключ клиента создается в такой последовательности:<br/>
+            <ol>
+                <li>
+                    Сначала генерируется исходные значения P(простое) и G(случайное), каждое по @KDSecret.BytesCount бит<br/>
+                    Простое число генерируется проверкой чисел из отрезка (длиной @KDSecret.IntervalLength)
+                    с использованием теста простоты Рабина-Миллера со значением уверенности @KDSecret.PrimeCertainty<br/>
+                </li>
+                <li>
+                    На базе P и G вычисляются открытые (PK[i]) и закрытые (SK[i]) ключи для доверенных центров [1..@KDSecret.TrustedCenterCount]<br/>
+                    Генерируется случайное SK[i] (длиной @KDSecret.BytesCount бит)<br/>
+                    Вычисляется PK[i] = (G ** SK[i]) mod P
+                </li>
+                <li>
+                    Затем собираются открытый и закрытый ключ клиента (из PK[i], SK[i] и P)
+                </li>
+                <li>
+                    Последним отдается открытый ключ центру депонирования (из PK[i] и P)<br />
+                    Тот проверяет публичные ключи у доверенных центров (сопоставляя со своим), и разрешает или запрещает пользоваться ими.
+                </li>
+            </ol>
+        </p>
+    </div>
+    
+
+    <div class="bs-callout bs-callout-info" data-bind="visible: IsDepositCenterMode">
+        <h2>Справка</h2>
+        <p>Центр депонирования хранит открытые ключи клиентов</p>
+    </div>
+    
+    <div class="bs-callout bs-callout-info" data-bind="visible: IsTrustedCenterMode">
+        <h2>Справка</h2>
+        <p>Доверенные лица хранят части открытых / закрытых ключей клиента</p>
+    </div>
+    
+    <div class="bs-callout bs-callout-info" data-bind="visible: IsStateMode">
+        <h2>Справка</h2>
+        <p>
+            Госорганы вправе запрашивать у доверенных лиц части ключей и узнавать полный открытый и закрытый ключ клиента<br/>
+            Обратите внимание, нужен <b>идентификатор ключа KeyId</b>, а не идентификатор записи<br/>
+            KeyId можно получить, нажав на идентификатор записи
+        </p>
+    </div>
+
     <div class="form-group" data-bind="visible: IsClientMode">
         <div class="col-md-offset-2 col-sm-10">
             <button class="btn btn-success" onclick="createKey()" data-bind="visible: !Process()">Создать ключ</button>

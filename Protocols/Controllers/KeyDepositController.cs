@@ -69,7 +69,7 @@ namespace Currency.Controllers
                         trustedKeys = KeyContainersFactory.CreateForTrustedCenters(keySource);
 
                     KeyContainer creatorKey;
-                    using (timeMeasurer.StartOperation("3. Генерация ключей для автора"))
+                    using (timeMeasurer.StartOperation("3. Генерация ключей для клиента"))
                         creatorKey = KeyContainersFactory.CreateForCreator(trustedKeys);
 
                     KeyContainer depositKey;
