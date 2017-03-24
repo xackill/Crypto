@@ -4,7 +4,7 @@ using KeyDeposit.DataBaseModels;
 
 namespace KeyDeposit.Workers
 {
-    public class KeyDepositeContext : Context
+    public class KeyDepositContext : Context
     {
         public DbSet<KeyContainer> Keys { get; set; }
     }

@@ -78,6 +78,10 @@
       <Project>{8B6D5BF4-437C-49A6-AE4E-5CB3672FD269}</Project>
       <Name>DistributedCurrency</Name>
     </ProjectReference>
+    <ProjectReference Include="..\KeyDeposit\KeyDeposit.csproj">
+      <Project>{51E95582-059E-43FE-9AFB-350D6E739BC3}</Project>
+      <Name>KeyDeposit</Name>
+    </ProjectReference>
     <ProjectReference Include="..\VisualAuthentication\VisualAuthentication.csproj">
       <Project>{8F0D95B4-8535-4585-BDD3-6086E39A8DBF}</Project>
       <Name>VisualAuthentication</Name>

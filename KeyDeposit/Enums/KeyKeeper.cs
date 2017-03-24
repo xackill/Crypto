@@ -2,9 +2,9 @@
 {
     public enum KeyKeeper
     {
-        Creator,
-        State,
-        DepositCenter,
-        TrustedCenter,
+        Creator = 0,
+        State = 1,
+        DepositCenter = 2,
+        TrustedCenter = 3,
     }
 }

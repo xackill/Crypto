@@ -59,7 +59,7 @@
     <Compile Include="Helpers\RabinMillerHelper.cs" />
     <Compile Include="KDSecret.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Workers\KeyDepositeContext.cs" />
+    <Compile Include="Workers\KeyDepositContext.cs" />
     <Compile Include="Workers\IntFactory.cs" />
     <Compile Include="Workers\KeyContainersFactory.cs" />
     <Compile Include="Workers\KeySourceFactory.cs" />

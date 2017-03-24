@@ -18,6 +18,9 @@ using Core.Workers;
 using DistributedCurrency.DataBaseModels;
 using DistributedCurrency.Factories;
 using DistributedCurrency.Workers;
+using KeyDeposit.DataBaseModels;
+using KeyDeposit.DataModels;
+using KeyDeposit.Workers;
 using Newtonsoft.Json;
 using VisualAuthentication.DataModels;
 using VisualAuthentication.Extensions;
@@ -185,6 +188,33 @@ namespace Test
 
         public static void Main()
         {
+            KeySource keySource;
+
+            using (new ConsoleMonitoring("Генерация исходников"))
+                keySource = KeySourceFactory.Generate();
+
+            KeyContainer[] trustedKeys;
+            using (new ConsoleMonitoring("Генерация ключей для доверенных центров"))
+                trustedKeys = KeyContainersFactory.CreateForTrustedCenters(keySource);
+
+            KeyContainer creatorKey;
+            using (new ConsoleMonitoring("Генерация ключей для создателя"))
+                creatorKey = KeyContainersFactory.CreateForCreator(trustedKeys);
+
+            KeyContainer depositKey;
+            using (new ConsoleMonitoring("Генерация ключей для центра депонирования"))
+                depositKey = KeyContainersFactory.CreateForDepositCenter(creatorKey);
+
+            KeyContainer stateKey;
+            using (new ConsoleMonitoring("Генерация ключей для государства"))
+                stateKey = KeyContainersFactory.CreateForState(trustedKeys);
+
+            using (new ConsoleMonitoring("Запись в БД"))
+            {
+                var keys = new[] { creatorKey, depositKey, stateKey }.Concat(trustedKeys);
+                DataBase<KeyDepositContext>.Write(keys);
+            }
+
             //            CreateEnvelope();
 
 //            var bmp = PictureDrawer.Draw();

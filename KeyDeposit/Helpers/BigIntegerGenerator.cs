@@ -12,7 +12,8 @@ namespace KeyDeposit.Helpers
             var bytes = new byte[bytesCount];
             Random.GetBytes(bytes);
 
-            return new BigInteger(bytes);
+            var random = new BigInteger(bytes);
+            return BigInteger.Abs(random);
         }
 
         public static BigInteger Generate(BigInteger maxVal)
