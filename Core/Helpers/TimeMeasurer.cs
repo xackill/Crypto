@@ -26,7 +26,7 @@ namespace Core.Helpers
                     .Select(g => $"{g.Key}: {g.Value}ms")
                     .JoinStrings("\n") 
                     +
-                    $"Общее время: {stopwatch.ElapsedMilliseconds}ms";
+                    $"\nОбщее время: {stopwatch.ElapsedMilliseconds}ms";
 
         public void Dispose()
         {
