@@ -163,3 +163,29 @@ function insertNewKey(result) {
 
     insertNewKeyToKeyViewer(keyId);
 }
+
+function learnTheKey() {
+    data.Process(true);
+    data.Result("");
+
+    var keyId = data.KeyId();
+
+    $.ajax({
+        async: true,
+        url: "/KeyDeposit/LearnTheKey",
+        data: { id: keyId },
+        cache: false,
+        success: function (result) {
+            data.Result(result);
+            if (!data.IsResultError()) {
+                insertNewKey(result);
+            }
+        },
+        error: function () {
+            data.Result("Ошибка! Возможно, данные введены некорректно.");
+        },
+        complete: function () {
+            data.Process(false);
+        }
+    });
+}

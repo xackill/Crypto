@@ -57,34 +57,66 @@ namespace Currency.Controllers
         {
             try
             {
-                var timeMeasurer = new TimeMeasurer();
+                using (var timeMeasurer = new TimeMeasurer())
+                {
+                    KeySource keySource;
 
-                KeySource keySource;
+                    using (timeMeasurer.StartOperation("1. Генерация P(простое) и G(случайное)"))
+                        keySource = KeySourceFactory.Generate();
 
-                using (timeMeasurer.StartOperation("1. Генерация P(простое) и G(случайное)"))
-                    keySource = KeySourceFactory.Generate();
+                    KeyContainer[] trustedKeys;
+                    using (timeMeasurer.StartOperation("2. Генерация ключей для доверенных центров"))
+                        trustedKeys = KeyContainersFactory.CreateForTrustedCenters(keySource);
 
-                KeyContainer[] trustedKeys;
-                using (timeMeasurer.StartOperation("2. Генерация ключей для доверенных центров"))
-                    trustedKeys = KeyContainersFactory.CreateForTrustedCenters(keySource);
+                    KeyContainer creatorKey;
+                    using (timeMeasurer.StartOperation("3. Генерация ключей для автора"))
+                        creatorKey = KeyContainersFactory.CreateForCreator(trustedKeys);
 
-                KeyContainer creatorKey;
-                using (timeMeasurer.StartOperation("3. Генерация ключей для автора"))
-                    creatorKey = KeyContainersFactory.CreateForCreator(trustedKeys);
+                    KeyContainer depositKey;
+                    using (timeMeasurer.StartOperation("4. Генерация ключей для центра депонирования"))
+                        depositKey = KeyContainersFactory.CreateForDepositCenter(creatorKey);
 
-                KeyContainer depositKey;
-                using (timeMeasurer.StartOperation("4. Генерация ключей для центра депонирования"))
-                    depositKey = KeyContainersFactory.CreateForDepositCenter(creatorKey);
+                    var keys = new[] { creatorKey, depositKey }.Concat(trustedKeys);
+                    DataBase.Write(keys);
 
-                var keys = new[] { creatorKey, depositKey }.Concat(trustedKeys);
-                DataBase.Write(keys);
-
-                return $"Успех! Ключ {creatorKey.Id} сгенерирован!\n{timeMeasurer.Results}";
+                    return $"Успех! Ключ {creatorKey.Id} сгенерирован!\n{timeMeasurer.Results}";
+                }
             }
             catch (Exception e)
             {
                 return $"Ошибка! {e.Message}";
             }
         }
+
+        public string LearnTheKey(Guid id)
+        {
+            try
+            {
+                using (var timeMeasurer = new TimeMeasurer())
+                using (var context = new KeyDepositContext())
+                {
+                    KeyContainer[] trustedKeys;
+                    using (timeMeasurer.StartOperation("1. Чтение ключей доверенных центров"))
+                        trustedKeys = context
+                                        .Keys
+                                        .Where(c => c.KeyId == id && c.Keeper == KeyKeeper.TrustedCenter)
+                                        .ToArray();
+
+                    KeyContainer stateKey;
+                    using (timeMeasurer.StartOperation("2. Генерация секретного ключа на базе частей из доверенных центров"))
+                        stateKey = KeyContainersFactory.CreateForState(trustedKeys);
+
+                    context.Keys.Add(stateKey);
+                    context.SaveChanges();
+
+                    return $"Успех! Ключ {stateKey.Id} передан в соответствующие органы!\n{timeMeasurer.Results}";
+                }
+            }
+            catch (Exception e)
+            {
+                return $"Ошибка! {e.Message}";
+            }
+        }
+        
     }
 }
