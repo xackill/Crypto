@@ -149,6 +149,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\KeyDepositController.cs" />
     <Compile Include="Controllers\VisualAuthenticationController.cs" />
     <Compile Include="Controllers\AnonymousCurrencyController.cs" />
     <Compile Include="Controllers\DistributedCurrencyController.cs" />
@@ -181,6 +182,7 @@
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\KDepositWork.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\CreateAccount.js" />
@@ -222,6 +224,7 @@
     <Content Include="Views\AnonymousCurrency\Work.cshtml" />
     <Content Include="Views\AnonymousCurrency\Help.cshtml" />
     <Content Include="Views\VisualAuthentication\Index.cshtml" />
+    <Content Include="Views\KeyDeposit\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -245,6 +248,10 @@
     <ProjectReference Include="..\DistributedCurrency\DistributedCurrency.csproj">
       <Project>{8B6D5BF4-437C-49A6-AE4E-5CB3672FD269}</Project>
       <Name>DistributedCurrency</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KeyDeposit\KeyDeposit.csproj">
+      <Project>{51E95582-059E-43FE-9AFB-350D6E739BC3}</Project>
+      <Name>KeyDeposit</Name>
     </ProjectReference>
     <ProjectReference Include="..\VisualAuthentication\VisualAuthentication.csproj">
       <Project>{8F0D95B4-8535-4585-BDD3-6086E39A8DBF}</Project>

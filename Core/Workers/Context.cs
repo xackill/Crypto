@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using Core.DataBaseModels;
@@ -23,17 +24,26 @@ namespace Core.Workers
             throw new Exception($"Сущности <{nameof(T)}> с Id = {id} не существует");
         }
 
-        public void Write<T>(T entity) where T : DataBaseModel
+        public void Write<T>(IEnumerable<T> entities) where T : DataBaseModel
         {
-            Set<T>().Add(entity);
+            Set<T>().AddRange(entities);
+            SaveChanges();
+        }
+
+        public void Write<T>(T entity) where T : DataBaseModel
+            => Write<T>(new[] { entity });
+
+        public void Update<T>(IEnumerable<T> entities) where T : DataBaseModel
+        {
+            foreach (var entity in entities)
+            {
+                Set<T>().Attach(entity);
+                Entry(entity).State = EntityState.Modified;
+            }
             SaveChanges();
         }
 
         public void Update<T>(T entity) where T : DataBaseModel
-        {
-            Set<T>().Attach(entity);
-            Entry(entity).State = EntityState.Modified;
-            SaveChanges();
-        }
+            => Update<T>(new[] { entity });
     }
 }
