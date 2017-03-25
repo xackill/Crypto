@@ -52,12 +52,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataBaseModels\EncryptedMessage.cs" />
+    <Compile Include="DataBaseModels\EncryptedMessageContainer.cs" />
     <Compile Include="DataBaseModels\KeyContainer.cs" />
     <Compile Include="PESecret.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Workers\BBSGenerator.cs" />
     <Compile Include="Workers\BBSGeneratorFactory.cs" />
+    <Compile Include="Workers\KeyContainerFactory.cs" />
+    <Compile Include="Workers\ProbabilisticCryptoProvider.cs" />
     <Compile Include="Workers\ProbabilisticEncryptionContext.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -70,5 +72,6 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

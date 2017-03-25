@@ -23,7 +23,7 @@ namespace Core.Workers
             };
         }
 
-        public static BigInteger GeneratePrimeCongruent3Modulo4(int bytesCount = Secret.BytesCount)
+        public static BigInteger GenerateBlumPrime(int bytesCount = Secret.BytesCount)
         {
             while (true)
             {

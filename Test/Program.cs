@@ -1,15 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity.Infrastructure;
-using System.Data.Entity.ModelConfiguration.Conventions;
-using System.Drawing;
 using System.Linq;
-using System.Numerics;
-using AnonymousCurrency.DataBaseModels;
 using AnonymousCurrency.DataModels;
 using AnonymousCurrency.Enums;
 using AnonymousCurrency.Factories;
-using AnonymousCurrency.Helpers;
 using AnonymousCurrency.Workers;
 using Core;
 using Core.Cryptography;
@@ -19,13 +13,8 @@ using DistributedCurrency.DataBaseModels;
 using DistributedCurrency.Factories;
 using DistributedCurrency.Workers;
 using KeyDeposit.DataBaseModels;
-using KeyDeposit.DataModels;
-using KeyDeposit.Workers;
-using Newtonsoft.Json;
+using ProbabilisticEncryption.DataBaseModels;
 using ProbabilisticEncryption.Workers;
-using VisualAuthentication.DataModels;
-using VisualAuthentication.Extensions;
-using VisualAuthentication.Factories;
 
 namespace Test
 {
@@ -189,16 +178,22 @@ namespace Test
 
         public static void Main()
         {
-//            BigInteger max;
-//            using (new ConsoleMonitoring("Генерация числа"))
-//                max = IntFactory.GenerateRandom();
+            ProbabilisticEncryption.DataBaseModels.KeyContainer key;
+            using (new ConsoleMonitoring("Генерация контейнера"))
+                key = KeyContainerFactory.CreateNew();
 
-            BBSGenerator g;
-            using (new ConsoleMonitoring("Создание BBS генератора"))
-                g = BBSGeneratorFactory.CreateNew();
+            var msg = "ukpuiipuoxah";
+            EncryptedMessageContainer emsg;
+            using (new ConsoleMonitoring("Шифрование"))
+                emsg = ProbabilisticCryptoProvider.Encrypt(key, msg);
 
-            Console.WriteLine($"P == {g.P};  Q == {g.Q}");
+            Console.WriteLine($"MSG = {emsg.Message.ToBase64()} \n Xt = {emsg.Xt.ToBase64()}");
 
+            string omsg;
+            using (new ConsoleMonitoring("Расшифрование"))
+                omsg = ProbabilisticCryptoProvider.Decrypt(key, emsg);
+
+            Console.WriteLine($"MSG = {omsg}");
             //KeySource keySource;
             //
             //using (new ConsoleMonitoring("Генерация исходников"))
