@@ -5,7 +5,7 @@ using KeyDeposit.Enums;
 
 namespace KeyDeposit.DataBaseModels
 {
-    [Table("KD_KeyContainer")]
+    [Table("KD_KeyContainers")]
     public class KeyContainer : DataBaseModel
     {
         public Guid KeyId { get; set; }

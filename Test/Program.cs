@@ -193,11 +193,11 @@ namespace Test
 //            using (new ConsoleMonitoring("Генерация числа"))
 //                max = IntFactory.GenerateRandom();
 
-//            BBSGenerator g;
-//            using (new ConsoleMonitoring("Создание BBS генератора"))
-//                g = new BBSGenerator(max);
+            BBSGenerator g;
+            using (new ConsoleMonitoring("Создание BBS генератора"))
+                g = BBSGeneratorFactory.CreateNew();
 
-//            Console.WriteLine($"N == {g.N};  X == {g.X}");
+            Console.WriteLine($"P == {g.P};  Q == {g.Q}");
 
             //KeySource keySource;
             //

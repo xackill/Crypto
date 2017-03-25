@@ -25,7 +25,7 @@ namespace ProbabilisticEncryption.Workers
             X0 = BigInteger.ModPow(x, 2, N);
         }
 
-        public BBSGenerator(BigInteger p, BigInteger q, BigInteger t, BigInteger xt)
+        public BBSGenerator(BigInteger p, BigInteger q, int t, BigInteger xt)
         {
             P = p; Q = q;
             N = p * q;
