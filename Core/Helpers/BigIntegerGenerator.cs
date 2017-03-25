@@ -1,7 +1,7 @@
 ﻿using System.Numerics;
 using System.Security.Cryptography;
 
-namespace KeyDeposit.Helpers
+namespace Core.Helpers
 {
     public static class BigIntegerGenerator
     {

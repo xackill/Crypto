@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using Core.Workers;
 using KeyDeposit.DataBaseModels;
 using KeyDeposit.DataModels;
 using KeyDeposit.Enums;

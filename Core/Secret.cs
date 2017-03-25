@@ -17,5 +17,10 @@ namespace Core
 
         public const int EnvelopeSignCount = 10;
         public const int SecretsCount = 10;
+
+        // BigIntGenerate:
+        public const int IntervalLength = 1000;
+        public const int PrimeCertainty = 100;
+        public const int BytesCount = 128;
     }
 }
