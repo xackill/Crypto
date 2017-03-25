@@ -82,6 +82,10 @@
       <Project>{51E95582-059E-43FE-9AFB-350D6E739BC3}</Project>
       <Name>KeyDeposit</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ProbabilisticEncryption\ProbabilisticEncryption.csproj">
+      <Project>{4221F5A1-8DA3-4FAD-853C-180CFD6BC35F}</Project>
+      <Name>ProbabilisticEncryption</Name>
+    </ProjectReference>
     <ProjectReference Include="..\VisualAuthentication\VisualAuthentication.csproj">
       <Project>{8F0D95B4-8535-4585-BDD3-6086E39A8DBF}</Project>
       <Name>VisualAuthentication</Name>

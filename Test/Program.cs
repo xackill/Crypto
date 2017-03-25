@@ -22,6 +22,7 @@ using KeyDeposit.DataBaseModels;
 using KeyDeposit.DataModels;
 using KeyDeposit.Workers;
 using Newtonsoft.Json;
+using ProbabilisticEncryption.Workers;
 using VisualAuthentication.DataModels;
 using VisualAuthentication.Extensions;
 using VisualAuthentication.Factories;
@@ -188,37 +189,47 @@ namespace Test
 
         public static void Main()
         {
-            KeySource keySource;
+//            BigInteger max;
+//            using (new ConsoleMonitoring("Генерация числа"))
+//                max = IntFactory.GenerateRandom();
 
-            using (new ConsoleMonitoring("Генерация исходников"))
-                keySource = KeySourceFactory.Generate();
+//            BBSGenerator g;
+//            using (new ConsoleMonitoring("Создание BBS генератора"))
+//                g = new BBSGenerator(max);
 
-            KeyContainer[] trustedKeys;
-            using (new ConsoleMonitoring("Генерация ключей для доверенных центров"))
-                trustedKeys = KeyContainersFactory.CreateForTrustedCenters(keySource);
+//            Console.WriteLine($"N == {g.N};  X == {g.X}");
 
-            KeyContainer creatorKey;
-            using (new ConsoleMonitoring("Генерация ключей для создателя"))
-                creatorKey = KeyContainersFactory.CreateForCreator(trustedKeys);
-
-            KeyContainer depositKey;
-            using (new ConsoleMonitoring("Генерация ключей для центра депонирования"))
-                depositKey = KeyContainersFactory.CreateForDepositCenter(creatorKey);
-
-            KeyContainer stateKey;
-            using (new ConsoleMonitoring("Генерация ключей для государства"))
-                stateKey = KeyContainersFactory.CreateForState(trustedKeys);
-
-            using (new ConsoleMonitoring("Запись в БД"))
-            {
-                var keys = new[] { creatorKey, depositKey, stateKey }.Concat(trustedKeys);
-                DataBase<KeyDepositContext>.Write(keys);
-            }
+            //KeySource keySource;
+            //
+            //using (new ConsoleMonitoring("Генерация исходников"))
+            //keySource = KeySourceFactory.Generate();
+            //
+            //KeyContainer[] trustedKeys;
+            //using (new ConsoleMonitoring("Генерация ключей для доверенных центров"))
+            //trustedKeys = KeyContainersFactory.CreateForTrustedCenters(keySource);
+            //
+            //KeyContainer creatorKey;
+            //using (new ConsoleMonitoring("Генерация ключей для создателя"))
+            //creatorKey = KeyContainersFactory.CreateForCreator(trustedKeys);
+            //
+            //KeyContainer depositKey;
+            //using (new ConsoleMonitoring("Генерация ключей для центра депонирования"))
+            //depositKey = KeyContainersFactory.CreateForDepositCenter(creatorKey);
+            //
+            //KeyContainer stateKey;
+            //using (new ConsoleMonitoring("Генерация ключей для государства"))
+            //stateKey = KeyContainersFactory.CreateForState(trustedKeys);
+            //
+            //using (new ConsoleMonitoring("Запись в БД"))
+            //{
+            //var keys = new[] { creatorKey, depositKey, stateKey }.Concat(trustedKeys);
+            //DataBase<KeyDepositContext>.Write(keys);
+            //}
 
             //            CreateEnvelope();
 
-//            var bmp = PictureDrawer.Draw();
-//            bmp.Save(@"C:\work\a.bmp");
+            //            var bmp = PictureDrawer.Draw();
+            //            bmp.Save(@"C:\work\a.bmp");
 
             //            for (;;)
             //            {
