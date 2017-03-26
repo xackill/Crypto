@@ -18,7 +18,7 @@ namespace ProbabilisticEncryption.Workers
             var p = new BigInteger(keyContainer.P);
             var q = new BigInteger(keyContainer.Q);
 
-            var t = encryptedMessageContainer.Message.Length * 8;
+            var t = encryptedMessageContainer.Message.Length * 8 + 1;
             var xt = new BigInteger(encryptedMessageContainer.Xt);
 
             return new BBSGenerator(p, q, t, xt);
