@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using AnonymousCurrency.DataModels;
 using AnonymousCurrency.Enums;
 using AnonymousCurrency.Factories;
@@ -182,18 +183,35 @@ namespace Test
             using (new ConsoleMonitoring("Генерация контейнера"))
                 key = KeyContainerFactory.CreateNew();
 
-            var msg = "ukpuiipuoxah";
+            var msg = "ЭтоСамыйСложныйТестКоторыйЯСмогПридуматьПодОдеялком";
             EncryptedMessageContainer emsg;
             using (new ConsoleMonitoring("Шифрование"))
                 emsg = ProbabilisticCryptoProvider.Encrypt(key, msg);
 
-            Console.WriteLine($"MSG = {emsg.Message.ToBase64()} \n Xt = {emsg.Xt.ToBase64()}");
+            Console.WriteLine($"MSG = {emsg.Message.ToBase64()}");
 
             string omsg;
             using (new ConsoleMonitoring("Расшифрование"))
                 omsg = ProbabilisticCryptoProvider.Decrypt(key, emsg);
 
             Console.WriteLine($"MSG = {omsg}");
+
+//            key = new ProbabilisticEncryption.DataBaseModels.KeyContainer {P = new BigInteger(11).ToByteArray(), Q = new BigInteger(7).ToByteArray()};
+
+//            var bbs1 = BBSGeneratorFactory.Initialize(key);
+//            var num = bbs1.GetX(2);
+
+//            var p = new BigInteger(key.P);
+//            var q = new BigInteger(key.Q);
+
+//            var bbs2 = new BBSGenerator(p, q, 2, num);
+
+//            Console.WriteLine($"{bbs1.X0}");
+//            Console.WriteLine($"{bbs1.GetX(2)}");
+//            Console.WriteLine();
+//            Console.WriteLine($"{bbs2.X0}");
+//            Console.WriteLine($"{bbs2.GetX(2)}");
+
             //KeySource keySource;
             //
             //using (new ConsoleMonitoring("Генерация исходников"))

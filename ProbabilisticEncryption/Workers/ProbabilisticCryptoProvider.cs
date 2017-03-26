@@ -21,7 +21,7 @@ namespace ProbabilisticEncryption.Workers
             {
                 Id = Guid.NewGuid(),
                 Message = obytes,
-                Xt = bbsGenerator.GetX(ibytes.Length).ToByteArray()
+                Xt = bbsGenerator.GetX(ibytes.Length * 8).ToByteArray()
             };
         }
 

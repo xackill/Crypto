@@ -31,11 +31,11 @@ namespace ProbabilisticEncryption.Workers
             N = p * q;
             M = (p - 1) * (q - 1);
 
-            var (a, b) = EuclideanHelper.GetExtendedGCD(p, q);
+            var (_, a, b) = EuclideanHelper.GcdExtended(p, q);
             var u = BigInteger.ModPow((p + 1) / 4, t, p - 1);
             var v = BigInteger.ModPow((q + 1) / 4, t, q - 1);
             var w = BigInteger.ModPow(xt % p, u, p);
-            var z = BigInteger.ModPow(xt % p, v, p);
+            var z = BigInteger.ModPow(xt % q, v, q);
             X0 = (b * q * w + a * p * z) % N;
         }
 

@@ -17,7 +17,7 @@ namespace Core.Workers
             {
                 var x = GenerateRandom(bytesCount);
 
-                var gcd = EuclideanHelper.GetGCD(x, n);
+                var gcd = EuclideanHelper.Gcd(x, n);
                 if (gcd == 1)
                     return x;
             };
