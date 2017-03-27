@@ -158,7 +158,7 @@ namespace Currency.Controllers
                     using (timeMeasurer.StartOperation("3. Расшифрование"))
                         msg = ProbabilisticCryptoProvider.Decrypt(key, emsg);
 
-                    return $"Успех! Сообщение {emsg.Id} зашифровано!\n{timeMeasurer.Results}\n\nСодержание:\n{msg}";
+                    return $"Успех! Сообщение {emsg.Id} расшифровано!\n{timeMeasurer.Results}\n\nСодержание:\n{msg}";
                 }
             }
             catch (Exception e)
