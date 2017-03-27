@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
+using AnonymousCurrency;
 using AnonymousCurrency.DataBaseModels;
 using AnonymousCurrency.DataModels;
 using AnonymousCurrency.Enums;
@@ -74,8 +75,8 @@ namespace Currency.Controllers
             {
                 using (var bank = new Bank())
                 {
-                    var range = Enumerable.Range(0, Secret.EnvelopeSignCount).ToArray();
-                    var cheatIdx = new Random().Next(Secret.EnvelopeSignCount); 
+                    var range = Enumerable.Range(0, ACSecret.EnvelopeSignCount).ToArray();
+                    var cheatIdx = new Random().Next(ACSecret.EnvelopeSignCount); 
                     var csps = range.Select(i => new {i, csp = new RSACryptography()}).ToArray();
                     var envelopes = csps
                         .Select(csp => EnvelopeFactory.CreateBankCheckingEnvelope(csp.csp, userId, amount + (csp.i == cheatIdx? cheatAmount : 0)))

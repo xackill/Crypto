@@ -32,8 +32,8 @@ namespace AnonymousCurrency.Workers
             if (ApplicationBalance == 0)
                 throw new Exception("Не может быть создан конверт с 0!");
 
-            if (Envelopes.Length != Secret.EnvelopeSignCount)
-                throw new Exception($"Конвертов должно быть {Secret.EnvelopeSignCount}");
+            if (Envelopes.Length != ACSecret.EnvelopeSignCount)
+                throw new Exception($"Конвертов должно быть {ACSecret.EnvelopeSignCount}");
 
             var customer = DataBase.Read<BankCustomer>(CustomerId);
             if (customer.Balance < application.Balance)
@@ -47,10 +47,10 @@ namespace AnonymousCurrency.Workers
 
         public SignedEnvelope CheckAndSignEnvelope(RSACryptography[] csps)
         {
-            if (csps.Length != Secret.EnvelopeSignCount - 1)
-                throw new Exception($"Закрытых ключей должно быть {Secret.EnvelopeSignCount - 1}");
+            if (csps.Length != ACSecret.EnvelopeSignCount - 1)
+                throw new Exception($"Закрытых ключей должно быть {ACSecret.EnvelopeSignCount - 1}");
 
-            for (var i = 0; i < Secret.EnvelopeSignCount - 1; ++i)
+            for (var i = 0; i < ACSecret.EnvelopeSignCount - 1; ++i)
             {
                 var envelope = Envelopes[EnvelopesToOpen[i]];
                 ThrowIfEnvelopeCorrupted(envelope, csps[i]);
@@ -70,10 +70,10 @@ namespace AnonymousCurrency.Workers
         private static ImmutableArray<int> GenerateEnvelopesNumbers(out int exclude)
         {
             var rand = new Random();
-            exclude = rand.Next(Secret.EnvelopeSignCount);
+            exclude = rand.Next(ACSecret.EnvelopeSignCount);
 
             return Enumerable
-                .Range(0, Secret.EnvelopeSignCount)
+                .Range(0, ACSecret.EnvelopeSignCount)
                 .Except(exclude)
                 .Shuffle()
                 .ToImmutableArray();
@@ -85,7 +85,7 @@ namespace AnonymousCurrency.Workers
             ThrowIfEnvelopeContentCorrupted(content);
 
             var encryptedSecrets = envelope.EnumerateSecrets().ToArray();
-            if (encryptedSecrets.Length != Secret.SecretsCount)
+            if (encryptedSecrets.Length != ACSecret.SecretsCount)
                 throw new Exception("Обнаружен конверт с недостаточным числом секретов!");
                  
             foreach (var encryptedSecret in encryptedSecrets)

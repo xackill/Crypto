@@ -14,7 +14,7 @@ namespace AnonymousCurrency.Workers
 
         public Bank()
         {
-            csp = new RSACryptography(Secret.BankPublicPrivateKey);
+            csp = new RSACryptography(ACSecret.BankPublicPrivateKey);
         }
 
         public void Dispose()

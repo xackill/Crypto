@@ -10,7 +10,7 @@ namespace AnonymousCurrency.Helpers
 
         public BankSignChecker()
         {
-            csp = new RSACryptography(Secret.BankPublicKey);
+            csp = new RSACryptography(ACSecret.BankPublicKey);
         }
 
         public void Dispose()

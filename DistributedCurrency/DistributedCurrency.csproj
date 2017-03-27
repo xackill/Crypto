@@ -52,6 +52,7 @@
     <Compile Include="DataBaseModels\Wallet.cs" />
     <Compile Include="DataModels\Solvency.cs" />
     <Compile Include="DataModels\TransactCreationResult.cs" />
+    <Compile Include="DCSecret.cs" />
     <Compile Include="Exceptions\TransactionValidateException.cs" />
     <Compile Include="Extensions\TransactionExtensions.cs" />
     <Compile Include="Factories\ContactsFactory.cs" />

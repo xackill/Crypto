@@ -1,4 +1,5 @@
-﻿@{
+﻿@using DistributedCurrency
+@{
     ViewBag.Title = "Как это работает?";
 }
 
@@ -29,7 +30,7 @@
         <br/>
         Чтобы открыть конкретный кошелек, добавьте в адресной строке его уникальный ID
         <br />
-        (Например, @Html.ActionLink("Кошелек Магистра Йоды", "Work", "DistributedCurrency", new { id = "4B7F8592-3DE6-4CCF-9A83-5E3BC0E1C003" }, null))
+        (Например, @Html.ActionLink("Кошелек Шерлока Холмса", "Work", "DistributedCurrency", new { id = DCSecret.SherlockHolmesWalletId }, null))
     </dd>
     <br/>
 

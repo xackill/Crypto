@@ -43,7 +43,7 @@ namespace DistributedCurrency.Factories
                     var transaction = new Transaction
                     {
                         Id = Guid.NewGuid(),
-                        MinerReward = Secret.MinerReward,
+                        MinerReward = DCSecret.MinerReward,
 
                         SourceId = sourceId,
                         ExtraSourceId = extraSourceId,

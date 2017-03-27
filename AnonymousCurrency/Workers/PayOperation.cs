@@ -18,7 +18,7 @@ namespace AnonymousCurrency.Workers
         public PayOperation(SellerCheckingEnvelope envelope)
         {
             Envelope = envelope;
-            SecretNumber = new Random().Next(Secret.SecretsCount);
+            SecretNumber = new Random().Next(ACSecret.SecretsCount);
         }
 
         public SignedEnvelope Exec(byte[] encryptedSecret)

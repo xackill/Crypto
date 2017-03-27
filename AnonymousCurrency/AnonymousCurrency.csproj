@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ACSecret.cs" />
     <Compile Include="DataBaseModels\BankCustomer.cs" />
     <Compile Include="DataBaseModels\SignedEnvelope.cs" />
     <Compile Include="DataBaseModels\UsedCheck.cs" />

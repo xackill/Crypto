@@ -17,7 +17,7 @@ namespace AnonymousCurrency.Factories
             var encryptedContent = CryptoConverter.Encrypt(content, csp);
 
             var encryptedSecrets = Enumerable
-                                    .Range(0, Secret.SecretsCount)
+                                    .Range(0, ACSecret.SecretsCount)
                                     .Select(_ => EnvelopeSecretHelper.GenerateSecret(ownerId, content.Id))
                                     .Select(s => CryptoConverter.Encrypt(s, csp))
                                     .Aggregate((secrets, nextSecret) => secrets.ConcatBytes(nextSecret));
