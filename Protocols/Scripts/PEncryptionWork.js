@@ -5,6 +5,8 @@
     this.LoadingTable = ko.observable(false);
 
     this.KeyId = ko.observable("");
+    this.MessageId = ko.observable("");
+    this.Message = ko.observable("");
 
     var self = this;
     this.HasResult = ko.computed(function () { return self.Result() !== "" });
@@ -17,10 +19,16 @@
         return txt;
     });
 
-    this.IsClientMode = ko.computed(function () { return self.Mode() === "Клиент" });
-    this.IsDepositCenterMode = ko.computed(function () { return self.Mode() === "Центр депонирования" });
-    this.IsTrustedCenterMode = ko.computed(function () { return self.Mode() === "Доверенные лица" });
-    this.IsStateMode = ko.computed(function () { return self.Mode() === "Государство" });
+    this.IsKeyMode = ko.computed(function () { return self.Mode() === "Создать ключ" });
+    this.IsEncryptMode = ko.computed(function () { return self.Mode() === "Зашифровать" });
+    this.IsDecryptMode = ko.computed(function () { return self.Mode() === "Расшифровать" });
+
+    this.TableHeader = ko.computed(function () { return self.IsKeyMode() ? "Доступные контейнеры" : "Зашифрованные сообщения"; });
+    this.LoadIdServerMethod = ko.computed(function () { return self.IsKeyMode() ? "LoadKeyContainersIds" : "LoadEncryptedMessagesIds"; });
+    this.LoadContainerServerMethod = ko.computed(function () { return self.IsKeyMode() ? "LoadKeyContainer" : "LoadEncryptedMessage"; });
+    this.CreateServerMethod = ko.computed(function() {
+        return self.IsKeyMode() ? "CreateKeyContainer" : self.IsEncryptMode() ? "CreateEncryptedMessage" : "DecryptMessage";
+    });
 }
 var data = new UserData();
 
@@ -28,29 +36,26 @@ var data = new UserData();
 function setMode(mode) {
     data.Mode(mode);
     data.Result("");
-    loadKeyViewer();
+
+    if (!data.IsDecryptMode())
+        loadViewer();
 }
 
-function loadKeyViewer() {
-    $("#KeyViewer").empty();
+function loadViewer() {
+    $("#Viewer").empty();
     data.LoadingTable(true);
-
-    var type = data.IsClientMode() ? "0" :
-                data.IsDepositCenterMode() ? "2" :
-                    data.IsTrustedCenterMode() ? "3" :  "1";
-
+    
     $.ajax({
         async: true,
-        url: "/KeyDeposit/LoadKeys",
+        url: "/ProbabilisticEncryption/" + data.LoadIdServerMethod(),
         cache: false,
-        data: { keeper: type },
         success: function (answ) {
             if (answ.startsWith("Ошибка"))
                 data.Result(answ);
             else {
                 var keyIds = JSON.parse(answ);
-                createHeaderToKeyViewer();
-                loadIdsToKeyViewer(keyIds);
+                createHeaderToViewer();
+                loadIdsToViewer(keyIds);
             }
         },
         complete: function () {
@@ -59,8 +64,8 @@ function loadKeyViewer() {
     });
 }
 
-function createHeaderToKeyViewer() {
-    $("#KeyViewer").append(
+function createHeaderToViewer() {
+    $("#Viewer").append(
         '<tr id="TableHeader">' +
             '<th></th>' +
             '<th>Идентификатор записи</th>' +
@@ -68,14 +73,14 @@ function createHeaderToKeyViewer() {
     );
 }
 
-function loadIdsToKeyViewer(keyIds) {
+function loadIdsToViewer(keyIds) {
     for (var i = 0; i < keyIds.length; ++i) {
-        insertNewKeyToKeyViewer(keyIds[i]);
+        insertNewKeyToViewer(keyIds[i]);
     }
 }
 
-function insertNewKeyToKeyViewer(keyId) {
-    $("#KeyViewer").append(
+function insertNewKeyToViewer(keyId) {
+    $("#Viewer").append(
         '<tr onclick="showhide(\'' + keyId + '\')">' +
             '<td></td>' +
             '<td>' + keyId + '</td>' +
@@ -103,20 +108,12 @@ function showhide(id) {
 
             $.ajax({
                 async: true,
-                url: "/KeyDeposit/GetKeyContainer",
+                url: "/ProbabilisticEncryption/" + data.LoadContainerServerMethod(),
                 cache: false,
                 data: { id: id },
                 success: function (data) {
                     var container = JSON.parse(data);
-                    div.append(
-                        "<dl class='dl-horizontal'>" +
-                        wrapByDl(container, "KeyId") +
-                        "<br/>" +
-                        wrapByDl(container, "PublicKey") +
-                        wrapByDl(container, "PrivateKey") +
-                        wrapByDl(container, "Modulus") +
-                        "</dl>"
-                    );
+                    addContainer(div, container);
                 },
                 complete: function () {
                     load.hide();
@@ -127,24 +124,51 @@ function showhide(id) {
     }
 }
 
+function addContainer(div, container) {
+    if (data.IsKeyMode())
+        div.append(
+            "<dl class='dl-horizontal'>" +
+            wrapByDl(container, "P") +
+            wrapByDl(container, "Q") +
+            "</dl>"
+        );
+    else
+        div.append(
+            "<dl class='dl-horizontal'>" +
+            wrapByDl(container, "Message") +
+            wrapByDl(container, "Xt") +
+            "</dl>"
+        );
+}
+
 function wrapByDl(container, val) {
     var value = container[val];
-    if (!val.endsWith("Id"))
-        value = value.match(/.{5}/g).join(" ");
+    value = value.match(/.{5}/g).join(" ");
     return "<dt>" + val + "</dt><dd>" + value + "</dd>";
 }
 
-function createKey() {
+function process() {
     data.Process(true);
     data.Result("");
 
+    var sData = {};
+    if (data.IsEncryptMode()) {
+        sData.keyId = data.KeyId();
+        sData.message = data.Message();
+    }
+    if (data.IsDecryptMode()) {
+        sData.keyId = data.KeyId();
+        sData.messageId = data.MessageId();
+    }
+
     $.ajax({
         async: true,
-        url: "/KeyDeposit/CreateKey",
+        url: "/ProbabilisticEncryption/" + data.CreateServerMethod(),
         cache: false,
+        data: sData,
         success: function (result) {
             data.Result(result);
-            if (!data.IsResultError()) {
+            if (!data.IsResultError() && !data.IsDecryptMode()) {
                 insertNewKey(result);
             }
         },
@@ -162,31 +186,5 @@ function insertNewKey(result) {
     if (!keyId)
         data.Result("Ошибка! В сообщении не обнаружен ID: " + result);
 
-    insertNewKeyToKeyViewer(keyId);
-}
-
-function learnTheKey() {
-    data.Process(true);
-    data.Result("");
-
-    var keyId = data.KeyId();
-
-    $.ajax({
-        async: true,
-        url: "/KeyDeposit/LearnTheKey",
-        data: { id: keyId },
-        cache: false,
-        success: function (result) {
-            data.Result(result);
-            if (!data.IsResultError()) {
-                insertNewKey(result);
-            }
-        },
-        error: function () {
-            data.Result("Ошибка! Возможно, данные введены некорректно.");
-        },
-        complete: function () {
-            data.Process(false);
-        }
-    });
+    insertNewKeyToViewer(keyId);
 }
