@@ -226,10 +226,12 @@
     <Content Include="Views\AnonymousCurrency\Work.cshtml" />
     <Content Include="Views\AnonymousCurrency\Help.cshtml" />
     <Content Include="Views\VisualAuthentication\Index.cshtml" />
-    <Content Include="Views\KeyDeposit\Index.cshtml" />
+    <Content Include="Views\KeyDeposit\Work.cshtml" />
     <Content Include="Views\ProbabilisticEncryption\Work.cshtml" />
     <Content Include="Views\ProbabilisticEncryption\Help.cshtml" />
     <Content Include="Views\ProbabilisticEncryption\Index.cshtml" />
+    <Content Include="Views\KeyDeposit\Help.cshtml" />
+    <Content Include="Views\KeyDeposit\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

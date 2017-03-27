@@ -20,7 +20,7 @@
     this.IsClientMode = ko.computed(function () { return self.Mode() === "Клиент" });
     this.IsDepositCenterMode = ko.computed(function () { return self.Mode() === "Центр депонирования" });
     this.IsTrustedCenterMode = ko.computed(function () { return self.Mode() === "Доверенные лица" });
-    this.IsStateMode = ko.computed(function () { return self.Mode() === "Государство" });
+    this.IsStateMode = ko.computed(function () { return self.Mode() === "Госорганы" });
 }
 var data = new UserData();
 

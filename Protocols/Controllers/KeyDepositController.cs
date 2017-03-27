@@ -18,6 +18,16 @@ namespace Currency.Controllers
             return View();
         }
 
+        public ActionResult Work()
+        {
+            return View();
+        }
+
+        public ActionResult Help()
+        {
+            return View();
+        }
+
         public string LoadKeys(KeyKeeper keeper)
         {
             try
