@@ -227,6 +227,8 @@
     <Content Include="Views\AnonymousCurrency\Help.cshtml" />
     <Content Include="Views\VisualAuthentication\Index.cshtml" />
     <Content Include="Views\KeyDeposit\Index.cshtml" />
+    <Content Include="Views\ProbabilisticEncryption\Work.cshtml" />
+    <Content Include="Views\ProbabilisticEncryption\Help.cshtml" />
     <Content Include="Views\ProbabilisticEncryption\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
