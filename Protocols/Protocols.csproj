@@ -150,6 +150,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\KeyDepositController.cs" />
+    <Compile Include="Controllers\ProbabilisticEncryptionController.cs" />
     <Compile Include="Controllers\VisualAuthenticationController.cs" />
     <Compile Include="Controllers\AnonymousCurrencyController.cs" />
     <Compile Include="Controllers\DistributedCurrencyController.cs" />
@@ -182,6 +183,7 @@
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\PEncryptionWork.js" />
     <Content Include="Scripts\KDepositWork.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -225,6 +227,9 @@
     <Content Include="Views\AnonymousCurrency\Help.cshtml" />
     <Content Include="Views\VisualAuthentication\Index.cshtml" />
     <Content Include="Views\KeyDeposit\Index.cshtml" />
+    <Content Include="Views\ProbabilisticEncryption\Work.cshtml" />
+    <Content Include="Views\ProbabilisticEncryption\Help.cshtml" />
+    <Content Include="Views\ProbabilisticEncryption\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -252,6 +257,10 @@
     <ProjectReference Include="..\KeyDeposit\KeyDeposit.csproj">
       <Project>{51E95582-059E-43FE-9AFB-350D6E739BC3}</Project>
       <Name>KeyDeposit</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ProbabilisticEncryption\ProbabilisticEncryption.csproj">
+      <Project>{4221F5A1-8DA3-4FAD-853C-180CFD6BC35F}</Project>
+      <Name>ProbabilisticEncryption</Name>
     </ProjectReference>
     <ProjectReference Include="..\VisualAuthentication\VisualAuthentication.csproj">
       <Project>{8F0D95B4-8535-4585-BDD3-6086E39A8DBF}</Project>

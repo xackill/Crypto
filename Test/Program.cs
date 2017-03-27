@@ -1,15 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity.Infrastructure;
-using System.Data.Entity.ModelConfiguration.Conventions;
-using System.Drawing;
 using System.Linq;
 using System.Numerics;
-using AnonymousCurrency.DataBaseModels;
 using AnonymousCurrency.DataModels;
 using AnonymousCurrency.Enums;
 using AnonymousCurrency.Factories;
-using AnonymousCurrency.Helpers;
 using AnonymousCurrency.Workers;
 using Core;
 using Core.Cryptography;
@@ -19,12 +14,8 @@ using DistributedCurrency.DataBaseModels;
 using DistributedCurrency.Factories;
 using DistributedCurrency.Workers;
 using KeyDeposit.DataBaseModels;
-using KeyDeposit.DataModels;
-using KeyDeposit.Workers;
-using Newtonsoft.Json;
-using VisualAuthentication.DataModels;
-using VisualAuthentication.Extensions;
-using VisualAuthentication.Factories;
+using ProbabilisticEncryption.DataBaseModels;
+using ProbabilisticEncryption.Workers;
 
 namespace Test
 {
@@ -188,37 +179,70 @@ namespace Test
 
         public static void Main()
         {
-            KeySource keySource;
+            ProbabilisticEncryption.DataBaseModels.KeyContainer key;
+            using (new ConsoleMonitoring("Генерация контейнера"))
+                key = KeyContainerFactory.CreateNew();
 
-            using (new ConsoleMonitoring("Генерация исходников"))
-                keySource = KeySourceFactory.Generate();
+            var msg = "ЭтоСамыйСложныйТестКоторыйЯСмогПридуматьПодОдеялком";
+            EncryptedMessageContainer emsg;
+            using (new ConsoleMonitoring("Шифрование"))
+                emsg = ProbabilisticCryptoProvider.Encrypt(key, msg);
 
-            KeyContainer[] trustedKeys;
-            using (new ConsoleMonitoring("Генерация ключей для доверенных центров"))
-                trustedKeys = KeyContainersFactory.CreateForTrustedCenters(keySource);
+            Console.WriteLine($"MSG = {emsg.Message.ToBase64()}");
 
-            KeyContainer creatorKey;
-            using (new ConsoleMonitoring("Генерация ключей для создателя"))
-                creatorKey = KeyContainersFactory.CreateForCreator(trustedKeys);
+            string omsg;
+            using (new ConsoleMonitoring("Расшифрование"))
+                omsg = ProbabilisticCryptoProvider.Decrypt(key, emsg);
 
-            KeyContainer depositKey;
-            using (new ConsoleMonitoring("Генерация ключей для центра депонирования"))
-                depositKey = KeyContainersFactory.CreateForDepositCenter(creatorKey);
+            Console.WriteLine($"MSG = {omsg}");
 
-            KeyContainer stateKey;
-            using (new ConsoleMonitoring("Генерация ключей для государства"))
-                stateKey = KeyContainersFactory.CreateForState(trustedKeys);
+//            key = new ProbabilisticEncryption.DataBaseModels.KeyContainer {P = new BigInteger(11).ToByteArray(), Q = new BigInteger(7).ToByteArray()};
 
-            using (new ConsoleMonitoring("Запись в БД"))
-            {
-                var keys = new[] { creatorKey, depositKey, stateKey }.Concat(trustedKeys);
-                DataBase<KeyDepositContext>.Write(keys);
-            }
+//            var bbs1 = BBSGeneratorFactory.Initialize(key);
+//            var num = bbs1.GetX(2);
+
+//            var p = new BigInteger(key.P);
+//            var q = new BigInteger(key.Q);
+
+//            var bbs2 = new BBSGenerator(p, q, 2, num);
+
+//            Console.WriteLine($"{bbs1.X0}");
+//            Console.WriteLine($"{bbs1.GetX(2)}");
+//            Console.WriteLine();
+//            Console.WriteLine($"{bbs2.X0}");
+//            Console.WriteLine($"{bbs2.GetX(2)}");
+
+            //KeySource keySource;
+            //
+            //using (new ConsoleMonitoring("Генерация исходников"))
+            //keySource = KeySourceFactory.Generate();
+            //
+            //KeyContainer[] trustedKeys;
+            //using (new ConsoleMonitoring("Генерация ключей для доверенных центров"))
+            //trustedKeys = KeyContainersFactory.CreateForTrustedCenters(keySource);
+            //
+            //KeyContainer creatorKey;
+            //using (new ConsoleMonitoring("Генерация ключей для создателя"))
+            //creatorKey = KeyContainersFactory.CreateForCreator(trustedKeys);
+            //
+            //KeyContainer depositKey;
+            //using (new ConsoleMonitoring("Генерация ключей для центра депонирования"))
+            //depositKey = KeyContainersFactory.CreateForDepositCenter(creatorKey);
+            //
+            //KeyContainer stateKey;
+            //using (new ConsoleMonitoring("Генерация ключей для государства"))
+            //stateKey = KeyContainersFactory.CreateForState(trustedKeys);
+            //
+            //using (new ConsoleMonitoring("Запись в БД"))
+            //{
+            //var keys = new[] { creatorKey, depositKey, stateKey }.Concat(trustedKeys);
+            //DataBase<KeyDepositContext>.Write(keys);
+            //}
 
             //            CreateEnvelope();
 
-//            var bmp = PictureDrawer.Draw();
-//            bmp.Save(@"C:\work\a.bmp");
+            //            var bmp = PictureDrawer.Draw();
+            //            bmp.Save(@"C:\work\a.bmp");
 
             //            for (;;)
             //            {

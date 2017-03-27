@@ -39,6 +39,11 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.ValueTuple, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.3.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -53,12 +58,16 @@
     <Compile Include="Extensions\MatchCollectionExtensions.cs" />
     <Compile Include="Extensions\ByteArrayExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Helpers\BigIntegerGenerator.cs" />
+    <Compile Include="Helpers\EuclideanHelper.cs" />
     <Compile Include="Helpers\OperationTimeMeasurer.cs" />
+    <Compile Include="Helpers\RabinMillerHelper.cs" />
     <Compile Include="Helpers\TimeMeasurer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Secret.cs" />
     <Compile Include="Workers\Context.cs" />
     <Compile Include="Workers\DataBase.cs" />
+    <Compile Include="Workers\IntFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

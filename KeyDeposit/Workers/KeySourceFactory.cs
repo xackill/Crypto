@@ -1,4 +1,5 @@
-﻿using KeyDeposit.DataModels;
+﻿using Core.Workers;
+using KeyDeposit.DataModels;
 
 namespace KeyDeposit.Workers
 {

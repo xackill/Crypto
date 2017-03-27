@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 
-namespace KeyDeposit.Helpers
+namespace Core.Helpers
 {
     public static class RabinMillerHelper
     {

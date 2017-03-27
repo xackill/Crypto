@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.Title = "P-Encrypt";
+}
+
+<div class="jumbotron">
+    <h1>P-Encrypt</h1>
+    <p class="lead">
+        Вероятностная криптография на основе генератора псевдослучайных чисел Blum &mdash; Blum &mdash; Shub.
+    </p>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>Шифрование.</h2>
+        <p>Создавайте секретные ключи, шифруйте с их помощью секреты, а потом расшифровывайте их.</p>
+        <p><a class="btn btn-default" href="@Url.Action("Work", "ProbabilisticEncryption")">Приступить! &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Как это работает?</h2>
+        <p>Из каких шагов состоит работа, как их выполнять и зачем; что было реализовано и как это посмотреть.</p>
+        <p><a class="btn btn-default" href="@Url.Action("Help", "ProbabilisticEncryption")">Подробнее &raquo;</a></p>
+    </div>
+</div>
