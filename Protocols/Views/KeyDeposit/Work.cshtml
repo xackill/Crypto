@@ -35,7 +35,9 @@
                        data-bind="css: {'btn-primary': IsTrustedCenterMode, 'btn-default' : !IsTrustedCenterMode() }" />
                 
                 <input type="button" class="btn" onclick="setMode('Госорганы')" value="Госорганы"
-                       data-bind="css: {'btn-primary': IsStateMode, 'btn-default' : !IsStateMode() }" />                
+                       data-bind="css: {'btn-primary': IsStateMode, 'btn-default' : !IsStateMode() }" />      
+                
+                <a class="btn btn-warning" href="@Url.Action("Help", "KeyDeposit")">Помощь</a>
             </div>
         </div>
     </div>
