@@ -129,9 +129,9 @@ function showhide(id) {
 
 function wrapByDl(container, val) {
     var value = container[val];
-    if (!val.endsWith("Id"))
+    if (value && !val.endsWith("Id"))
         value = value.match(/.{5}/g).join(" ");
-    return "<dt>" + val + "</dt><dd>" + value + "</dd>";
+    return "<dt>" + val + "</dt><dd>" + (value || "&mdash;") + "</dd>";
 }
 
 function createKey() {
