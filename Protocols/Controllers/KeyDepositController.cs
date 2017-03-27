@@ -111,6 +111,9 @@ namespace Currency.Controllers
                                         .Where(c => c.KeyId == id && c.Keeper == KeyKeeper.TrustedCenter)
                                         .ToArray();
 
+                    if (!trustedKeys.Any())
+                        throw new Exception("Неизвестный ID ключа!");
+
                     KeyContainer stateKey;
                     using (timeMeasurer.StartOperation("2. Генерация секретного ключа на базе частей из доверенных центров"))
                         stateKey = KeyContainersFactory.CreateForState(trustedKeys);
