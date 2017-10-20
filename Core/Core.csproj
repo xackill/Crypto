@@ -54,11 +54,13 @@
   <ItemGroup>
     <Compile Include="Cryptography\RSACryptography.cs" />
     <Compile Include="DataBaseModels\DataBaseModel.cs" />
+    <Compile Include="Extensions\BigIntegerExtensions.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Extensions\MatchCollectionExtensions.cs" />
     <Compile Include="Extensions\ByteArrayExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Helpers\BigIntegerGenerator.cs" />
+    <Compile Include="Helpers\BigIntegerSmartParser.cs" />
     <Compile Include="Helpers\EuclideanHelper.cs" />
     <Compile Include="Helpers\OperationTimeMeasurer.cs" />
     <Compile Include="Helpers\RabinMillerHelper.cs" />
