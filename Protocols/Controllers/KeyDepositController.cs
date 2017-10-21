@@ -86,7 +86,7 @@ namespace Currency.Controllers
                         depositKey = KeyContainersFactory.CreateForDepositCenter(creatorKey);
 
                     var keys = new[] { creatorKey, depositKey }.Concat(trustedKeys);
-                    DataBase.Write(keys);
+                    DataBase.WriteAll(keys);
 
                     return $"Успех! Ключ {creatorKey.Id} сгенерирован!\n{timeMeasurer.Results}";
                 }
