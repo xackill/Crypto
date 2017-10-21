@@ -8,7 +8,7 @@ using NUnit.Framework;
 using Test.Helpers;
 using DCDataBase = Core.Workers.DataBase<DistributedCurrency.Workers.DistributedCurrencyContext>;
 
-namespace Test.Tests
+namespace Test.DistributedCurrencyTests
 {
     public class DistributedCurrencyTest
     {
