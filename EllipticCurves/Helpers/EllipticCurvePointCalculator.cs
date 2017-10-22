@@ -23,7 +23,7 @@ namespace EllipticCurves.Helpers
 
         public EllipticCurvePoint Multiply(BigInteger factor, EllipticCurvePoint point)
         {
-            checker.ThrowIfFactorLessThanZero(factor);
+            checker.ThrowIfFactorLessThanOne(factor);
             checker.ThrowIfCurveDoesNotContainAllPoints(point);
 
             var result = point;
@@ -32,10 +32,7 @@ namespace EllipticCurves.Helpers
                 if (factor % 2 == 0) 
                     continue;
                 
-                if (result.X == point.X || result.Y == point.Y)
-                    result = Double(result);
-                else
-                    result = SummarizeWithoutChecking(result, point);
+                result = SummarizeWithoutChecking(result, point);
                 factor--;
             }
 
@@ -44,6 +41,9 @@ namespace EllipticCurves.Helpers
         
         private EllipticCurvePoint SummarizeWithoutChecking(EllipticCurvePoint first, EllipticCurvePoint second)
         {
+            if (first.X == second.X)
+                return Double(first);
+            
             var (dx, dy) = Normalize(second.X - first.X, second.Y - first.Y);
             var lambda = dy * dx.ModInverse(curve.Modulus);
             

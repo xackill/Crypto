@@ -17,7 +17,6 @@ namespace Core.Helpers
             return a + b;
         }
 
-
         public static (BigInteger gcd, BigInteger x, BigInteger y) GcdExtended(BigInteger a, BigInteger b)
         {
             if (a == 0)

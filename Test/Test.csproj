@@ -61,6 +61,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EllipticCurvesTests\EllipticCurvePointCalculatorTests.cs" />
     <Compile Include="Helpers\ConsoleMonitoring.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DistributedCurrencyTests\DistributedCurrencyTest.cs" />
@@ -81,6 +82,10 @@
     <ProjectReference Include="..\DistributedCurrency\DistributedCurrency.csproj">
       <Project>{8B6D5BF4-437C-49A6-AE4E-5CB3672FD269}</Project>
       <Name>DistributedCurrency</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EllipticCurves\EllipticCurves.csproj">
+      <Project>{08EB6021-ED60-4F17-9F81-81DED87678D2}</Project>
+      <Name>EllipticCurves</Name>
     </ProjectReference>
     <ProjectReference Include="..\KeyDeposit\KeyDeposit.csproj">
       <Project>{51E95582-059E-43FE-9AFB-350D6E739BC3}</Project>

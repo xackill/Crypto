@@ -22,7 +22,7 @@ namespace EllipticCurves.Helpers
                 throw new Exception($"{curve} не содержит {badPoints.JoinStrings(", ")}");
         }
 
-        public void ThrowIfFactorLessThanZero(BigInteger factor)
+        public void ThrowIfFactorLessThanOne(BigInteger factor)
         {
             if (factor <= BigInteger.Zero)
                 throw new Exception("Множитель должен быть больше 0");
