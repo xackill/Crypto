@@ -1,5 +1,4 @@
 ﻿using System.Numerics;
-using Core.Extensions;
 using EllipticCurves.DataModels;
 
 namespace EllipticCurves.Helpers
@@ -44,39 +43,24 @@ namespace EllipticCurves.Helpers
             if (first.X == second.X)
                 return Double(first);
             
-            var (dx, dy) = Normalize(second.X - first.X, second.Y - first.Y);
-            var lambda = dy * dx.ModInverse(curve.Modulus);
-            
+            var lambda = (second.Y - first.Y) / (second.X - first.X);
             return SummarizeInternal(lambda, first, second);
         }
         
         private EllipticCurvePoint Double(EllipticCurvePoint point)
         {
             var k1 = 3 * point.X * point.X + curve.A;
-            var k2 = (2 * point.Y).ModInverse(curve.Modulus);
+            var k2 = 2 * point.Y;
 
-            return SummarizeInternal(k1 * k2, point, point);
+            return SummarizeInternal(k1 / k2, point, point);
         }
         
-        private EllipticCurvePoint SummarizeInternal(BigInteger lambda, EllipticCurvePoint first, EllipticCurvePoint second)
+        private static EllipticCurvePoint SummarizeInternal(FiniteFieldValue lambda, EllipticCurvePoint first, EllipticCurvePoint second)
         {
-            lambda = Normalize(lambda);
-
-            var x = Normalize(lambda * lambda - first.X - second.X);
-            var y = Normalize(lambda * (first.X - x) - first.Y);
+            var x = lambda * lambda - first.X - second.X;
+            var y = lambda * (first.X - x) - first.Y;
             
             return new EllipticCurvePoint(x, y);
-        }
-        
-        private BigInteger Normalize(BigInteger coord)
-        {
-            coord %= curve.Modulus;
-            return coord >= 0 ? coord : coord + curve.Modulus;
-        }
-
-        private (BigInteger, BigInteger) Normalize(BigInteger dx, BigInteger dy)
-        {
-            return (Normalize(dx), Normalize(dy));
         }
     }
 }

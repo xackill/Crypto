@@ -9,38 +9,36 @@ namespace Test.EllipticCurvesTests
 {
     public class EllipticCurvePointCalculatorTests
     {
-        private EllipticCurve curve;
         private EllipticCurvePointCalculator sut;
 
         [SetUp]
         public void SetUp()
         {
-            curve = SimpleEllipticCurve;
-            sut = new EllipticCurvePointCalculator(curve);
+            sut = new EllipticCurvePointCalculator(SimpleEllipticCurve);
         }
 
         [Test]
         public void Summarize_DifferentPoints_Success()
         {
-            var firstPoint = new EllipticCurvePoint(x:  0, y:  1);
-            var secondPoint = new EllipticCurvePoint(x: 11, y: 10);
+            var firstPoint = EllipticParser.ParsePoint(x: "0", y: "1", field: SimplePrimeField);
+            var secondPoint = EllipticParser.ParsePoint(x: "11", y: "10", field: SimplePrimeField);
             var actual = sut.Summarize(firstPoint, secondPoint);
 
-            var expected = new EllipticCurvePoint(x: 14, y: 21);
+            var expected = EllipticParser.ParsePoint(x: "14", y: "21", field: SimplePrimeField);
             Assert.AreEqual(expected, actual);            
         }
         
         [Test]
         public void Summarize_SamePoint_Success()
         {
-            var point = new EllipticCurvePoint(x:  0, y:  1);
+            var point = EllipticParser.ParsePoint(x: "0", y: "1", field: SimplePrimeField);
             var actual = sut.Summarize(point, point);
 
-            var expected = new EllipticCurvePoint(x: 8, y: 10);
+            var expected = EllipticParser.ParsePoint(x: "8", y: "10", field: SimplePrimeField);
             Assert.AreEqual(expected, actual);            
         }
 
-        private static EllipticCurve SimpleEllipticCurve 
-            => new EllipticCurve(a : 3, b: 1, modulus: 23);
+        private static readonly FiniteField SimplePrimeField = EllipticParser.ParseField(p: "23");
+        private static readonly EllipticCurve SimpleEllipticCurve = EllipticParser.ParseCurve(a: "3", b: "1", field: SimplePrimeField);
     }
 }

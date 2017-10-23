@@ -44,6 +44,9 @@
   <ItemGroup>
     <Compile Include="DataModels\EllipticCurve.cs" />
     <Compile Include="DataModels\EllipticCurvePoint.cs" />
+    <Compile Include="DataModels\FiniteFieldValue.cs" />
+    <Compile Include="DataModels\FiniteField.cs" />
+    <Compile Include="DataModels\PrimeField.cs" />
     <Compile Include="Helpers\EllipticCurvePointCalculusChecker.cs" />
     <Compile Include="Helpers\EllipticParser.cs" />
     <Compile Include="Helpers\EllipticCurvePointCalculator.cs" />

@@ -33,7 +33,7 @@ namespace EllipticCurves.Helpers
             var x3 = point.X * point.X * point.X;
             var y2 = point.Y * point.Y;
 
-            return (y2 - x3 - curve.A * point.X - curve.B) % curve.Modulus != BigInteger.Zero;
+            return (y2 - x3 - curve.A * point.X - curve.B) != 0;
         }
     }
 }

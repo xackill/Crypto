@@ -1,13 +1,11 @@
-﻿using System.Numerics;
-
-namespace EllipticCurves.DataModels
+﻿namespace EllipticCurves.DataModels
 {
     public class EllipticCurvePoint
     {
-        public readonly BigInteger X;
-        public readonly BigInteger Y;
+        public readonly FiniteFieldValue X;
+        public readonly FiniteFieldValue Y;
 
-        public EllipticCurvePoint(BigInteger x, BigInteger y)
+        public EllipticCurvePoint(FiniteFieldValue x, FiniteFieldValue y)
         {
             X = x;
             Y = y;
@@ -18,7 +16,7 @@ namespace EllipticCurves.DataModels
             if (obj is EllipticCurvePoint point)
                 return X == point.X && Y == point.Y;
 
-            return base.Equals(obj);
+            return false;
         }
 
         public override int GetHashCode()
@@ -31,7 +29,7 @@ namespace EllipticCurves.DataModels
 
         public override string ToString()
         {
-            return $"[ECP: x=0x{X.ToString("X")}, y=0x{Y.ToString("X")}]";
+            return $"[ECP: x={X}, y={Y}]";
         }
     }
 }
