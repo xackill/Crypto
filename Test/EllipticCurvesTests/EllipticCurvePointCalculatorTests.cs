@@ -1,7 +1,4 @@
-﻿using System;
-using System.Numerics;
-using Core.Extensions;
-using EllipticCurves.DataModels;
+﻿using EllipticCurves.DataModels;
 using EllipticCurves.Helpers;
 using NUnit.Framework;
 

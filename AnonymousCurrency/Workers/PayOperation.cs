@@ -5,7 +5,6 @@ using AnonymousCurrency.DataModels;
 using AnonymousCurrency.Enums;
 using AnonymousCurrency.Extensions;
 using AnonymousCurrency.Helpers;
-using Core;
 using Core.Cryptography;
 
 namespace AnonymousCurrency.Workers

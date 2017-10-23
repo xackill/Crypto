@@ -3,7 +3,6 @@ using System.Linq;
 using AnonymousCurrency.DataBaseModels;
 using AnonymousCurrency.DataModels;
 using AnonymousCurrency.Helpers;
-using Core;
 using Core.Cryptography;
 using Core.Extensions;
 

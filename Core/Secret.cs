@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Core
+﻿namespace Core
 {
     public static class Secret
     {

@@ -8,7 +8,6 @@ using AnonymousCurrency.Enums;
 using AnonymousCurrency.Extensions;
 using AnonymousCurrency.Factories;
 using AnonymousCurrency.Workers;
-using Core;
 using Core.Cryptography;
 using Core.Extensions;
 using Newtonsoft.Json;

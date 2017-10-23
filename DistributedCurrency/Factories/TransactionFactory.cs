@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using Core;
 using Core.Cryptography;
 using DistributedCurrency.DataBaseModels;
 using DistributedCurrency.Extensions;
@@ -23,7 +22,7 @@ namespace DistributedCurrency.Factories
             Guid sourceId, Guid? extraSourceId, int? coinsForTransfer)
         {
             if (extraSourceId.HasValue && coinsForTransfer.HasValue)
-                throw new Exception("Не определен тип операции");
+                throw new Exception("РќРµ РѕРїСЂРµРґРµР»РµРЅ С‚РёРї РѕРїРµСЂР°С†РёРё");
 
             using (var context = new DistributedCurrencyContext())
             {
