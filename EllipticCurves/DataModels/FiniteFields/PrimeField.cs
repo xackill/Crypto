@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 
-namespace EllipticCurves.DataModels
+namespace EllipticCurves.DataModels.FiniteFields
 {    
     public class PrimeField : FiniteField
     {
@@ -10,7 +10,7 @@ namespace EllipticCurves.DataModels
 
         public override FiniteFieldValue Negative(BigInteger a)
         {
-            return CreateFiniteFieldValue(-a);
+            return CreateFiniteFieldValue(Normalize(-a));
         }
 
         public override FiniteFieldValue Inverse(BigInteger a)
@@ -32,11 +32,6 @@ namespace EllipticCurves.DataModels
         public override string ToString(BigInteger a)
         {
             return $"0x{a.ToString("X")}";
-        }
-
-        private FiniteFieldValue CreateFiniteFieldValue(BigInteger a)
-        {
-            return new FiniteFieldValue(a, this);
         }
         
         private BigInteger Normalize(BigInteger a)

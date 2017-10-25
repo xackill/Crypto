@@ -1,5 +1,7 @@
 ﻿using System.Numerics;
 using EllipticCurves.DataModels;
+using EllipticCurves.DataModels.EllipticCurves;
+using EllipticCurves.DataModels.FiniteFields;
 
 namespace EllipticCurves.Helpers
 {

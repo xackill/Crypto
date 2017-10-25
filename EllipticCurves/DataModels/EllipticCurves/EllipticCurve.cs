@@ -1,6 +1,7 @@
 ﻿using System;
+using EllipticCurves.DataModels.FiniteFields;
 
-namespace EllipticCurves.DataModels
+namespace EllipticCurves.DataModels.EllipticCurves
 {
     public sealed class EllipticCurve
     {
@@ -23,10 +24,7 @@ namespace EllipticCurves.DataModels
 
         private bool IsSingular()
         {
-            var a3 = A * A * A;
-            var b2 = B * B;
-            
-            return (4 * a3 + 27 * b2) == 0;
+            return 4 * (A * A * A) + 27 * (B * B) == 0;
         }
     }
 }

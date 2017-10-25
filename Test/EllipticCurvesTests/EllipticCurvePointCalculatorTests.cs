@@ -1,4 +1,6 @@
 ﻿using EllipticCurves.DataModels;
+using EllipticCurves.DataModels.EllipticCurves;
+using EllipticCurves.DataModels.FiniteFields;
 using EllipticCurves.Helpers;
 using NUnit.Framework;
 

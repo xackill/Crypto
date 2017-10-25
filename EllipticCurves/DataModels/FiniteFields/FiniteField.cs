@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 
-namespace EllipticCurves.DataModels
+namespace EllipticCurves.DataModels.FiniteFields
 {
     public abstract class FiniteField
     {
@@ -37,6 +37,11 @@ namespace EllipticCurves.DataModels
         public static bool operator !=(FiniteField a, FiniteField b)
         {
             return !(a == b);
+        }
+        
+        protected FiniteFieldValue CreateFiniteFieldValue(BigInteger a)
+        {
+            return new FiniteFieldValue(a, this);
         }
     }
 }

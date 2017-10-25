@@ -2,6 +2,8 @@
 using Core;
 using Core.Helpers;
 using EllipticCurves.DataModels;
+using EllipticCurves.DataModels.EllipticCurves;
+using EllipticCurves.DataModels.FiniteFields;
 using SmartParser = Core.Helpers.BigIntegerSmartParser;
 
 namespace EllipticCurves.Helpers

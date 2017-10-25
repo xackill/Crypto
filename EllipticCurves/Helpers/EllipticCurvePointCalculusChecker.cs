@@ -3,6 +3,7 @@ using System.Linq;
 using System.Numerics;
 using Core.Extensions;
 using EllipticCurves.DataModels;
+using EllipticCurves.DataModels.EllipticCurves;
 
 namespace EllipticCurves.Helpers
 {

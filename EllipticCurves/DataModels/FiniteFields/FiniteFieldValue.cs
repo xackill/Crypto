@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Numerics;
 
-namespace EllipticCurves.DataModels
+namespace EllipticCurves.DataModels.FiniteFields
 {
     public class FiniteFieldValue
     {

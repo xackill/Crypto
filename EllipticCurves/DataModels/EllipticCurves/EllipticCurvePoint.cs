@@ -1,4 +1,6 @@
-﻿namespace EllipticCurves.DataModels
+﻿using EllipticCurves.DataModels.FiniteFields;
+
+namespace EllipticCurves.DataModels.EllipticCurves
 {
     public class EllipticCurvePoint
     {
