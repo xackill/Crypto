@@ -10,7 +10,7 @@ namespace Core.Extensions
         public static int DegreeOfBinaryPolynomial(this BigInteger value)
         {
             var bytes = BigInteger.Abs(value).ToByteArray();
-            var lastPart = Convert.ToString(bytes.Last(), 2).Length;
+            var lastPart = Convert.ToString(bytes.Last(), 2).TrimStart('0').Length;
             return (bytes.Length - 1) * 8 + lastPart - 1;
         }
 

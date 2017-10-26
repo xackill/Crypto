@@ -27,14 +27,13 @@ namespace EllipticCurves.DataModels.FiniteFields
             while (u != BigInteger.One)
             {
                 var j = u.DegreeOfBinaryPolynomial() - v.DegreeOfBinaryPolynomial();
-                if (j < 0) 
+                if (j < 0)
                 {
                     (u, v, g1, g2, j) = (v, u, g2, g1, -j);
-                } 
+                }
 
-                var zj = BigInteger.One << j;
-                u ^= MultiplyInternal(zj, v);
-                g1 ^= MultiplyInternal(zj, g2);
+                u ^= v << j;
+                g1 ^= g2 << j;
             }
 
             return CreateFiniteFieldValue(g1);
