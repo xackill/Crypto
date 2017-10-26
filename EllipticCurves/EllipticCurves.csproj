@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataModels\EllipticCurves\NonSupersingularEllipticCurve.cs" />
     <Compile Include="DataModels\EllipticCurves\EllipticCurve.cs" />
     <Compile Include="DataModels\EllipticCurves\EllipticCurvePoint.cs" />
     <Compile Include="DataModels\EllipticCurves\PrimeEllipticCurve.cs" />

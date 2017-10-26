@@ -18,20 +18,39 @@ namespace EllipticCurves.Helpers
             return new PrimeField(modulus);
         }
         
+        public static FiniteField ParseBinaryField(string f, string p)
+        {
+            var modulus = SmartParser.Parse(p);
+            if (!modulus.IsPowerOfTwo)
+                throw new Exception("p - не степень числа 2");
+
+            var reductionPolynomial = SmartParser.Parse(f);
+            // check
+            
+            return new BinaryField(reductionPolynomial, modulus);
+        }
+        
         public static EllipticCurve ParsePrimeEllipticCurve(string a, string b, FiniteField field)
         {
-            var aValue = CreateFiniteFieldValue(a, field);
-            var bValue = CreateFiniteFieldValue(b, field);
-            
+            var (aValue, bValue) = Convert(a, b, field);
             return new PrimeEllipticCurve(aValue, bValue);
+        }
+        
+        public static EllipticCurve ParseNonSupersingularEllipticCurve(string a, string b, FiniteField field)
+        {
+            var (aValue, bValue) = Convert(a, b, field);
+            return new NonSupersingularEllipticCurve(aValue, bValue);
         }
 
         public static EllipticCurvePoint ParsePoint(string x, string y, FiniteField field)
         {
-            var xValue = CreateFiniteFieldValue(x, field);
-            var yValue = CreateFiniteFieldValue(y, field);
-            
+            var (xValue, yValue) = Convert(x, y, field);
             return new EllipticCurvePoint(xValue, yValue);
+        }
+
+        private static (FiniteFieldValue, FiniteFieldValue) Convert(string x, string y, FiniteField field)
+        {
+            return (CreateFiniteFieldValue(x, field), CreateFiniteFieldValue(y, field));
         }
 
         private static FiniteFieldValue CreateFiniteFieldValue(string a, FiniteField finiteField)
