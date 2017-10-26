@@ -6,12 +6,11 @@ namespace EllipticCurves.DataModels.FiniteFields
     public class BinaryField : FiniteField
     {
         private readonly BigInteger reductionPolynomial;
-        private readonly BigInteger r;
         
-        public BinaryField(BigInteger reductionPolynomial, BigInteger modulus) : base(modulus)
+        public BinaryField(BigInteger reductionPolynomial, BigInteger modulus) 
+            : base(modulus.DegreeOfBinaryPolynomial())
         {
             this.reductionPolynomial = reductionPolynomial;
-            r = reductionPolynomial - modulus;
         }
 
         public override FiniteFieldValue Negative(BigInteger a)
@@ -66,8 +65,8 @@ namespace EllipticCurves.DataModels.FiniteFields
             for (var i = 1; i < binaryString.Length; ++i)
             {
                 b *= 2;
-                if (b > Modulus)
-                    b ^= r;
+                if (b.DegreeOfBinaryPolynomial() == Modulus)
+                    b ^= reductionPolynomial;
 
                 if (binaryString[i] == '1')
                     c ^= b;

@@ -11,7 +11,7 @@ namespace Core.Extensions
         {
             var bytes = BigInteger.Abs(value).ToByteArray();
             var lastPart = Convert.ToString(bytes.Last(), 2).Length;
-            return (bytes.Length - 1) * 8 + lastPart;
+            return (bytes.Length - 1) * 8 + lastPart - 1;
         }
 
         public static string ToBinaryString(this BigInteger value)

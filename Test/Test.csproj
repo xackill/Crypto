@@ -61,7 +61,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EllipticCurvesTests\FiniteFieldsTests\BinaryFieldTest.cs" />
+    <Compile Include="EllipticCurvesTests\FiniteFieldsTests\FiniteFieldTestBase.cs" />
     <Compile Include="EllipticCurvesTests\EllipticCurvePointCalculatorTests.cs" />
+    <Compile Include="EllipticCurvesTests\FiniteFieldsTests\PrimeFieldTest.cs" />
     <Compile Include="Helpers\ConsoleMonitoring.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DistributedCurrencyTests\DistributedCurrencyTest.cs" />
