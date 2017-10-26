@@ -44,13 +44,12 @@
   <ItemGroup>
     <Compile Include="DataModels\EllipticCurves\EllipticCurve.cs" />
     <Compile Include="DataModels\EllipticCurves\EllipticCurvePoint.cs" />
+    <Compile Include="DataModels\EllipticCurves\PrimeEllipticCurve.cs" />
     <Compile Include="DataModels\FiniteFields\BinaryField.cs" />
     <Compile Include="DataModels\FiniteFields\FiniteField.cs" />
     <Compile Include="DataModels\FiniteFields\FiniteFieldValue.cs" />
     <Compile Include="DataModels\FiniteFields\PrimeField.cs" />
-    <Compile Include="Helpers\EllipticCurvePointCalculusChecker.cs" />
     <Compile Include="Helpers\EllipticParser.cs" />
-    <Compile Include="Helpers\EllipticCurvePointCalculator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

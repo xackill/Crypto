@@ -4,34 +4,48 @@ namespace EllipticCurves.DataModels.EllipticCurves
 {
     public class EllipticCurvePoint
     {
-        public readonly FiniteFieldValue X;
-        public readonly FiniteFieldValue Y;
+        public FiniteFieldValue X { get; }
+        public FiniteFieldValue Y { get; }
+        public bool IsInfinity { get; }
+
+        public static EllipticCurvePoint Infinity { get; } = new EllipticCurvePoint(isInfinity: true);
 
         public EllipticCurvePoint(FiniteFieldValue x, FiniteFieldValue y)
         {
             X = x;
             Y = y;
         }
-
+        
+        private EllipticCurvePoint(bool isInfinity)
+        {
+            IsInfinity = isInfinity;
+        }
+        
         public override bool Equals(object obj)
         {
-            if (obj is EllipticCurvePoint point)
-                return X == point.X && Y == point.Y;
-
-            return false;
-        }
-
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                return (X.GetHashCode() * 397) ^ Y.GetHashCode();
-            }
+            if (!(obj is EllipticCurvePoint point)) 
+                return false;
+            
+            if (IsInfinity && point.IsInfinity)
+                return true;
+            
+            return X == point.X && Y == point.Y;
         }
 
         public override string ToString()
         {
-            return $"[ECP: x={X}, y={Y}]";
+            return IsInfinity ? "[ECP: ∞]" : $"[ECP: x={X}, y={Y}]";
+        }
+        
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = (X != null ? X.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Y != null ? Y.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ IsInfinity.GetHashCode();
+                return hashCode;
+            }
         }
     }
 }
