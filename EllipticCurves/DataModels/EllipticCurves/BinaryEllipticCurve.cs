@@ -2,9 +2,9 @@
 
 namespace EllipticCurves.DataModels.EllipticCurves
 {
-    public class NonSupersingularEllipticCurve : EllipticCurve
+    public class BinaryEllipticCurve : EllipticCurve
     {
-        public NonSupersingularEllipticCurve(FiniteFieldValue a, FiniteFieldValue b) : base(a, b)
+        public BinaryEllipticCurve(FiniteFieldValue a, FiniteFieldValue b) : base(a, b)
         {
         }
 

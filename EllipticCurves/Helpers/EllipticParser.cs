@@ -36,10 +36,10 @@ namespace EllipticCurves.Helpers
             return new PrimeEllipticCurve(aValue, bValue);
         }
         
-        public static EllipticCurve ParseNonSupersingularEllipticCurve(string a, string b, FiniteField field)
+        public static EllipticCurve ParseBinaryEllipticCurve(string a, string b, FiniteField field)
         {
             var (aValue, bValue) = Convert(a, b, field);
-            return new NonSupersingularEllipticCurve(aValue, bValue);
+            return new BinaryEllipticCurve(aValue, bValue);
         }
 
         public static EllipticCurvePoint ParsePoint(string x, string y, FiniteField field)

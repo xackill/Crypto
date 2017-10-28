@@ -64,7 +64,7 @@
     <Compile Include="EllipticCurvesTests\EllipticCurveTestBase.cs" />
     <Compile Include="EllipticCurvesTests\FiniteFieldsTests\BinaryFieldTest.cs" />
     <Compile Include="EllipticCurvesTests\FiniteFieldsTests\FiniteFieldTestBase.cs" />
-    <Compile Include="EllipticCurvesTests\NonSupersingularEllipticCurveTest.cs" />
+    <Compile Include="EllipticCurvesTests\BinaryEllipticCurveTest.cs" />
     <Compile Include="EllipticCurvesTests\PrimeEllipticCurveTest.cs" />
     <Compile Include="EllipticCurvesTests\FiniteFieldsTests\PrimeFieldTest.cs" />
     <Compile Include="Helpers\ConsoleMonitoring.cs" />

@@ -5,7 +5,7 @@ using NUnit.Framework;
 
 namespace Test.EllipticCurvesTests
 {
-    public class NonSupersingularEllipticCurveTest : EllipticCurveTestBase
+    public class BinaryEllipticCurveTest : EllipticCurveTestBase
     {
         private string ca, cb, f, p;
         
@@ -39,6 +39,6 @@ namespace Test.EllipticCurvesTests
             => EllipticParser.ParseBinaryField(f, p);
       
         protected override EllipticCurve Curve
-            => EllipticParser.ParseNonSupersingularEllipticCurve(ca, cb, Field);
+            => EllipticParser.ParseBinaryEllipticCurve(ca, cb, Field);
     }
 }
