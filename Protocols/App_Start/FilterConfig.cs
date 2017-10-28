@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
 
-namespace Currency
+namespace Protocols
 {
     public class FilterConfig
     {

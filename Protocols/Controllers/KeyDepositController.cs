@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Linq;
-using KeyDeposit.Workers;
 using System.Web.Mvc;
 using Core.Helpers;
 using KeyDeposit.DataBaseModels;
 using KeyDeposit.DataModels;
 using KeyDeposit.Enums;
+using KeyDeposit.Workers;
 using Newtonsoft.Json;
 using DataBase = Core.Workers.DataBase<KeyDeposit.Workers.KeyDepositContext>;
 
-namespace Currency.Controllers
+namespace Protocols.Controllers
 {
     public class KeyDepositController : Controller
     {

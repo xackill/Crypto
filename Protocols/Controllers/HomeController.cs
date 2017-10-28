@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
 
-namespace Currency.Controllers
+namespace Protocols.Controllers
 {
     public class HomeController : Controller
     {

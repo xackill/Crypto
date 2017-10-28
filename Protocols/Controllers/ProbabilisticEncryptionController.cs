@@ -1,13 +1,13 @@
-﻿ using System;
- using System.Linq;
- using System.Web.Mvc;
- using Core.Helpers;
- using Newtonsoft.Json;
- using ProbabilisticEncryption.DataBaseModels;
- using ProbabilisticEncryption.Workers;
+﻿using System;
+using System.Linq;
+using System.Web.Mvc;
+using Core.Helpers;
+using Newtonsoft.Json;
+using ProbabilisticEncryption.DataBaseModels;
+using ProbabilisticEncryption.Workers;
 using DataBase = Core.Workers.DataBase<ProbabilisticEncryption.Workers.ProbabilisticEncryptionContext>;
 
-namespace Currency.Controllers
+namespace Protocols.Controllers
 {
     public class ProbabilisticEncryptionController : Controller
     {

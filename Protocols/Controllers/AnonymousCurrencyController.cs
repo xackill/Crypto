@@ -13,7 +13,7 @@ using Core.Extensions;
 using Newtonsoft.Json;
 using DataBase = Core.Workers.DataBase<AnonymousCurrency.Workers.AnonymousCurrencyContext>;
 
-namespace Currency.Controllers
+namespace Protocols.Controllers
 {
     public class AnonymousCurrencyController : Controller
     {
