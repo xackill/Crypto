@@ -25,7 +25,7 @@
             <a class="btn btn-warning" href="@Url.Action("Help", "EllipticCurves")">Помощь</a>
         </div>
     </div>
-    
+
     <div class="form-group">
         <label for="FieldTypesContainer" class="col-md-2 control-label">Тип поля</label>
         <div id="FieldTypesContainer" class="col-sm-10">
@@ -34,6 +34,16 @@
     
             <input type="button" class="btn" onclick="setFieldType('GF(2^m)')" value="GF(2^m)"
                    data-bind="css: {'btn-primary': isBinaryField, 'btn-default' : !isBinaryField() }" />
+        </div>
+    </div>
+
+    <div class="form-group" data-bind="visible: isFileInputType">
+        <label for="FileContainer" class="col-md-2 control-label"></label>
+        <div id="FileContainer" class="col-sm-10">
+            <input type="file" id="fileInput" onchange="loadFile()" data-bind="visible: !process()">
+            
+            <img src="../../Content/Load.gif" style="display: none; width: 27px" alt="<Load>"
+                 data-bind="visible: process"/>
         </div>
     </div>
     

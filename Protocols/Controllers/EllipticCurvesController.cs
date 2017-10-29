@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 using System.Web.Mvc;
+using Core.Extensions;
 using EllipticCurves.DataModels.EllipticCurves;
 using EllipticCurves.DataModels.FiniteFields;
 using EllipticCurves.Helpers;
@@ -47,7 +49,57 @@ namespace Protocols.Controllers
                 return $"Ошибка! {e.Message}";
             }
         }
-        
+
+        public string CalculateFromFile(string finiteFieldType, string inputFile)
+        {
+            var isPrimeField = finiteFieldType == "GF(p)";
+            var data = inputFile.Split(new[] { "\n", "\r\n"}, StringSplitOptions.RemoveEmptyEntries);
+            try
+            {
+                if (data.Length < 4)
+                    throw new Exception("Неверный формат файла");
+
+                FiniteField field;
+                if (isPrimeField)
+                    field = EllipticParser.ParsePrimeField(data[0]);
+                else
+                {
+                    var fieldParams = data[0].Split(' ');
+                    if (fieldParams.Length != 2)
+                        throw new Exception("Неверный формат файла");
+
+                    field = EllipticParser.ParseBinaryField(f: fieldParams[1], p: fieldParams[0]);
+                }
+
+                var curveParams = data[1].Split(' ');
+                if (curveParams.Length != 2)
+                    throw new Exception("Неверный формат файла");
+                
+                var curve = isPrimeField
+                    ? EllipticParser.ParsePrimeEllipticCurve(a: curveParams[0], b: curveParams[1], field: field)
+                    : EllipticParser.ParseBinaryEllipticCurve(a: curveParams[0], b: curveParams[1], field: field);
+
+                var operationsParams = data[2].Split(' ');
+                if (operationsParams.Length != 2)
+                    throw new Exception("Неверный формат файла");
+
+                var t = int.Parse(operationsParams[0]);
+                var s = int.Parse(operationsParams[1]);
+
+                if (data.Length < t + s + 3)
+                    throw new Exception("Неверный формат файла");
+
+                var sumOperations = data.Skip(3).Take(t).Select(ParseSummarizeOperation);
+                var mulOperations = data.Skip(3 + t).Take(s).Select(ParseMultiplyOperation);
+                
+                return Calculate(curve, sumOperations.Union(mulOperations).ToArray(), field);               
+            }
+            catch (Exception e)
+            {
+                return $"Ошибка! {e.Message}";
+            }
+        }
+
         private static string Calculate(EllipticCurve curve, EllipticCurveOperationModel[] operations, FiniteField field)
         {
             var sb = new StringBuilder();
@@ -83,6 +135,37 @@ namespace Protocols.Controllers
             }
             
             return sb.ToString();
+        }
+
+        private static EllipticCurveOperationModel ParseSummarizeOperation(string data)
+        {
+            var operationParams = data.Split(' ');
+            if (operationParams.Length != 4)
+                throw new Exception("Неверный формат файла");
+            
+            return new EllipticCurveOperationModel
+            {
+                Type = "+",
+                X1 = operationParams[0],
+                Y1 = operationParams[1],
+                X2 = operationParams[2],
+                Y2 = operationParams[3]
+            };
+        }
+        
+        private static EllipticCurveOperationModel ParseMultiplyOperation(string data)
+        {
+            var operationParams = data.Split(' ');
+            if (operationParams.Length != 3)
+                throw new Exception("Неверный формат файла");
+            
+            return new EllipticCurveOperationModel
+            {
+                Type = "x",
+                X1 = operationParams[0],
+                Y1 = operationParams[1],
+                Factor = operationParams[2],
+            };
         }
     }
 }

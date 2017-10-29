@@ -47,6 +47,7 @@ var data = new UserData();
 
 function setInputType(type) {
     data.inputType(type);
+    data.result("");
 }
 
 function setFieldType(type) {
@@ -61,6 +62,7 @@ function calculate() {
     var ellipticCurve = { A: data.ellipticCurveA(), B: data.ellipticCurveB() };
     var operations = $.map(data.operations(), convertOperationToString);
     $.ajax({
+        type: "POST",
         async: true,
         url: "/EllipticCurves/Calculate",
         cache: false,
@@ -70,7 +72,7 @@ function calculate() {
             operations: JSON.stringify(operations)
         },
         success: function (result) {
-            data.result(result.replace("\n", "<br>"));
+            data.result(result.replace(/\n\r?/g, "<br>"));
         },
         error: function () {
             data.result("Ошибка! Возможно, данные введены некорректно.");
@@ -92,4 +94,45 @@ function convertOperationToString(operation) {
         Factor: operation.factor(),
 
         Type: operation.type() };
+}
+
+function loadFile() {
+    if (!window.File || !window.FileReader || !window.FileList || !window.Blob) {
+        alert('Этот браузер не поддерживает чтение из файлов');
+        return;
+    }
+
+    data.process(true);
+    data.result("");
+    
+    data.fr = new FileReader();
+    data.fr.onload = receivedText;
+
+    var input = document.getElementById('fileInput');
+    data.fr.readAsText(input.files[0]);
+}
+
+function receivedText() {
+    data.process(true);
+    data.result("");
+
+    $.ajax({
+        type: "POST",
+        async: true,
+        url: "/EllipticCurves/CalculateFromFile",
+        cache: false,
+        data: {
+            finiteFieldType: data.fieldType(),
+            inputFile: data.fr.result
+        },
+        success: function (result) {
+            data.result(result.replace(/\n\r?/g, "<br>"));
+        },
+        error: function () {
+            data.result("Ошибка! Возможно, данные введены некорректно.");
+        },
+        complete: function () {
+            data.process(false);
+        }
+    });
 }
