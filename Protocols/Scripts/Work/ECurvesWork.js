@@ -55,6 +55,7 @@ function setFieldType(type) {
 
 function calculate() {
     data.process(true);
+    data.result("");
 
     var finiteField = { Modulus: data.modulus(), ReductionPolynomial: data.reductionPolynomial(), Type: data.fieldType() };
     var ellipticCurve = { A: data.ellipticCurveA(), B: data.ellipticCurveB() };
