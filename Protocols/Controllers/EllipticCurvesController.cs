@@ -7,6 +7,7 @@ using EllipticCurves.DataModels.FiniteFields;
 using EllipticCurves.Helpers;
 using Newtonsoft.Json;
 using Protocols.Models;
+using Protocols.Monitoring;
 using SmartParser = Core.Helpers.BigIntegerSmartParser;
 
 namespace Protocols.Controllers
@@ -30,6 +31,8 @@ namespace Protocols.Controllers
         
         public string Calculate(string finiteField, string ellipticCurve, string operations)
         {
+            Logger.Log.Info($"Calculate: '{finiteField}', '{ellipticCurve}', '{operations}'");
+            
             var finiteFieldModel = JsonConvert.DeserializeObject<FiniteFieldModel>(finiteField);
             var ellipticCurveModel = JsonConvert.DeserializeObject<EllipticCurveModel>(ellipticCurve);
             var operationsModels = JsonConvert.DeserializeObject<EllipticCurveOperationModel[]>(operations);
@@ -56,6 +59,8 @@ namespace Protocols.Controllers
 
         public string CalculateFromFile(string finiteFieldType, string inputFile)
         {
+            Logger.Log.Info($"CalculateFromFile: '{finiteFieldType}', '{inputFile}'");
+            
             var isPrimeField = finiteFieldType == "GF(p)";
             var data = inputFile.Split(new[] { "\n", "\r\n"}, StringSplitOptions.RemoveEmptyEntries);
             try

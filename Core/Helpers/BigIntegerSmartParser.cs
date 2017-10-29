@@ -18,7 +18,7 @@ namespace Core.Helpers
             if (BigInteger.TryParse(data, numberStyles, null, out var result))
                 return result;
             
-            throw new Exception($"Ошибка: {data} не распознано как число!");
+            throw new Exception($"'{data}' не распознано как число");
         }
     }
 }
