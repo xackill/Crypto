@@ -211,6 +211,7 @@
     <Content Include="Scripts\Work\PEncryptionWork.js" />
     <Content Include="Scripts\Work\VAWork.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="Views\EllipticCurves\Help.cshtml" />
     <Content Include="Views\EllipticCurves\Index.cshtml" />
     <Content Include="Views\EllipticCurves\Work.cshtml" />
     <Content Include="Web.config" />

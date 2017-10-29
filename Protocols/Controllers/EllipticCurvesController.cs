@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Text;
 using System.Web.Mvc;
-using Core.Extensions;
 using EllipticCurves.DataModels.EllipticCurves;
 using EllipticCurves.DataModels.FiniteFields;
 using EllipticCurves.Helpers;
@@ -24,6 +23,11 @@ namespace Protocols.Controllers
             return View();
         }
 
+        public ActionResult Help()
+        {
+            return View();
+        }
+        
         public string Calculate(string finiteField, string ellipticCurve, string operations)
         {
             var finiteFieldModel = JsonConvert.DeserializeObject<FiniteFieldModel>(finiteField);
