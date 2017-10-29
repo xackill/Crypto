@@ -1,0 +1,120 @@
+﻿@{
+    ViewBag.Title = "Эллиптические кривые";
+}
+
+<script type="text/javascript" src="../../Scripts/Work/ECurvesWork.js"></script>
+
+<div class="jumbotron">
+    <h1>E-Curves</h1>
+    <p class="lead">
+        Сумматор точек эллиптической кривой над GF(p) и GF(2^m)
+    </p>
+</div>
+
+<h2>Данные</h2>
+<div class="form-horizontal">
+    <div class="form-group">
+        <label for="ModesContainer" class="col-md-2 control-label">Ввод</label>
+        <div id="ModesContainer" class="col-sm-10">
+            <input type="button" class="btn" onclick="setInputType('Интерфейс')" value="Интерфейс"
+                   data-bind="css: {'btn-primary': isUIInputType, 'btn-default' : !isUIInputType() }" />
+    
+            <input type="button" class="btn" onclick="setInputType('Файл')" value="Файл"
+                   data-bind="css: {'btn-primary': isFileInputType, 'btn-default' : !isFileInputType() }" />
+                    
+            <a class="btn btn-warning" href="@Url.Action("Help", "EllipticCurves")">Помощь</a>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label for="FieldTypesContainer" class="col-md-2 control-label">Тип поля</label>
+        <div id="FieldTypesContainer" class="col-sm-10">
+            <input type="button" class="btn" onclick="setFieldType('GF(p)')" value="GF(p)"
+                   data-bind="css: {'btn-primary': isPrimeField, 'btn-default' : !isPrimeField() }" />
+    
+            <input type="button" class="btn" onclick="setFieldType('GF(2^m)')" value="GF(2^m)"
+                   data-bind="css: {'btn-primary': isBinaryField, 'btn-default' : !isBinaryField() }" />
+        </div>
+    </div>
+    
+    <div class="form-group" data-bind="visible: isUIInputType">
+        <label for="Modulus" class="col-md-2 control-label">Поле</label>
+        <div id="Modulus" class="col-md-9">
+            <div class="col-md-4 padding-less">
+                <input type="text" class="form-control col-md-4" placeholder="Введите порядок поля"
+                       data-bind="value: modulus">
+            </div>
+
+            <div class="col-md-1"></div>
+
+            <div class="col-md-4 padding-less">
+                <input type="text" class="form-control col-md-4" placeholder="Введите неприводимый многочлен"
+                       data-bind="value: reductionPolynomial, visible: isBinaryField">
+            </div>
+        </div>
+    </div>
+    
+    <div class="form-group" data-bind="visible: isUIInputType">
+        <label for="EllipticCurve" class="col-md-2 control-label">Эллиптическая кривая</label>
+        <div id="EllipticCurve" class="col-md-9">
+            <div class="col-md-4 padding-less">
+                <input type="text" id="EllipticCurveA" class="form-control col-md-4" placeholder="Введите A" data-bind="value: ellipticCurveA">
+            </div>
+            
+            <div class="col-md-1"></div>
+            
+            <div class="col-md-4 padding-less">
+                <input type="text" id="EllipticCurveB" class="form-control col-md-4" placeholder="Введите B" data-bind="value: ellipticCurveB">
+            </div>
+        </div>
+    </div>
+</div>
+
+<h2 data-bind="visible: isUIInputType">Операции</h2>
+<div class="form-horizontal" data-bind="visible: isUIInputType">
+    <div data-bind="foreach: operations">
+        <div class="form-group">
+            <label class="col-md-2">
+                <input type="button" class="btn btn-danger center-block" data-bind="click: $parent.removeOperation" value="Удалить" >
+            </label>
+            <div class="col-md-9">
+                <div class="col-md-4 padding-less">
+                    <input type="text" class="form-control col-md-4" placeholder="Введите X1" data-bind="value: x1">
+                    <input type="text" class="form-control col-md-4" placeholder="Введите Y1" data-bind="value: y1">
+                </div>
+                
+                <div class="col-md-1">
+                    <input type="button" class="btn btn-info" data-bind="click: $parent.changeType, value: type">
+                </div>
+                
+                <div class="col-md-4 padding-less">
+                    <input type="text" class="form-control col-md-4" placeholder="Введите X2" data-bind="value: x2, visible: type() == '+'">
+                    <input type="text" class="form-control col-md-4" placeholder="Введите Y2" data-bind="value: y2, visible: type() == '+'">
+                    <input type="text" class="form-control col-md-4" placeholder="Введите множитель" data-bind="value: factor, visible: type() == 'x'">
+                </div>
+            </div>
+        </div>
+    </div>        
+
+    <div class="form-group">
+        <label class="col-md-2">
+            <input type="button" class="btn btn-success center-block" data-bind="click: addOperation" value="Добавить"/>
+        </label>
+        <div class="col-sm-10">
+            <input type="button" class="btn btn-success" onclick="calculate()" value="Посчитать"
+                   data-bind="visible: hasOperations() && !process()"/>
+            <img src="../../Content/Load.gif" style="display: none; width: 27px" alt="<Load>"
+                 data-bind="visible: process"/>
+        </div>
+    </div>
+</div>
+
+<h2 data-bind="visible: hasResult">Результат</h2>
+<div class="bs-callout" 
+     data-bind="visible: hasResult, css: {'bs-callout-danger': isResultError, 'bs-callout-success' : !isResultError() }">
+    <p data-bind="html: result"></p>
+</div>
+
+<script>
+    ko.applyBindings(data);
+</script>

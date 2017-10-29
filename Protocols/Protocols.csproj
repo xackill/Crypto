@@ -64,6 +64,8 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -150,6 +152,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\EllipticCurvesController.cs" />
     <Compile Include="Controllers\KeyDepositController.cs" />
     <Compile Include="Controllers\ProbabilisticEncryptionController.cs" />
     <Compile Include="Controllers\VisualAuthenticationController.cs" />
@@ -159,6 +162,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\EllipticCurveModel.cs" />
+    <Compile Include="Models\EllipticCurveOperationModel.cs" />
+    <Compile Include="Models\FiniteFieldModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -200,10 +206,13 @@
     <Content Include="Scripts\Work\CreateAccount.js" />
     <Content Include="Scripts\Work\CreateWallet.js" />
     <Content Include="Scripts\Work\CurrencyWork.js" />
+    <Content Include="Scripts\Work\ECurvesWork.js" />
     <Content Include="Scripts\Work\KDepositWork.js" />
     <Content Include="Scripts\Work\PEncryptionWork.js" />
     <Content Include="Scripts\Work\VAWork.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="Views\EllipticCurves\Index.cshtml" />
+    <Content Include="Views\EllipticCurves\Work.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -252,6 +261,10 @@
     <ProjectReference Include="..\DistributedCurrency\DistributedCurrency.csproj">
       <Project>{8B6D5BF4-437C-49A6-AE4E-5CB3672FD269}</Project>
       <Name>DistributedCurrency</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EllipticCurves\EllipticCurves.csproj">
+      <Project>{08EB6021-ED60-4F17-9F81-81DED87678D2}</Project>
+      <Name>EllipticCurves</Name>
     </ProjectReference>
     <ProjectReference Include="..\KeyDeposit\KeyDeposit.csproj">
       <Project>{51E95582-059E-43FE-9AFB-350D6E739BC3}</Project>
