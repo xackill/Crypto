@@ -30,9 +30,6 @@ namespace Core.Workers
             SaveChanges();
         }
 
-        public void Write<T>(T entity) where T : DataBaseModel
-            => Write<T>(new[] { entity });
-
         public void Update<T>(IEnumerable<T> entities) where T : DataBaseModel
         {
             foreach (var entity in entities)
@@ -42,8 +39,5 @@ namespace Core.Workers
             }
             SaveChanges();
         }
-
-        public void Update<T>(T entity) where T : DataBaseModel
-            => Update<T>(new[] { entity });
     }
 }

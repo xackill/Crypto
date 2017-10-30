@@ -8,13 +8,12 @@ using AnonymousCurrency.Enums;
 using AnonymousCurrency.Extensions;
 using AnonymousCurrency.Factories;
 using AnonymousCurrency.Workers;
-using Core;
 using Core.Cryptography;
 using Core.Extensions;
 using Newtonsoft.Json;
 using DataBase = Core.Workers.DataBase<AnonymousCurrency.Workers.AnonymousCurrencyContext>;
 
-namespace Currency.Controllers
+namespace Protocols.Controllers
 {
     public class AnonymousCurrencyController : Controller
     {

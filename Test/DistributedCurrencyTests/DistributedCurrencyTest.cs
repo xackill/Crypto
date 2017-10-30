@@ -1,17 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using DistributedCurrency;
 using DistributedCurrency.DataBaseModels;
 using DistributedCurrency.Factories;
 using DistributedCurrency.Workers;
+using NUnit.Framework;
+using Test.Helpers;
 using DCDataBase = Core.Workers.DataBase<DistributedCurrency.Workers.DistributedCurrencyContext>;
 
-namespace Test
+namespace Test.DistributedCurrencyTests
 {
-    public class Program
+    public class DistributedCurrencyTest
     {
-        public static Dictionary<string, Guid> Characters = new Dictionary <string, Guid>
+        [Test]
+        [Explicit]
+        public void InitDistributedCurrency()
+        {
+            CreateCharactersWallets();
+            CreateFirstTransaction();
+        }
+        
+        private readonly Dictionary<string, Guid> characters = new Dictionary <string, Guid>
         {
             { "Шерлок Холмс", DCSecret.SherlockHolmesWalletId },
             { "Профессор Мориарти", Guid.NewGuid() },
@@ -20,11 +29,11 @@ namespace Test
             { "Майкрофт Холмс", DCSecret.MycroftHolmesWalletId }
         };
 
-        public static void CreateMajorWallets()
+        private void CreateCharactersWallets()
         {
-            var charactersWallets = new List<Wallet>(Characters.Count);
-            var charactersContacts = new List<Contact>(Characters.Count);
-            foreach (var character in Characters)
+            var charactersWallets = new List<Wallet>(characters.Count);
+            var charactersContacts = new List<Contact>(characters.Count);
+            foreach (var character in characters)
             {
                 var wallet = WalletFactory.Create();
                 wallet.Id = character.Value;
@@ -35,11 +44,11 @@ namespace Test
                 charactersContacts.Add(contact);
             }
 
-            DCDataBase.Write(charactersWallets.AsEnumerable());
-            DCDataBase.Write(charactersContacts.AsEnumerable());
+            DCDataBase.WriteAll(charactersWallets);
+            DCDataBase.WriteAll(charactersContacts);
         }
 
-        public static void CreateFirstTransaction()
+        private void CreateFirstTransaction()
         {
             var sender = DCDataBase.Read<Contact>(DCSecret.JohnWatsonWalletId);
             var verifier = DCDataBase.Read<Wallet>(DCSecret.MycroftHolmesWalletId);
@@ -60,12 +69,6 @@ namespace Test
                 using (new ConsoleMonitoring("Запись в базу"))
                     DCDataBase.Write(transact);
             }
-        }
-
-        public static void Main()
-        {
-            CreateMajorWallets();
-            CreateFirstTransaction();
         }
     }
 }

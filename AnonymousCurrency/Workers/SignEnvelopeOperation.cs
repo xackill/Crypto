@@ -6,7 +6,6 @@ using AnonymousCurrency.DataModels;
 using AnonymousCurrency.Enums;
 using AnonymousCurrency.Extensions;
 using AnonymousCurrency.Helpers;
-using Core;
 using Core.Cryptography;
 using Core.Extensions;
 using DataBase = Core.Workers.DataBase<AnonymousCurrency.Workers.AnonymousCurrencyContext>;

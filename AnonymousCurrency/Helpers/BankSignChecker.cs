@@ -1,5 +1,4 @@
 ﻿using System;
-using Core;
 using Core.Cryptography;
 
 namespace AnonymousCurrency.Helpers

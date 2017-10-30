@@ -18,22 +18,22 @@ namespace Core.Workers
                 return context.Read<T>(id);
         }
 
-        public static void Write<T>(IEnumerable<T> entities) where T : DataBaseModel
+        public static void WriteAll<T>(IEnumerable<T> entities) where T : DataBaseModel
         {
             using (var context = new TC())
                 context.Write(entities);
         }
 
-        public static void Write<T>(T entity) where T : DataBaseModel
-             => Write<T>(new[] { entity });
-
-        public static void Update<T>(IEnumerable<T> entities) where T : DataBaseModel
+        public static void UpdateAll<T>(IEnumerable<T> entities) where T : DataBaseModel
         {
             using (var context = new TC())
                 context.Update(entities);
         }
+        
+        public static void Write<T>(T entity) where T : DataBaseModel
+             => WriteAll(new[] { entity });
 
         public static void Update<T>(T entity) where T : DataBaseModel
-            => Update<T>(new[] { entity });
+            => UpdateAll(new[] { entity });
     }
 }

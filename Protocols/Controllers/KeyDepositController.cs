@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Linq;
-using KeyDeposit.Workers;
 using System.Web.Mvc;
 using Core.Helpers;
 using KeyDeposit.DataBaseModels;
 using KeyDeposit.DataModels;
 using KeyDeposit.Enums;
+using KeyDeposit.Workers;
 using Newtonsoft.Json;
 using DataBase = Core.Workers.DataBase<KeyDeposit.Workers.KeyDepositContext>;
 
-namespace Currency.Controllers
+namespace Protocols.Controllers
 {
     public class KeyDepositController : Controller
     {
@@ -86,7 +86,7 @@ namespace Currency.Controllers
                         depositKey = KeyContainersFactory.CreateForDepositCenter(creatorKey);
 
                     var keys = new[] { creatorKey, depositKey }.Concat(trustedKeys);
-                    DataBase.Write(keys);
+                    DataBase.WriteAll(keys);
 
                     return $"Успех! Ключ {creatorKey.Id} сгенерирован!\n{timeMeasurer.Results}";
                 }

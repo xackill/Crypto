@@ -9,7 +9,7 @@ using DistributedCurrency.Factories;
 using DistributedCurrency.Workers;
 using Newtonsoft.Json;
 
-namespace Currency.Controllers
+namespace Protocols.Controllers
 {
     public class DistributedCurrencyController : Controller
     {

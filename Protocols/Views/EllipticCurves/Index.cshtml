@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.Title = "Эллиптические кривые";
+}
+
+<div class="jumbotron">
+    <h1>E-Curves</h1>
+    <p class="lead">
+        Сумматор точек эллиптической кривой над GF(p) и GF(2^m)
+    </p>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>Сумматор</h2>
+        <p>Сложение и умножение на константу точек эллиптической кривой над GF(p) и GF(2^m)</p>
+        <p><a class="btn btn-default" href="@Url.Action("Work", "EllipticCurves")">Приступить! &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Как это работает?</h2>
+        <p>Из каких шагов состоит работа, как их выполнять и зачем; что было реализовано и как это посмотреть.</p>
+        <p><a class="btn btn-default" href="@Url.Action("Help", "EllipticCurves")">Подробнее &raquo;</a></p>
+    </div>
+</div>
