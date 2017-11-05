@@ -12,6 +12,7 @@
     
     this.process = ko.observable(false);
     this.result = ko.observable("");
+    this.resultToDownload = ko.observable("");
     
     var self = this;
     this.isUIInputType = ko.computed(function() { return self.inputType() === "Интерфейс" });
@@ -47,7 +48,7 @@ var data = new UserData();
 
 function setInputType(type) {
     data.inputType(type);
-    data.result("");
+    cleanResult();
 }
 
 function setFieldType(type) {
@@ -56,7 +57,7 @@ function setFieldType(type) {
 
 function calculate() {
     data.process(true);
-    data.result("");
+    cleanResult();
 
     var finiteField = { Modulus: data.modulus(), ReductionPolynomial: data.reductionPolynomial(), Type: data.fieldType() };
     var ellipticCurve = { A: data.ellipticCurveA(), B: data.ellipticCurveB() };
@@ -72,10 +73,10 @@ function calculate() {
             operations: JSON.stringify(operations)
         },
         success: function (result) {
-            data.result(result.replace(/\n\r?/g, "<br>"));
+            saveResult(result);
         },
         error: function () {
-            data.result("Ошибка! Возможно, данные введены некорректно.");
+            saveResult("Ошибка! Возможно, данные введены некорректно.");
         },
         complete: function () {
             data.process(false);
@@ -102,19 +103,24 @@ function loadFile() {
         return;
     }
 
+    var input = document.getElementById('fileInput');
+    var fileName = input.files[0];
+
+    if (!fileName || fileName === "")
+        return;
+    
     data.process(true);
-    data.result("");
+    cleanResult();
     
     data.fr = new FileReader();
     data.fr.onload = receivedText;
 
-    var input = document.getElementById('fileInput');
-    data.fr.readAsText(input.files[0]);
+    data.fr.readAsText(fileName);
 }
 
 function receivedText() {
     data.process(true);
-    data.result("");
+    cleanResult();
 
     $.ajax({
         type: "POST",
@@ -126,13 +132,39 @@ function receivedText() {
             inputFile: data.fr.result
         },
         success: function (result) {
-            data.result(result.replace(/\n\r?/g, "<br>"));
+            saveResult(result);
         },
         error: function () {
-            data.result("Ошибка! Возможно, данные введены некорректно.");
+            saveResult("Ошибка! Возможно, данные введены некорректно.");
         },
         complete: function () {
             data.process(false);
         }
     });
+}
+
+function cleanResult() {
+    data.result("");
+    data.resultToDownload("");
+}
+
+function saveResult(result) {
+    data.resultToDownload(result);
+    data.result(result.replace(/\n\r?/g, "<br>"));    
+}
+
+function downloadResult() {
+    var blob = new Blob([data.resultToDownload()], {type: 'text/plain'});
+    
+    if (window.navigator.msSaveOrOpenBlob) {
+        window.navigator.msSaveBlob(blob, "result.txt");
+    }
+    else {
+        var elem = window.document.createElement('a');
+        elem.href = window.URL.createObjectURL(blob);
+        elem.download = "result.txt";
+        document.body.appendChild(elem);
+        elem.click();
+        document.body.removeChild(elem);
+    }
 }

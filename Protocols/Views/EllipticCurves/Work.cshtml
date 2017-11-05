@@ -123,6 +123,7 @@
 <div class="bs-callout" 
      data-bind="visible: hasResult, css: {'bs-callout-danger': isResultError, 'bs-callout-success' : !isResultError() }">
     <p data-bind="html: result"></p>
+    <input type="button" class="btn btn-primary" onclick="downloadResult()" value="Сохранить в файл" />
 </div>
 
 <script>
