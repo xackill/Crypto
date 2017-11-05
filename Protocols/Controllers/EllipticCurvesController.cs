@@ -122,7 +122,7 @@ namespace Protocols.Controllers
                     {
                         case "+":
                             var a = EllipticParser.ParsePoint(operation.X1, operation.Y1, field);
-                            var b = EllipticParser.ParsePoint(operation.X1, operation.Y1, field);
+                            var b = EllipticParser.ParsePoint(operation.X2, operation.Y2, field);
                             var c = curve.Summarize(a, b);
                             sb.AppendLine($"{i+1}. {a} + {b} = {c}");
                             break;
@@ -139,7 +139,7 @@ namespace Protocols.Controllers
                 }
                 catch (Exception e)
                 {
-                    sb.Append($"{i+1} {e.Message}");
+                    sb.AppendLine($"{i+1}. {e.Message}");
                 }
             }
             

@@ -85,10 +85,10 @@ function calculate() {
 
 function convertOperationToString(operation) {
     return { 
-        X1: operation.x1(), 
-        Y1: operation.y1(), 
+        X1: operation.x1(),
+        Y1: operation.y1(),
         
-        X2: operation.x1(), 
+        X2: operation.x2(),
         Y2: operation.y2(),
         
         Factor: operation.factor(),
