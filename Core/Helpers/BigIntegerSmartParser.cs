@@ -9,7 +9,7 @@ namespace Core.Helpers
         public static BigInteger Parse(string data)
         {
             return !data.StartsWith("0x")
-                ? Parse(data, NumberStyles.None)
+                ? Parse(data, NumberStyles.AllowLeadingSign)
                 : Parse(data.Substring(2), NumberStyles.HexNumber);
         }
 

@@ -50,6 +50,11 @@ namespace EllipticCurves.DataModels.FiniteFields
             return CreateFiniteFieldValue(c);
         }
 
+        public override BigInteger Normalize(BigInteger a)
+        {
+            return a;
+        }
+
         public override string ToString(BigInteger a)
         {
             return $"0x{a.ToString("X")}";

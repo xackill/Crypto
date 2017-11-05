@@ -17,6 +17,8 @@ namespace EllipticCurves.DataModels.FiniteFields
         public abstract FiniteFieldValue Add(BigInteger a, BigInteger b);
         public abstract FiniteFieldValue Multiply(BigInteger a, BigInteger b);
 
+        public abstract BigInteger Normalize(BigInteger a);
+        
         public abstract string ToString(BigInteger a);
 
         public override bool Equals(object obj)

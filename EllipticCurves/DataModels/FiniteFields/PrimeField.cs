@@ -29,15 +29,15 @@ namespace EllipticCurves.DataModels.FiniteFields
             return CreateFiniteFieldValue(Normalize(a * b));
         }
 
-        public override string ToString(BigInteger a)
-        {
-            return $"0x{a.ToString("X")}";
-        }
-        
-        private BigInteger Normalize(BigInteger a)
+        public override BigInteger Normalize(BigInteger a)
         {
             a %= Modulus;
             return a >= 0 ? a : a + Modulus;
+        }
+
+        public override string ToString(BigInteger a)
+        {
+            return $"0x{a.ToString("X")}";
         }
     }
 }

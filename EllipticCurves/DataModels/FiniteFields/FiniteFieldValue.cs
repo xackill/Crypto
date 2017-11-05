@@ -10,7 +10,7 @@ namespace EllipticCurves.DataModels.FiniteFields
 
         public FiniteFieldValue(BigInteger value, FiniteField finiteField)
         {
-            this.value = value;
+            this.value = finiteField.Normalize(value);
             this.finiteField = finiteField;
         }
 
